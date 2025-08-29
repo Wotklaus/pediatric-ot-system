@@ -23,147 +23,6 @@ html, body {
   padding: 0;
 }
 
-/* Header */
-.header {
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-  width: 100vw;
-  margin: 0;
-  padding: 0;
-}
-
-.header-content {
-  width: 100vw;
-  margin: 0;
-  padding: 0 20px;
-}
-
-.header-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 80px;
-  width: 100%;
-}
-
-/* Logo */
-.logo-container {
-  flex-shrink: 0;
-}
-
-.logo-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo-icon {
-  width: 40px;
-  height: 40px;
-  background-color: #3b82f6;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo-letter {
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.logo-title {
-  font-size: 28px;
-  font-weight: bold;
-  color: #3b82f6;
-  line-height: 1;
-}
-
-.logo-subtitle {
-  font-size: 14px;
-  color: #3b82f6;
-  line-height: 1;
-  margin-top: -2px;
-}
-
-/* Navegación desktop */
-.desktop-nav {
-  display: none;
-  align-items: center;
-  gap: 40px;
-  flex-grow: 1;
-  justify-content: center;
-}
-
-.nav-link {
-  color: #374151;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 16px;
-  padding: 10px 0;
-  transition: color 0.3s ease;
-  white-space: nowrap;
-  background-color: #ffffff;
-}
-
-.nav-link:hover {
-  color: #3b82f6;
-}
-
-/* Menú móvil */
-.mobile-menu-button {
-  display: block;
-}
-
-.menu-toggle {
-  background: none;
-  border: none;
-  color: #374151;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-}
-
-.menu-toggle:hover {
-  color: #3b82f6;
-  background-color: #f3f4f6;
-}
-
-.menu-icon {
-  width: 24px;
-  height: 24px;
-}
-
-.mobile-nav {
-  border-top: 1px solid #e5e7eb;
-  padding: 20px 0;
-  background: white;
-}
-
-.mobile-nav-links {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.mobile-nav-link {
-  color: #374151;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 16px;
-  padding: 12px 0;
-  transition: color 0.3s ease;
-}
-
-.mobile-nav-link:hover {
-  color: #3b82f6;
-}
-
 /* Sección Hero */
 .hero-section {
   background: linear-gradient(135deg, #1f2937 0%, #374151 50%, #4b5563 100%);
@@ -220,10 +79,6 @@ html, body {
   font-weight: 400;
 }
 
-.hero-break {
-  display: none;
-}
-
 .cta-container {
   display: flex;
   justify-content: center;
@@ -253,6 +108,7 @@ html, body {
   transform: translateY(0);
 }
 
+/* Hero decoraciones */
 .decorative-dots {
   display: flex;
   justify-content: center;
@@ -269,13 +125,8 @@ html, body {
   animation: pulse 2s infinite;
 }
 
-.dot-2 {
-  animation-delay: 0.7s;
-}
-
-.dot-3 {
-  animation-delay: 1.4s;
-}
+.dot-2 { animation-delay: 0.7s; }
+.dot-3 { animation-delay: 1.4s; }
 
 .background-pattern {
   position: absolute;
@@ -322,45 +173,30 @@ html, body {
 }
 
 @keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.5;
-    transform: scale(1.1);
-  }
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.1); }
 }
 
 @keyframes blob {
-  0%, 100% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  33% {
-    transform: translate(40px, -60px) scale(1.1);
-  }
-  66% {
-    transform: translate(-30px, 30px) scale(0.9);
-  }
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(40px, -60px) scale(1.1); }
+  66% { transform: translate(-30px, 30px) scale(0.9); }
 }
 
-
-
+/* Beneficios y Proceso */
 .benefits-section {
-  background-color: #5c8d524f; /* azul claro */
+  background-color: #e6e6e6;
 }
 
 .how-it-works-section {
-  background-color: #ede9fe; /* violeta claro */
+  background-color: #ede9fe;
 }
-
 
 .benefits-section,
 .how-it-works-section {
   width: 100%;
   padding: 80px 20px;
 }
-
 
 .benefits-section h2,
 .how-it-works-section h2 {
@@ -369,9 +205,8 @@ html, body {
   font-weight: 700;
   color: #1f2937;
   margin-bottom: 40px;
-  margin-top:  -60px;
+  margin-top: -60px;
 }
-
 
 .benefits-grid,
 .steps-grid {
@@ -380,9 +215,7 @@ html, body {
   gap: 40px;
   max-width: 1300px;
   margin: 0 auto;
-
 }
-
 
 .benefit-item,
 .step-item {
@@ -392,9 +225,7 @@ html, body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   text-align: center;
   transition: transform 0.3s ease;
-  position:static;
 }
-
 
 .benefit-item:hover,
 .step-item:hover {
@@ -407,7 +238,6 @@ html, body {
   color: #3b82f6;
 }
 
-
 .benefit-item h3,
 .step-item h3 {
   font-size: 20px;
@@ -416,7 +246,6 @@ html, body {
   margin-bottom: 12px;
 }
 
-
 .benefit-item p,
 .step-item p {
   font-size: 16px;
@@ -424,98 +253,25 @@ html, body {
   line-height: 1.6;
 }
 
-/* Footer */
-.footer {
-  background-color: #1f2937;
-  color: #d1d5db;
-  padding: 40px 20px;
-  text-align: center;
-}
-
-.footer-content p {
-  margin-bottom: 12px;
-  font-size: 14px;
-}
-
-/* Media Queries Responsivos */
+/* Responsive */
 @media (min-width: 768px) {
-  .desktop-nav {
-    display: flex;
-  }
-
-  .mobile-menu-button {
-    display: none;
-  }
-
-  .hero-break {
-    display: block;
-  }
-
   .hero-section {
     padding: calc(80px + 60px) 0 60px;
   }
-
-  .header-content {
-    padding: 0 40px;
-  }
-
-  .hero-content {
-    padding: 0 40px;
-  }
-
-
+  .hero-content { padding: 0 40px; }
   .benefits-section,
-  .how-it-works-section {
-    padding: 100px 40px;
-  }
-
-  .footer {
-    padding: 60px 40px;
-  }
+  .how-it-works-section { padding: 100px 40px; }
 }
 
 @media (min-width: 1024px) {
-  .hero-section {
-    padding: 100px 0;
-  }
-
-  .header-content {
-    padding: 0 60px;
-  }
-
-  .hero-content {
-    padding: 0 60px;
-  }
-
-  .decorative-dots {
-    display: flex;
-  }
-
- 
+  .hero-section { padding: 100px 0; }
+  .hero-content { padding: 0 60px; }
+  .decorative-dots { display: flex; }
   .benefits-section,
-  .how-it-works-section {
-    padding: 120px 60px;
-  }
-
-  .footer {
-    padding: 80px 60px;
-  }
+  .how-it-works-section { padding: 120px 60px; }
 }
 
 @media (min-width: 1200px) {
-  .desktop-nav {
-    gap: 50px;
-  }
-
-  .hero-section {
-    padding: 120px 0;
-  }
-
-  .header-content {
-    padding: 0 80px;
-  }
-
-  .hero-content {
-    padding: 0 80px;
-  }
+  .hero-section { padding: 120px 0; }
+  .hero-content { padding: 0 80px; }
 }

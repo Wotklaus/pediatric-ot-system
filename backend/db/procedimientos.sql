@@ -337,3 +337,39 @@ SELECT
     f.created_at
 FROM formularios f
 JOIN usuarios u ON u.id = f.user_id;
+
+
+-- =============================================
+--                ENTIDAD EVALUACION
+-- =============================================
+
+-- Insertar evaluacion
+CREATE OR REPLACE FUNCTION insertar_evaluacion(
+    p_formulario_id INT,
+    p_respuestas JSONB
+)
+RETURNS INT AS $$
+DECLARE
+    nueva_evaluacion_id INT;
+    r JSONB;
+BEGIN
+    -- 1️⃣ Crear la evaluación
+    INSERT INTO evaluaciones(formulario_id)
+    VALUES (p_formulario_id)
+    RETURNING id INTO nueva_evaluacion_id;
+
+    -- 2️⃣ Insertar respuestas
+    FOR r IN SELECT * FROM jsonb_array_elements(p_respuestas)
+    LOOP
+        INSERT INTO respuestas(evaluacion_id, pregunta_id, respuesta, puntaje)
+        VALUES (
+            nueva_evaluacion_id,
+            (r->>'pregunta_id')::INT,
+            r->>'respuesta',
+            (r->>'puntaje')::INT
+        );
+    END LOOP;
+
+    RETURN nueva_evaluacion_id;
+END;
+$$ LANGUAGE plpgsql;

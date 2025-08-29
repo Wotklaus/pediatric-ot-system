@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/header"; // ✅ Header dinámico
 import "./styles/Perfil.css";
 
 function Perfil() {
@@ -66,45 +67,8 @@ function Perfil() {
 
   return (
     <div className="perfil-page">
-      {/* Header */}
-      <header className="header">
-        <div className="header-content">
-          <div className="header-inner">
-            <div className="logo-container">
-              <div className="logo-wrapper">
-                <div className="logo-icon">
-                  <span className="logo-letter">C</span>
-                </div>
-                <div>
-                  <div className="logo-title">CARYAN</div>
-                  <div className="logo-subtitle">Insights</div>
-                </div>
-              </div>
-            </div>
-
-            <nav className="desktop-nav">
-              <button className="nav-link" onClick={() => navigate("/customer")}>
-                Inicio
-              </button>
-              <button className="nav-link" onClick={() => navigate("/perfil")}>
-                Perfil
-              </button>
-              <button className="nav-link" onClick={() => navigate("/misformularios")}>
-                Resultados
-              </button>
-              <button
-                className="nav-link salir"
-                onClick={() => {
-                  localStorage.clear();
-                  navigate("/login");
-                }}
-              >
-                Salir
-              </button>
-            </nav>
-          </div>
-        </div>
-      </header>
+      {/* Header dinámico */}
+      <Header />
 
       {/* ✅ Toast flotante */}
       {mensaje && <div className={`mensaje-toast ${tipoMensaje}`}>{mensaje}</div>}

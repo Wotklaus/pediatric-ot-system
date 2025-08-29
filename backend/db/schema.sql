@@ -73,3 +73,27 @@ CREATE TABLE IF NOT EXISTS formularios (
     hitos JSONB   -- edad, esperado y razones si responde "No"
 );
 
+
+--    ENTIDAD EVALUACIONES
+CREATE TABLE IF NOT EXISTS evaluaciones (
+    id SERIAL PRIMARY KEY,
+    formulario_id INT NOT NULL REFERENCES formularios(id) ON DELETE CASCADE,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+--    ENTIDAD PREGUNTAS
+CREATE TABLE IF NOT EXISTS preguntas (
+    id SERIAL PRIMARY KEY,
+    numero INT NOT NULL UNIQUE,
+    texto TEXT NOT NULL,
+    area VARCHAR(50) NOT NULL
+);
+
+--    ENTIDAD RESPUESTAS
+CREATE TABLE IF NOT EXISTS respuestas (
+    id SERIAL PRIMARY KEY,
+    evaluacion_id INT NOT NULL REFERENCES evaluaciones(id) ON DELETE CASCADE,
+    pregunta_id INT NOT NULL REFERENCES preguntas(id),
+    respuesta VARCHAR(255),
+    puntaje INT CHECK (puntaje BETWEEN 0 AND 2)
+);

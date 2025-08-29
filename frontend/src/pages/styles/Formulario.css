@@ -2,53 +2,51 @@
    CONTENEDOR PRINCIPAL
    =========================== */
 .anamnesis-container {
-  width: 100vw;                     /* Ocupa todo el ancho de la ventana */
-  min-height: 100vh;                /* Altura mínima: toda la pantalla */
-  padding: 50px 50px;               /* Espaciado interno */
+  width: 100vw;                     
+  min-height: 100vh;                
+  padding: 50px 50px;               
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #000000;                   /* Color principal del texto */
-  background-color: #fafafa;        /* Fondo gris claro */
-  box-sizing: border-box;           /* Incluye padding dentro del width/height */
+  color: #000000;                   
+  background-color: #fafafa;        
+  box-sizing: border-box;   
+  margin-top: 50px;        
 }
 
 /* ===========================
-   FORMULARIO PRINCIPAL CON GRID
+   FORMULARIO PRINCIPAL
    =========================== */
 .anamnesis-form {
-  max-width: 1500px;                /* Máximo ancho del formulario */
-  margin: 0 auto;                   /* Centrado horizontal */
-  display: grid;                     /* Grid layout para secciones lado a lado */
-  grid-template-columns: 1fr 1fr;   /* Dos columnas iguales */
-  grid-template-rows: auto auto;    /* Dos filas automáticas según contenido */
-  gap: 30px 20px;                    /* 30px entre filas, 20px entre columnas */
+  max-width: 1000px;               
+  margin: 0 auto;                  
+  display: flex;                    
+  flex-direction: column;           
+  gap: 30px;                        
 }
 
 /* ===========================
-   FIELDSETS POR COLUMNA
+   FIELDSETS POR SECCIÓN
    =========================== */
-.anamnesis-form fieldset:nth-child(1) { grid-column: 1; grid-row: 1; } /* Sección 1 */
-.anamnesis-form fieldset:nth-child(2) { grid-column: 2; grid-row: 1; } /* Sección 2 */
-.anamnesis-form fieldset:nth-child(3) { grid-column: 1; grid-row: 2; } /* Sección 3 */
-.anamnesis-form fieldset:nth-child(4) { grid-column: 2; grid-row: 2; } /* Sección 4 */
+.anamnesis-form fieldset {
+  border: 1px solid #a1a3a6;        
+  border-radius: 8px;               
+  padding: 20px;                    
+  background-color: #ffffff;        
+}
+
+/* Colores por sección */
+.anamnesis-form fieldset:nth-child(1) { background-color: #f0f8ff; } /* Sección 1: azul claro */
+.anamnesis-form fieldset:nth-child(2) { background-color: #fee9c3; } /* Sección 2: crema */
+.anamnesis-form fieldset:nth-child(3) { background-color: #f5f5dc; } /* Sección 3: beige */
+.anamnesis-form fieldset:nth-child(4) { background-color: #e6f7ff; } /* Sección 4: celeste muy claro */
 
 /* ===========================
    ENCABEZADOS
    =========================== */
 .anamnesis-container h2 {
-  text-align: center;               /* Centrado de títulos */
-  font-size: 28px;                  /* Tamaño grande para jerarquía */
-  margin-bottom: 20px;              /* Separación de la sección siguiente */
-  color: #484a4d;                   /* Color azul oscuro */
-}
-
-/* ===========================
-   FIELDSETS (SECCIONES)
-   =========================== */
-.anamnesis-form fieldset {
-  border: 1px solid #a1a3a6;        /* Borde gris claro */
-  border-radius: 8px;               /* Bordes redondeados */
-  padding: 20px;                     /* Espacio interno */
-  background-color: #ffffff;         /* Fondo blanco para resaltar sección */
+  text-align: center;               
+  font-size: 28px;                  
+  margin-bottom: 20px;              
+  color: #3e3c3c;                   
 }
 
 /* ===========================
@@ -57,7 +55,7 @@
 .anamnesis-form legend {
   font-weight: bold;
   font-size: 18px;
-  color: hsl(212, 53%, 45%);       /* Azul vibrante */
+  color: #3984ce;       
   padding: 0 10px;
 }
 
@@ -65,89 +63,93 @@
    LABELS
    =========================== */
 .anamnesis-form label {
-  display: block;                    /* Cada label ocupa línea completa */
+  display: block;                    
   margin-bottom: 10px;
   font-size: 15px;
   font-weight: 500;
   color: #000000;
+  
 }
 
 /* ===========================
-   INPUTS DE TEXTO, NÚMERO Y TELÉFONO
+   INPUTS DE TEXTO, NÚMERO, TELÉFONO Y FECHA
    =========================== */
 .anamnesis-form input[type="text"],
 .anamnesis-form input[type="number"],
-.anamnesis-form input[type="tel"] {
-  width: 70%;                       /* Ocupa toda la columna */
+.anamnesis-form input[type="tel"],
+.anamnesis-form input[type="date"] {
+  width: 100%;            
+  height: 35px;           
   padding: 10px 14px;
   margin-bottom: 15px;
   border: 1px solid #babcbe;
   border-radius: 6px;
   font-size: 15px;
-  background-color: #fafafa;
+  background-color: #ffffff;
   box-sizing: border-box;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
   color: #000000;
-  height: 30px;
 }
 
-/* INPUTS AL HACER FOCUS */
+/* Focus */
 .anamnesis-form input[type="text"]:focus,
 .anamnesis-form input[type="number"]:focus,
 .anamnesis-form input[type="tel"]:focus,
 .anamnesis-form input[type="date"]:focus {
-  border-color: #c5c5c3;
-  box-shadow: 0 0 4px rgba(80, 100, 114, 0.4);
+  border-color: #c3cbd1;
+  box-shadow: 0 0 4px rgba(162, 167, 170, 0.4);
   outline: none;
 }
 
 /* ===========================
-   INPUTS DE FECHA
+   RADIOS SÍ/NO REDONDOS
    =========================== */
-.anamnesis-form input[type="date"] {
-  width: 50%;                        /* Puedes cambiar a 100% si prefieres */
-  padding: 10px 14px;
-  margin-bottom: 15px;
-  border: 1px solid #b7babd;
-  border-radius: 6px;
-  font-size: 14px;
-  background-color: #f9f9f9;
-  box-sizing: border-box;
-  color: #000000;
-}
-
-/* ===========================
-   RADIOS Y CHECKBOXES
-   =========================== */
-.radio-group,
-.checkbox-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;                          /* Separación entre opciones */
-  margin: 10px 0 15px 0;
-}
-
-.radio-group label,
-.checkbox-group label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-/* ===========================
-   SELECT
-   =========================== */
-.anamnesis-form select {
-  width: 60%;                         /* Puedes cambiar a 100% si deseas */
-  padding: 10px 14px;
-  margin-bottom: 15px;
-  border: 1px solid #b7babd;
-  border-radius: 6px;
-  font-size: 14px;
+.radio-group input[type="radio"] {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #b0bec5;
+  border-radius: 50%;
   background-color: #ffffff;
-  box-sizing: border-box;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-right: 8px;
+  position: relative;
+}
+
+.radio-group input[type="radio"]:checked {
+  background-color: #40aff8;
+  border-color: #23475f63;
+}
+
+/* ===========================
+   CHECKBOXES SIMPLES
+   =========================== */
+.checkbox-group input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #b0bec5;
+  border-radius: 3px;
+  background-color: #ffffff;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-right: 8px;
+  position: relative;
+}
+
+.checkbox-group input[type="checkbox"]:checked {
+  background-color: #3498db;
+  border-color: #3498db;
+}
+
+/* Marca de check simple */
+.checkbox-group input[type="checkbox"]:checked::after {
+  content: '✓';
+  color: white;
+  font-size: 14px;
+  position: absolute;
+  top: -2px;
+  left: 2px;
 }
 
 /* ===========================
@@ -161,7 +163,6 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  align-self: center;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
@@ -170,16 +171,8 @@
   transform: translateY(-2px);
 }
 
-.button-group {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-  margin-left: 5px;
-}
-
 .cancel-button {
-  background-color: #ff0e0ecd;
+  background-color: #ff0e0e;
   color: white;
   padding: 12px 24px;
   font-size: 16px;
@@ -195,21 +188,36 @@
 }
 
 /* ===========================
-   MEDIA QUERIES (RESPONSIVE)
+   GRUPOS DE BOTONES
    =========================== */
-@media (max-width: 900px) {
-  .anamnesis-form {
-    grid-template-columns: 1fr;    /* Cada sección ocupa toda la fila */
-    grid-template-rows: auto;
-  }
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
 
-  .anamnesis-form fieldset {
-    grid-column: auto !important;
-    grid-row: auto !important;
-  }
+/* Mensaje de éxito o error */
+.toast {
+  padding: 12px 20px;
+  border-radius: 6px;
+  margin: 10px 0;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative; /* importante para no afectar layout de botones */
+}
 
-  .anamnesis-form input[type="date"],
-  .anamnesis-form select {
-    width: 100%;                   /* Ocupa toda la columna en móvil */
-  }
+/* Mensaje de error */
+.toast.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Mensaje de éxito */
+.toast.exito {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
 }

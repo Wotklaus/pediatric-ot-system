@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { UserProvider } from "./context/userContext";
 
 // Asegúrate que estos componentes existan en src/pages y estén exportados correctamente
 import Registro from "./pages/Registro";
@@ -9,56 +10,67 @@ import Formulario from "./pages/Formulario";
 import Perfil from "./pages/Perfil";
 import MisFormularios from "./pages/MisFormularios";
 import Disclaimer from "./pages/Disclaimer";
+import Evaluacion from "./pages/Evaluacion";
 
 // Componente para proteger rutas
 import ProtectedRoute from "./components/protectedRoute";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Rutas públicas */}
-        <Route path="/registro" element={<Registro />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/disclaimer" element={<Disclaimer />} />
-        <Route path="/home" element={<Home />} />
+    <UserProvider> {/* <-- Envolvemos toda la app en el UserProvider */}
+      <BrowserRouter>
+        <Routes>
+          {/* Rutas públicas */}
+          <Route path="/registro" element={<Registro />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route path="/home" element={<Home />} />
 
-        {/* Rutas protegidas */}
-        <Route
-          path="/customer"
-          element={
-            <ProtectedRoute>
-              <Customer />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/formulario"
-          element={
-            <ProtectedRoute>
-              <Formulario />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/perfil"
-          element={
-            <ProtectedRoute>
-              <Perfil />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/misformularios"
-          element={
-            <ProtectedRoute>
-              <MisFormularios />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+          {/* Rutas protegidas */}
+          <Route
+            path="/customer"
+            element={
+              <ProtectedRoute>
+                <Customer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/formulario"
+            element={
+              <ProtectedRoute>
+                <Formulario />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/perfil"
+            element={
+              <ProtectedRoute>
+                <Perfil />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/misformularios"
+            element={
+              <ProtectedRoute>
+                <MisFormularios />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/evaluacion"
+            element={
+              <ProtectedRoute>
+                <Evaluacion />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
   );
 }
 

@@ -1,133 +1,34 @@
-import React, { useState } from 'react';
-import './styles/Home.css';
-import { useNavigate } from 'react-router-dom';
-import { Link as ScrollLink } from 'react-scroll'; // Para scroll suave
+// src/pages/Home.jsx
+import React from "react";
+import Layout from "../components/layout";
+import "./styles/Home.css";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   return (
-    <div className="landing-container">
-      {/* Header/Navigation */}
-      <header className="header">
-        <div className="header-content">
-          <div className="header-inner">
-            {/* Logo */}
-            <div className="logo-container">
-              <div className="logo-wrapper">
-                <div className="logo-icon">
-                  <span className="logo-letter">C</span>
-                </div>
-                <div>
-                  <div className="logo-title">CARYAN</div>
-                  <div className="logo-subtitle">Insights</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Desktop Navigation */}
-            <nav className="desktop-nav">
-              <button className="nav-link" onClick={() => navigate("/registro")}>
-                Registrarse
-              </button>
-              <button className="nav-link" onClick={() => navigate("/login")}>
-                Iniciar sesión
-              </button>
-              <ScrollLink
-                className="nav-link"
-                to="benefits"
-                smooth={true}
-                duration={500}
-                offset={-80} // Ajusta según altura del header
-              >
-                Beneficios
-              </ScrollLink>
-              <ScrollLink
-                className="nav-link"
-                to="how-it-works"
-                smooth={true}
-                duration={500}
-                offset={-80}
-              >
-                Cómo Funciona
-              </ScrollLink>
-              <ScrollLink
-                className="nav-link"
-                to="footer"
-                smooth={true}
-                duration={500}
-                offset={-80}
-              >
-                Contacto
-              </ScrollLink>
-            </nav>
-
-            {/* Mobile menu button */}
-            <div className="mobile-menu-button">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="menu-toggle"
-              >
-                <svg className="menu-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Navigation */}
-          {isMenuOpen && (
-            <div className="mobile-nav">
-              <div className="mobile-nav-links">
-                <button onClick={() => navigate("/registro")} className="mobile-nav-link">
-                  Registro
-                </button>
-                <button onClick={() => navigate("/login")} className="mobile-nav-link">
-                  Iniciar sesión
-                </button>
-                <ScrollLink to="benefits" smooth={true} duration={500} offset={-80} className="mobile-nav-link">
-                  Beneficios
-                </ScrollLink>
-                <ScrollLink to="how-it-works" smooth={true} duration={500} offset={-80} className="mobile-nav-link">
-                  Cómo Funciona
-                </ScrollLink>
-                <ScrollLink to="footer" smooth={true} duration={500} offset={-80} className="mobile-nav-link">
-                  Contacto
-                </ScrollLink>
-              </div>
-            </div>
-          )}
-        </div>
-      </header>
-
+    <Layout>
       {/* Hero Section */}
-      <main className="hero-section">
+      <section className="hero-section">
         <div className="hero-content">
           <div className="hero-inner">
-            {/* Main Heading */}
             <h1 className="hero-title">
               <span className="hero-title-highlight">CARYAN:</span> Iluminando el Camino del
               <br />
               <span className="hero-title-block">Desarrollo Infantil</span>
             </h1>
 
-            {/* Subtitle */}
             <p className="hero-subtitle">
               Una herramienta para comprender y potenciar el perfil ocupacional de infantes en etapa temprana
-            
-              
             </p>
 
-            {/* Call to Action Button */}
             <div className="cta-container">
               <button className="cta-button" onClick={() => navigate("/registro")}>
                 Empezar
               </button>
-              
             </div>
 
-            {/* Decorative elements */}
             <div className="decorative-dots">
               <div className="dot dot-1"></div>
               <div className="dot dot-2"></div>
@@ -136,17 +37,14 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Background Pattern */}
         <div className="background-pattern">
           <div className="blob blob-1"></div>
           <div className="blob blob-2"></div>
           <div className="blob blob-3"></div>
         </div>
-      </main>
+      </section>
 
-      
-
-      {/* Sección: ¿Por Qué Elegir CARYAN Insights? */}
+      {/* Sección: Beneficios */}
       <section className="benefits-section" id="benefits">
         <div className="container">
           <h2>¿Por Qué Elegir CARYAN Insights?</h2>
@@ -175,7 +73,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Sección: El Proceso de Evaluación CARYAN */}
+      {/* Sección: Proceso */}
       <section className="how-it-works-section" id="how-it-works">
         <div className="container">
           <h2>El Proceso de Evaluación CARYAN</h2>
@@ -203,18 +101,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer-content">
-          <p>© 2025 CARYAN Insights. Todos los derechos reservados.</p>
-          <p>Texto de ejemplo para modificar más adelante.</p>
-        </div>
-      </footer>
-
-
-
-    </div>
+    </Layout>
   );
 };
 

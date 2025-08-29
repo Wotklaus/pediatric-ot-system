@@ -1,14 +1,15 @@
-// src/pages/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import "./styles/Login.css";
+import { useUser } from "../context/userContext"; // <-- Importar contexto
 
 function Login() {
   const [credenciales, setCredenciales] = useState({ email: "", contrasena: "" });
   const [mensaje, setMensaje] = useState("");
   const [cargando, setCargando] = useState(false);
 
+  const { setUser } = useUser(); // <-- Hook del contexto
   const navigate = useNavigate();
 
   const manejarLogin = async (e) => {
@@ -21,13 +22,21 @@ function Login() {
       const { usuario, token } = respuesta.data;
 
       console.log("LOGIN EXITOSO - Usuario:", usuario);
-      console.log("LOGIN EXITOSO - TOKEN RECIBIDO:", token ? "Existente" : "No existente");
+      console.log("LOGIN EXITOSO - TOKEN:", token ? "Existente" : "No existente");
 
       // Guardar en localStorage
-      localStorage.setItem("email", usuario.email); // 🔑
+      localStorage.setItem("email", usuario.email);
       localStorage.setItem("rol_id", usuario.rol_id.toString());
-      localStorage.setItem("token", token || ""); // aunque sea vacío
+      localStorage.setItem("token", token || "");
       localStorage.setItem("nombre", usuario.nombre);
+
+      // 🔑 Actualizar contexto
+      setUser({
+        nombre: usuario.nombre,
+        email: usuario.email,
+        role: usuario.rol_id === 1 ? "admin" : "cliente",
+        token: token || "",
+      });
 
       setMensaje(`✅ Bienvenido, ${usuario.nombre} (rol: ${usuario.rol_id})`);
 
