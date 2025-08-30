@@ -1,0 +1,125 @@
+.resultado-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.resultado-container {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.resultado-paper {
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.actions-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.titulo-principal {
+  color: #1976d2;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.puntaje-card {
+  padding: 2rem;
+  text-align: center;
+  background-color: #f8f9fa;
+  margin-bottom: 2rem;
+}
+
+.nivel-chip {
+  margin: 1rem 0;
+}
+
+.interpretacion {
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.divider {
+  margin: 2rem 0;
+}
+
+.recomendaciones-section {
+  margin-bottom: 2rem;
+}
+
+.recomendaciones-list {
+  padding-left: 1.5rem;
+  margin-top: 1rem;
+}
+
+.recomendaciones-list li {
+  margin-bottom: 0.5rem;
+}
+
+.actions-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.detalles-section {
+  margin-top: 2rem;
+}
+
+.respuesta-card {
+  padding: 1rem;
+  background-color: #ffffff;
+}
+
+.contextos-container {
+  margin-top: 1rem;
+}
+
+.chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.contexto-chip {
+  margin: 0.25rem;
+}
+
+/* Estilos para impresión */
+@media print {
+  .actions-top,
+  .actions-container {
+    display: none;
+  }
+
+  .resultado-container {
+    padding: 0;
+  }
+
+  .resultado-paper {
+    box-shadow: none !important;
+  }
+
+  .detalles-section {
+    display: block !important;
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .resultado-paper {
+    padding: 1rem;
+  }
+
+  .actions-container {
+    flex-direction: column;
+  }
+
+  .titulo-principal {
+    font-size: 1.5rem;
+  }
+}

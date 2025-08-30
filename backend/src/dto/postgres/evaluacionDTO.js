@@ -1,10 +1,11 @@
 class EvaluacionDTO {
-  constructor({ id, formularioId, fecha, respuestas }) {
-    this.id = id;
-    this.formularioId = formularioId;
-    this.fecha = fecha; // Timestamp
-    this.respuestas = respuestas || []; // Array de RespuestaDTO
-  }
+    constructor({ id, formulario_id, user_id, fecha, respuestas}) {
+        this.id = id;
+        this.formulario_id = formulario_id;
+        this.user_id = user_id;
+        this.fecha = fecha;
+        this.respuestas = respuestas;
+    }
 }
 
 module.exports = EvaluacionDTO;

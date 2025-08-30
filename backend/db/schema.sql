@@ -77,23 +77,20 @@ CREATE TABLE IF NOT EXISTS formularios (
 --    ENTIDAD EVALUACIONES
 CREATE TABLE IF NOT EXISTS evaluaciones (
     id SERIAL PRIMARY KEY,
-    formulario_id INT NOT NULL REFERENCES formularios(id) ON DELETE CASCADE,
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    formulario_id INTEGER NOT NULL REFERENCES formularios(id),
+    user_id INTEGER NOT NULL REFERENCES usuarios(id),
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    respuestas JSONB NOT NULL DEFAULT '[]'
+    -- Las respuestas serán así:
+    -- [
+    --     {
+    --         "pregunta_id": 1,
+    --         "respuesta": "2",
+    --         "puntaje": 2,
+    --         "contextos": ["No ha tenido tiempo", "Tiene miedo"]
+    --     }
+    -- ]
 );
 
---    ENTIDAD PREGUNTAS
-CREATE TABLE IF NOT EXISTS preguntas (
-    id SERIAL PRIMARY KEY,
-    numero INT NOT NULL UNIQUE,
-    texto TEXT NOT NULL,
-    area VARCHAR(50) NOT NULL
-);
 
---    ENTIDAD RESPUESTAS
-CREATE TABLE IF NOT EXISTS respuestas (
-    id SERIAL PRIMARY KEY,
-    evaluacion_id INT NOT NULL REFERENCES evaluaciones(id) ON DELETE CASCADE,
-    pregunta_id INT NOT NULL REFERENCES preguntas(id),
-    respuesta VARCHAR(255),
-    puntaje INT CHECK (puntaje BETWEEN 0 AND 2)
-);
+

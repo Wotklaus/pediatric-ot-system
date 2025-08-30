@@ -161,7 +161,7 @@ const Formulario = () => {
                 setMensaje("Formulario guardado correctamente ✅");
                 setTipoMensaje("exito");
 
-                const formularioId = data.Id; // Asegúrate que tu backend devuelva este campo
+                const formularioId = data.id; // <-- usa 'id' minúscula
                 setTimeout(() => navigate("/evaluacion", { state: { formularioId } }), 2000);
             } else {
                 setMensaje("Error al guardar: " + data.error);

@@ -14,12 +14,4 @@ INSERT INTO usuarios (email, nombre, apellido, cedula, telefono, contrasena, rol
   ('invitado@universidad.edu', 'Iván', 'Invitado', '0303030303', '0977777777', 'invitado123', 3);
 
 
---  ENTIDAD CANDIDATOS
-INSERT INTO candidatos (nombre) VALUES
-  ('Mejorar la Infraestructura de la sección Laboratorios'),
-  ('Soporte continuo en procesos de finalización de Carrera'),
-  ('Mallas curriculares adaptadas a nuevas Tecnologías');
-
-
-
--- 
+ 

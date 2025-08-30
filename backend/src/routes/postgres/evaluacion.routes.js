@@ -1,61 +1,50 @@
+// routes/postgres/evaluacion.routes.js
 const express = require("express");
 const router = express.Router();
 const EvaluacionDAO = require("../../dao/postgres/evaluacionDAO");
 const EvaluacionDTO = require("../../dto/postgres/evaluacionDTO");
-const authMiddleware = require("../../middleware/auth"); // tu middleware JWT
+const authMiddleware = require("../../middleware/auth");
+const PREGUNTAS = require("../../config/evaluacionConfig");
 
+// Instanciar el DAO
 const evaluacionDAO = new EvaluacionDAO();
 
-// POST: Insertar evaluación completa
 router.post("/", authMiddleware, async (req, res) => {
-  try {
-    const userId = req.user.id; // ID del usuario logueado (quien completó el formulario)
-    const body = req.body;
+    try {
+        const userId = req.user.id;
+        const body = req.body;
 
-    // body debe traer: { formularioId, respuestas: [ { pregunta_id, respuesta, puntaje }, ... ] }
-    console.log("📥 JSON crudo recibido desde React:", body);
+        console.log("📥 JSON recibido desde React:", body);
 
-    // Mapear al DTO
-    const evaluacionDTO = new EvaluacionDTO({
-      formularioId: body.formularioId,
-      respuestas: body.respuestas
-    });
+        const evaluacionDTO = new EvaluacionDTO({
+            formulario_id: body.formularioId,
+            user_id: userId,
+            fecha: new Date(),
+            respuestas: body.respuestas
+        });
 
-    console.log("✅ DTO listo para insertar:", evaluacionDTO);
+        console.log("✅ DTO preparado:", evaluacionDTO);
 
-    // Insertar usando DAO (que llama al procedimiento insert_evaluacion)
-    const resultado = await evaluacionDAO.insertar(evaluacionDTO);
+        const resultado = await evaluacionDAO.guardarEvaluacion(evaluacionDTO);
 
-    res.status(201).json({
-      mensaje: "Evaluación guardada",
-      evaluacionId: resultado.id
-    });
-  } catch (error) {
-    console.error("❌ Error al guardar evaluación:", error);
-    res.status(500).json({ error: "Error guardando evaluación" });
-  }
+        res.status(201).json({
+            mensaje: "Evaluación guardada exitosamente",
+            evaluacionId: resultado.fn_guardar_evaluacion // o resultado.id dependiendo de tu función
+        });
+    } catch (error) {
+        console.error("❌ Error guardando evaluación:", error);
+        res.status(500).json({ error: "Error al guardar la evaluación" });
+    }
 });
 
-// GET: Listar todas las evaluaciones
-router.get("/", authMiddleware, async (req, res) => {
-  try {
-    const evaluaciones = await evaluacionDAO.listar();
-    res.json(evaluaciones);
-  } catch (error) {
-    console.error("Error al listar evaluaciones:", error);
-    res.status(500).json({ error: "Error al obtener evaluaciones" });
-  }
-});
 
-// GET: Listar evaluaciones de un usuario específico
-router.get("/usuario", authMiddleware, async (req, res) => {
+router.get("/preguntas", authMiddleware, async (req, res) => {
   try {
-    const userId = req.user.id;
-    const evaluaciones = await evaluacionDAO.listarPorUsuario(userId);
-    res.json(evaluaciones);
+    console.log("📝 Enviando preguntas desde archivo de configuración");
+    res.json(PREGUNTAS);
   } catch (error) {
-    console.error("Error al listar evaluaciones del usuario:", error);
-    res.status(500).json({ error: "Error al obtener evaluaciones del usuario" });
+    console.error("❌ Error al obtener preguntas:", error);
+    res.status(500).json({ error: "Error cargando preguntas" });
   }
 });
 

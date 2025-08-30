@@ -342,34 +342,28 @@ JOIN usuarios u ON u.id = f.user_id;
 -- =============================================
 --                ENTIDAD EVALUACION
 -- =============================================
-
--- Insertar evaluacion
-CREATE OR REPLACE FUNCTION insertar_evaluacion(
+CREATE OR REPLACE FUNCTION fn_guardar_evaluacion(
     p_formulario_id INT,
+    p_user_id INT,
     p_respuestas JSONB
-)
-RETURNS INT AS $$
+) RETURNS INT AS $$
 DECLARE
-    nueva_evaluacion_id INT;
-    r JSONB;
+    v_evaluacion_id INT;
 BEGIN
-    -- 1️⃣ Crear la evaluación
-    INSERT INTO evaluaciones(formulario_id)
-    VALUES (p_formulario_id)
-    RETURNING id INTO nueva_evaluacion_id;
-
-    -- 2️⃣ Insertar respuestas
-    FOR r IN SELECT * FROM jsonb_array_elements(p_respuestas)
-    LOOP
-        INSERT INTO respuestas(evaluacion_id, pregunta_id, respuesta, puntaje)
-        VALUES (
-            nueva_evaluacion_id,
-            (r->>'pregunta_id')::INT,
-            r->>'respuesta',
-            (r->>'puntaje')::INT
-        );
-    END LOOP;
-
-    RETURN nueva_evaluacion_id;
+    INSERT INTO evaluaciones (
+        formulario_id,
+        user_id, 
+        respuestas, 
+        fecha
+    )
+    VALUES (
+        p_formulario_id,
+        p_user_id, 
+        p_respuestas, 
+        CURRENT_TIMESTAMP
+    )
+    RETURNING id INTO v_evaluacion_id;
+    
+    RETURN v_evaluacion_id;
 END;
 $$ LANGUAGE plpgsql;

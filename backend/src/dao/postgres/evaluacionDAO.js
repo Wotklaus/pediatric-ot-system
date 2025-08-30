@@ -1,45 +1,36 @@
-const pool = require("../../config/postgres");
+// dao/postgres/evaluacionDAO.js
+const pool = require('../../config/postgres');
 
 class EvaluacionDAO {
+    async guardarEvaluacion(evaluacion) {
+        try {
+            // Asegurarnos de que todas las respuestas tengan la estructura correcta
+            const respuestasLimpias = evaluacion.respuestas.map(r => ({
+                pregunta_id: r.pregunta_id,
+                respuesta: r.respuesta || '',  // Si es null o undefined, usar string vacío
+                puntaje: r.puntaje || 0,      // Si es null o undefined, usar 0
+                contextos: Array.isArray(r.contextos) ? r.contextos : [] // Asegurar que siempre sea array
+            }));
 
-  // Insertar evaluación usando el procedimiento almacenado
-  async insertar(evaluacionDTO) {
-    try {
-      const resultado = await pool.query(
-        "SELECT insertar_evaluacion($1, $2)",
-        [evaluacionDTO.formularioId, JSON.stringify(evaluacionDTO.respuestas)]
-      );
+            console.log("🔍 Respuestas preparadas para BD:", JSON.stringify(respuestasLimpias, null, 2));
 
-      return { id: resultado.rows[0].insertar_evaluacion };
-    } catch (error) {
-      console.error("Error en EvaluacionDAO.insertar:", error);
-      throw error;
+            const result = await pool.query(
+                'SELECT fn_guardar_evaluacion($1, $2, $3::jsonb)',
+                [
+                    evaluacion.formulario_id,
+                    evaluacion.user_id,
+                    JSON.stringify(respuestasLimpias)
+                ]
+            );
+
+            console.log("✅ Resultado de BD:", result.rows[0]);
+            return result.rows[0];
+        } catch (error) {
+            console.error("❌ Error en DAO:", error);
+            throw error;
+        }
     }
-  }
-
-  // Listar todas las evaluaciones
-  async listar() {
-    try {
-      const res = await pool.query("SELECT * FROM listar_evaluaciones();");
-      return res.rows;
-    } catch (error) {
-      console.error("Error en EvaluacionDAO.listar:", error);
-      throw error;
-    }
-  }
-
-  // Buscar una evaluación por ID
-  async buscarPorId(id) {
-    try {
-      const res = await pool.query("SELECT * FROM buscar_evaluacion_id($1);", [id]);
-      if (res.rows.length === 0) return null;
-      return res.rows[0];
-    } catch (error) {
-      console.error("Error en EvaluacionDAO.buscarPorId:", error);
-      throw error;
-    }
-  }
-
 }
 
+// Exportar la clase (no una instancia)
 module.exports = EvaluacionDAO;
