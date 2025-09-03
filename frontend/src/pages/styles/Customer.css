@@ -1,136 +1,124 @@
-/* Contenedor principal */
-.landing-container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #e9e9e9;
-  min-height: 100vh;
-}
 
 
-
-/* Menú móvil */
-.mobile-menu-button {
-  display: none;
-}
-
-.menu-toggle {
-  background: none;
-  border: none;
-  color: white;
-}
-
-.menu-icon {
-  width: 24px;
-  height: 24px;
-}
-
-.mobile-nav {
-  background-color: #004080;
-  padding: 10px;
-}
-
-.mobile-nav-link {
-  display: block;
-  color: white;
-  text-decoration: none;
-  margin-bottom: 10px;
-}
-
-/* Sección de características */
-.featu-section {
-  padding: 60px 20px;
-}
-
-
-
-.container h2 {
-  color: #131921;
-  font-size: 28px;
-  text-align: center;
-}
-
-.container p {
-  color: #131921;
-  font-size: 17px;
-  text-align: fixed;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 40px;
-  max-width: 1200px;
-  margin: 40px auto;
-}
-
-.feature-item {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  text-align: center;
-  transition: transform 0.3s ease;
-  border: 1px solid #a4a4a4;
-}
-
-.feature-item:hover {
-  transform: translateY(-5px);
-}
-
-.feature-item h3 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #131921;
-  margin-bottom: 12px;
-}
-
-.feature-item p {
-  font-size: 16px;
-  color: #35393f;
-  line-height: 1.6;
-}
-
-/* Sección de términos y botón */
-.cta-container {
-  text-align: center;
-  margin-top: 30px;
-}
-
-.terms-label {
+/* Contenido principal a la derecha del sidebar */
+.customer-content {
+  flex: 1; /* Ocupa todo el espacio disponible que no usa el sidebar */
+  margin-left: 250px; /* Deja espacio a la izquierda para el sidebar (250px) */
+  padding: 2.2rem 2.2rem 1.5rem 2.2rem; /* Espaciado interno (arriba, derecha, abajo, izquierda) */
+  box-sizing: border-box; /* Incluye el padding dentro del ancho total */
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  color: #333;
-  margin-bottom: 15px;
+  flex-direction: column;
 }
 
-.terms-label input[type="checkbox"] {
-  margin-right: 10px;
-  transform: scale(1.2);
-  accent-color: #004080;
+/* Sección principal de características/beneficios */
+.featu-section {
+  background: #ffffff; /* Fondo blanco para resaltar la sección */
+  border-radius: 12px; /* Bordes redondeados */
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07); /* Sombra suave para profundidad */
+  padding: 2.5rem 2rem; /* Espaciado interno amplio */
+  margin-bottom: 2.3rem; /* Espacio debajo de la sección */
 }
 
+
+
+/* Texto descriptivo dentro de la sección de características */
+.featu-section p {
+  font-size: 1.16rem; /* Tamaño del texto descriptivo */
+  color: #4e5761; /* Color gris oscuro para legibilidad */
+  margin-bottom: 1.3rem; /* Espacio debajo del párrafo */
+}
+
+/* Grid que contiene los diferentes items de características */
+.features-grid {
+  display: grid; /* Usar grid para organizar los items */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Columnas automáticas, mínimo 220px cada una */
+  gap: 1.4rem; /* Espacio entre los items */
+  margin-top: 1.2rem; /* Espacio arriba del grid */
+}
+
+/* Cada item de característica */
+.feature-item {
+  background: #f7f7fc; /* Fondo claro para distinguir cada item */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 1.1rem 1rem; /* Espaciado interno */
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05); /* Sombra suave */
+  display: flex;
+  flex-direction: column; /* Apilar contenido verticalmente */
+  align-items: flex-start; /* Alinear a la izquierda */
+}
+
+/* Ícono en cada item de característica */
+.feature-item .icon {
+  font-size: 2.2rem; /* Ícono grande y visible */
+  margin-bottom: 0.7rem; /* Espacio debajo del ícono */
+}
+
+/* Título de cada item de característica */
+.feature-item h3 {
+  font-size: 1.22rem; /* Tamaño destacado para el título del item */
+  color: #23272b; /* Color oscuro */
+  font-weight: 600; /* Negrita media */
+  margin-bottom: 0.5rem; /* Espacio debajo del título */
+}
+
+/* Texto del item de característica */
+.feature-item p {
+  font-size: 1rem; /* Tamaño del texto */
+  color: #676b74; /* Color gris medio */
+  margin-bottom: 0; /* Sin espacio extra debajo */
+}
+
+/* Botón principal para comenzar */
 .ctaa-button {
-  background-color: #1667b7;
-  color: white;
-  padding: 12px 24px;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-left: 700px;
+  display: inline-block; /* Permite margen y padding personalizados */
+  background: #23272b; /* Color de fondo oscuro */
+  color: #ffd700; /* Texto dorado */
+  border: none; /* Sin borde */
+  border-radius: 6px; /* Bordes redondeados */
+  padding: 0.8rem 2.1rem; /* Espaciado interno */
+  font-size: 1.12rem; /* Tamaño del texto */
+  font-weight: 600; /* Negrita media */
+  cursor: pointer; /* Cursor de mano al pasar */
+  transition: background 0.17s, color 0.17s; /* Transiciones suaves */
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05); /* Sombra ligera */
 }
 
-.ctaa-button:hover {
-  background-color: #0059b3;
+/* Efecto hover/focus en el botón principal */
+.ctaa-button:hover,
+.ctaa-button:focus {
+  background: #ffd700; /* Fondo dorado al pasar */
+  color: #23272b; /* Texto oscuro al pasar */
 }
 
-.ctaa-button:disabled {
-  background-color: #1667b7;
-  cursor: not-allowed;
-  opacity: 0.6;
+/* RESPONSIVIDAD PARA PANTALLAS PEQUEÑAS */
+/* Sidebar más pequeño y contenido más compacto para resoluciones menores a 900px */
+@media (max-width: 900px) {
+  .customer-content {
+    margin-left: 190px; /* Sidebar más angosto */
+    padding: 1.1rem 0.7rem;
+  }
+  .featu-section {
+    padding: 1.5rem 0.5rem;
+  }
+  .features-grid {
+    gap: 0.7rem;
+  }
 }
 
+/* Layout vertical para móviles, sidebar arriba y contenido abajo */
+@media (max-width: 600px) {
+  .customer-layout {
+    flex-direction: column;
+  }
+  .customer-content {
+    margin-left: 0; /* Sin espacio para el sidebar */
+    padding: 0.5rem 0.2rem;
+  }
+  .featu-section h2 {
+    font-size: 1.25rem;
+  }
+  .features-grid {
+    grid-template-columns: 1fr; /* Una sola columna */
+    gap: 0.5rem;
+  }
+}

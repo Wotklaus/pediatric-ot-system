@@ -1,16 +1,15 @@
-// src/pages/Perfil.jsx
 import React, { useEffect, useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/header"; // ✅ Header dinámico
+import Sidebar from "../components/sidebar";
 import "./styles/Perfil.css";
 
 function Perfil() {
   const [usuario, setUsuario] = useState(null);
   const [editando, setEditando] = useState(false);
   const [formulario, setFormulario] = useState({});
-  const [mensaje, setMensaje] = useState(""); // ✅ mensaje dinámico
-  const [tipoMensaje, setTipoMensaje] = useState("success"); // success | error
+  const [mensaje, setMensaje] = useState("");
+  const [tipoMensaje, setTipoMensaje] = useState("success");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +18,6 @@ function Perfil() {
       navigate("/login");
       return;
     }
-
     const fetchUsuario = async () => {
       try {
         const res = await api.get(`/api/pg/usuarios/${localStorage.getItem("email")}`, {
@@ -28,16 +26,9 @@ function Perfil() {
         setUsuario(res.data);
         setFormulario(res.data);
       } catch (error) {
-        console.error(
-          "Error al obtener usuario:",
-          error.response?.data || error.message
-        );
-        if (error.response?.status === 401) {
-          navigate("/login"); // token inválido, redirigir
-        }
+        if (error.response?.status === 401) navigate("/login");
       }
     };
-
     fetchUsuario();
   }, [navigate]);
 
@@ -56,7 +47,6 @@ function Perfil() {
       setMensaje("✅ Perfil actualizado correctamente");
       setTimeout(() => setMensaje(""), 3000);
     } catch (error) {
-      console.error("Error al actualizar:", error.response?.data || error.message);
       setTipoMensaje("error");
       setMensaje("❌ Error al actualizar perfil");
       setTimeout(() => setMensaje(""), 3000);
@@ -66,77 +56,70 @@ function Perfil() {
   if (!usuario) return <p>⏳ Cargando datos de usuario...</p>;
 
   return (
-    <div className="perfil-page">
-      {/* Header dinámico */}
-      <Header />
-
-      {/* ✅ Toast flotante */}
-      {mensaje && <div className={`mensaje-toast ${tipoMensaje}`}>{mensaje}</div>}
-
-      {/* Contenedor de perfil */}
-      <div className="perfil-container">
-        {/* Icono / foto de usuario */}
-        <div
-          className="perfil-icon"
-          onClick={() => document.getElementById("fotoInput").click()}
-        >
-          {usuario.foto ? <img src={usuario.foto} alt="Usuario" /> : "🧑‍💼"}
-          <input
-            type="file"
-            id="fotoInput"
-            style={{ display: "none" }}
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (file) {
-                const reader = new FileReader();
-                reader.onload = () =>
-                  setUsuario({ ...usuario, foto: reader.result });
-                reader.readAsDataURL(file);
-              }
-            }}
-          />
-        </div>
-
-        {/* Información del usuario */}
-        <div className="perfil-info">
-          {["nombre", "apellido", "cedula", "telefono", "email"].map((campo) => (
-            <div className="perfil-row" key={campo}>
-              <label>{campo.toUpperCase()}:</label>
-              {editando ? (
-                <input
-                  type="text"
-                  name={campo}
-                  value={formulario[campo] || ""}
-                  onChange={handleChange}
-                  disabled={campo === "email" || campo === "cedula"} // ❌ no editables
-                />
-              ) : (
-                <span>{usuario[campo]}</span>
-              )}
-            </div>
-          ))}
-
-          {editando ? (
-            <div className="perfil-buttons">
-              <button className="guardar" onClick={handleUpdate}>
-                Guardar
+    <div className="customer-layout">
+      <Sidebar />
+      <div className="customer-content">
+        {mensaje && <div className={`mensaje-toast ${tipoMensaje}`}>{mensaje}</div>}
+        <div className="perfil-container">
+          <div
+            className="perfil-icon"
+            onClick={() => document.getElementById("fotoInput").click()}
+          >
+            {usuario.foto ? <img src={usuario.foto} alt="Usuario" /> : "🧑‍💼"}
+            <input
+              type="file"
+              id="fotoInput"
+              style={{ display: "none" }}
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onload = () =>
+                    setUsuario({ ...usuario, foto: reader.result });
+                  reader.readAsDataURL(file);
+                }
+              }}
+            />
+          </div>
+          <div className="perfil-info">
+            {["nombre", "apellido", "cedula", "telefono", "email"].map((campo) => (
+              <div className="perfil-row" key={campo}>
+                <label>{campo.toUpperCase()}:</label>
+                {editando ? (
+                  <input
+                    type="text"
+                    name={campo}
+                    value={formulario[campo] || ""}
+                    onChange={handleChange}
+                    disabled={campo === "email" || campo === "cedula"}
+                  />
+                ) : (
+                  <span>{usuario[campo]}</span>
+                )}
+              </div>
+            ))}
+            {editando ? (
+              <div className="perfil-buttons">
+                <button className="guardar" onClick={handleUpdate}>
+                  Guardar
+                </button>
+                <button
+                  className="cancelar"
+                  onClick={() => {
+                    setFormulario(usuario);
+                    setEditando(false);
+                  }}
+                >
+                  Cancelar
+                </button>
+              </div>
+            ) : (
+              <button className="editar" onClick={() => setEditando(true)}>
+                Actualizar Información
               </button>
-              <button
-                className="cancelar"
-                onClick={() => {
-                  setFormulario(usuario);
-                  setEditando(false);
-                }}
-              >
-                Cancelar
-              </button>
-            </div>
-          ) : (
-            <button className="editar" onClick={() => setEditando(true)}>
-              Actualizar Información
-            </button>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>

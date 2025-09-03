@@ -1,0 +1,138 @@
+/* Contenedor principal del sidebar */
+.sidebar {
+  width: 250px; /* Ancho del sidebar */
+  min-height: 100vh; /* Altura mínima: toda la ventana */
+  background: #23272b; /* Color de fondo */
+  color: #ececec; /* Color de texto principal */
+  position: fixed; /* Fijo en la pantalla */
+  left: 0;
+  top: 0;
+  display: flex; /* Usa flex para organizar hijos */
+  flex-direction: column; /* Apila los hijos verticalmente */
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif; /* Fuente del sidebar */
+  box-shadow: 2px 0 8px rgba(0,0,0,0.08); /* Sombra lateral para profundidad */
+}
+
+/* Sección del logo en la parte superior */
+.sidebar-logo {
+  font-size: 1.5rem; /* Tamaño del texto del logo */
+  font-weight: 600; /* Negrita */
+  padding: 1.3rem 1.2rem 0.7rem 1.2rem; /* Espaciado alrededor */
+  color: #ececec; /* Color del logo */
+  letter-spacing: 0.04em; /* Espaciado entre letras */
+  display: flex; /* Flex para alinear elementos */
+  align-items: center; /* Centra verticalmente */
+  justify-content: space-between; /* Espacia logo e ícono de menú */
+}
+
+/* Ícono del menú (hamburguesa/barras) */
+.sidebar-menu-icon i {
+  font-size: 1.3rem; /* Tamaño del ícono */
+  color: #ececec; /* Color del ícono */
+  cursor: pointer; /* Cambia cursor al pasar */
+}
+
+/* Contenedor del contenido principal del sidebar */
+.sidebar-content {
+  flex: 1; /* Ocupa todo el espacio disponible */
+  padding: 0 1.2rem; /* Espaciado lateral interno */
+}
+
+/* Encabezados de sección (CORE, ACCESOS, REPORTES, etc.) */
+.sidebar-heading {
+  font-size: 0.95rem; /* Tamaño de fuente */
+  font-weight: bold; /* Negrita */
+  text-transform: uppercase; /* Mayúsculas */
+  margin: 1.2rem 0 0.7rem 0; /* Espaciado arriba y abajo */
+  letter-spacing: 0.08em; /* Espaciado entre letras */
+  color: #7b848b; /* Color gris para distinguir */
+}
+
+/* Enlaces del sidebar (navegación, botones, etc.) */
+.sidebar-link {
+  color: #ececec; /* Color del texto */
+  display: flex; /* Flex para alinear íconos y texto */
+  align-items: center; /* Centra verticalmente */
+  padding: 0.7rem 0.7rem; /* Espaciado interno */
+  text-decoration: none; /* Sin subrayado */
+  border-radius: 4px; /* Bordes redondeados */
+  transition: background 0.12s; /* Transición suave */
+  font-size: 1.08rem; /* Tamaño de fuente */
+  margin-bottom: 0.15rem; /* Espaciado entre enlaces */
+  cursor: pointer; /* Cursor de mano */
+  font-weight: 500; /* Seminegrita */
+  border: none; /* Sin borde (para botones) */
+  background: none; /* Sin fondo */
+}
+
+/* Íconos dentro de los enlaces */
+.sidebar-link i {
+  margin-right: 0.8rem; /* Espaciado entre ícono y texto */
+  font-size: 1.15em; /* Tamaño relativo al texto */
+}
+
+/* Efectos hover y focus para los enlaces */
+.sidebar-link:hover,
+.sidebar-link:focus {
+  background: #2a3136; /* Fondo oscuro al pasar */
+  color: #ffd700; /* Texto dorado al pasar */
+  outline: none; /* Sin borde al tomar foco */
+}
+
+/* Grupo de enlaces (para menús desplegables) */
+.sidebar-group {
+  margin-bottom: 0.5rem; /* Espacio debajo del grupo */
+}
+
+/* Flecha de colapso en menús desplegables */
+.sidebar-collapse-arrow {
+  margin-left: auto; /* Empuja la flecha a la derecha */
+  color: #7b848b; /* Color gris para flecha */
+}
+
+/* Menú colapsado (submenús) */
+.collapse {
+  padding-left: 0.5rem; /* Sangría para distinguir el submenú */
+}
+
+/* Submenú anidado dentro de un grupo */
+.sidebar-nested {
+  display: flex; /* Flex para apilar enlaces */
+  flex-direction: column; /* Apila verticalmente */
+  margin-left: 1.7rem; /* Sangría desde el grupo padre */
+  border-left: 2px solid #2a3136; /* Línea vertical de separación */
+  padding-left: 0.5rem; /* Espaciado interno */
+}
+
+/* Pie de página del sidebar (botón salir) */
+.sidebar-footer {
+  padding: 1.1rem 1.2rem; /* Espaciado interno */
+  background: #23272b; /* Fondo igual al sidebar */
+  border-top: 1px solid #282c34; /* Línea superior de separación */
+  margin-top: auto; /* Empuja el footer al final */
+  text-align: left; /* Alinea contenido a la izquierda */
+}
+
+/* Estilos del botón de salir */
+.sidebar-logout {
+  color: #e05b5b; /* Rojo para resaltar */
+  font-weight: 600; /* Negrita */
+  font-size: 1.1rem; /* Tamaño de fuente */
+  padding-left: 0; /* Sin sangría izquierda */
+}
+
+/* Ícono del botón de salir */
+.sidebar-logout i {
+  margin-right: 0.7rem; /* Espaciado entre ícono y texto */
+}
+
+/* Responsividad: Sidebar más pequeño en pantallas pequeñas */
+@media (max-width: 900px) {
+  .sidebar {
+    width: 190px; /* Reduce el ancho */
+    font-size: 0.94em; /* Reduce tamaño de fuente */
+  }
+  .sidebar-logo {
+    font-size: 1.18rem; /* Reduce tamaño del logo */
+  }
+}

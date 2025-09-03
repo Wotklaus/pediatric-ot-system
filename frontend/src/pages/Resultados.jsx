@@ -1,26 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import Header from '../components/header';
-import {
-  Card,
-  Button,
-  Container,
-  Typography,
-  Box,
-  Collapse,
-  Grid,
-  Chip,
-  Divider,
-  IconButton,
-  Paper
-} from '@mui/material';
-import {
-  ExpandMore as ExpandMoreIcon,
-  Print as PrintIcon,
-  ArrowBack as ArrowBackIcon,
-  Home as HomeIcon
-} from '@mui/icons-material';
-import './styles/Resultados.css';
+
 
 const Resultado = () => {
   const { id } = useParams();
