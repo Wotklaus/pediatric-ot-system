@@ -1,128 +1,180 @@
-/* ===========================
-   CONTENEDOR PRINCIPAL
-   =========================== */
-.mis-formularios {
-  width: 100vw;
+/* Espacio para el Sidebar y Navbar */
+.main-content-with-sidebar {
+  margin-left: 250px; /* Sidebar ocupa 250px */
+  padding-top: 64px;  /* Ajusta este valor al alto real de tu navbar */
   min-height: 100vh;
-  padding: 40px 50px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #fafafa;
-  color: #000000;
   box-sizing: border-box;
+  background: #f4f3f3;
+  width: 120%;
+}
+
+/* Contenedor principal de todas las evaluaciones */
+.mis-formularios {
   display: flex;
   flex-direction: column;
   gap: 30px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-/* ===========================
-   TARJETAS DE FORMULARIOS
-   =========================== */
+/* Cada evaluación en vertical */
 .formulario-card {
   background-color: #ffffff;
-  border: 1px solid #d1d1d1;
-  border-radius: 10px;
-  padding: 25px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  border: 1.5px solid #d1d1d1;
+  border-radius: 18px;
+  box-shadow: 0 2px 14px rgba(0,0,0,0.10);
+  padding: 28px 28px 18px 28px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 28px;
 }
 
-/* ===========================
-   TITULOS PRINCIPALES
-   =========================== */
-.formulario-card h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
-  color: #484a4d;
-  border-bottom: 1px solid #c1c1c1;
-  padding-bottom: 8px;
+/* Título de evaluación */
+.evaluacion-titulo h2 {
+  font-size: 26px;
+  color: #3b3b3b;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+  font-weight: 700;
 }
 
-/* ===========================
-   SUBTITULOS DE SECCIONES
-   =========================== */
-.formulario-card h3 {
-  font-size: 20px;
-  margin-top: 20px;
+/* Cards en fila arriba */
+.info-sections-row {
+  display: flex;
+  flex-direction: row;
+  gap: 22px;
+  justify-content: space-between;
   margin-bottom: 10px;
-  color: #2e3d49;
+}
+.section-card {
+  background-color: #e1e4e7;
+  border: 1px solid #cce2fa;
+  border-radius: 12px;
+  box-shadow: 0 1px 5px rgba(60,130,255,0.06);
+  padding: 18px 15px;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.section-card h3 {
+  margin-bottom: 7px;
+  color: #074f97;
   border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 6px;
+  padding-bottom: 4px;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
 }
-
-/* ===========================
-   LABELS Y PARRAFOS
-   =========================== */
-.formulario-card p {
+.section-card p {
   font-size: 15px;
-  line-height: 1.5;
-  margin: 4px 0;
+  margin: 2px 0;
 }
-
-.formulario-card p strong {
+.section-card p strong {
   font-weight: 600;
   color: #1a1a1a;
 }
 
-/* ===========================
-   HITOS DEL DESARROLLO
-   =========================== */
-.hitos {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
+/* Hitos abajo */
+.hitos-desarrollo {
   margin-top: 10px;
 }
-
+.hitos-desarrollo h3 {
+  margin-bottom: 8px;
+}
+.hitos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-top: 8px;
+}
 .hito-card {
   border: 1px solid #d1d1d1;
   border-radius: 8px;
-  padding: 12px 15px;
+  padding: 10px 12px;
   background-color: #f9f9f9;
+  box-shadow: 0 1px 5px rgba(60,130,255,0.04);
 }
-
 .hito-card h4 {
-  font-size: 16px;
-  margin-bottom: 8px;
+  font-size: 15px;
+  margin-bottom: 7px;
   color: #2e3d49;
 }
-
 .hito-card p {
   font-size: 14px;
-  margin: 3px 0;
+  margin: 2px 0;
 }
-
 .hito-card ul {
   margin: 5px 0 0 15px;
   padding: 0;
   list-style-type: disc;
 }
-
 .hito-card li {
-  font-size: 14px;
+  font-size: 13px;
   margin-bottom: 3px;
 }
 
-/* ===========================
-   MENSAJES DE ERROR O VACÍO
-   =========================== */
+/* Botón detalles */
+.evaluacion-detalles-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+.evaluacion-detalles-btn {
+  background-color: #2264a8;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 8px 24px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: not-allowed;
+  opacity: 0.8;
+  box-shadow: 0 1px 4px rgba(34,100,168,0.13);
+  transition: background 0.2s;
+}
+
+/* Mensaje de error o vacío */
 .error {
   color: #d32f2f;
   font-weight: bold;
   text-align: center;
   font-size: 16px;
+  margin-top: 80px;
 }
 
-/* ===========================
-   RESPONSIVE
-   =========================== */
-@media (max-width: 900px) {
-  .mis-formularios {
-    padding: 20px;
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+  .info-sections-row {
+    flex-direction: column;
+    gap: 16px;
   }
-
+  .main-content-with-sidebar {
+    max-width: 100vw;
+    padding-left: 0;
+    padding-right: 10px;
+  }
+}
+@media (max-width: 900px) {
+  .main-content-with-sidebar {
+    margin-left: 190px; /* Sidebar más estrecho en móvil según tu CSS */
+    padding-top: 54px;  /* Navbar más pequeño en móvil si aplica */
+    padding-right: 4px;
+  }
+  .mis-formularios {
+    padding: 0 4px;
+    gap: 14px;
+  }
+  .formulario-card {
+    padding: 12px 5px 10px 5px;
+    gap: 16px;
+  }
+  .section-card {
+    padding: 10px 4px;
+  }
   .hitos {
-    grid-template-columns: 1fr; /* Cada hito ocupa toda la fila en móvil */
+    grid-template-columns: 1fr;
   }
 }

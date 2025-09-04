@@ -11,7 +11,7 @@ import Perfil from "./pages/Perfil";
 import MisFormularios from "./pages/MisFormularios";
 import Disclaimer from "./pages/Disclaimer";
 import Evaluacion from "./pages/Evaluacion";
-import Resultados from "./pages/Resultados"; // Nueva página de resultados
+import MisResultados from "./pages/MisResultados";
 import Admin from "./pages/Admin";
 
 // Componente para proteger rutas
@@ -28,7 +28,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/admin" element={<Admin />} />
           {/* Rutas protegidas */}
           <Route
             path="/customer"
@@ -79,13 +78,14 @@ function App() {
             }
           />
           <Route
-            path="/resultados/:id"
+            path="/misresultados"
             element={
               <ProtectedRoute>
-                <Resultados />
+                <MisResultados />
               </ProtectedRoute>
             }
           />
+
         </Routes>
       </BrowserRouter>
     </UserProvider>

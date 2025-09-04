@@ -1,124 +1,99 @@
-
-
-/* Contenido principal a la derecha del sidebar */
-.customer-content {
-  flex: 1; /* Ocupa todo el espacio disponible que no usa el sidebar */
-  margin-left: 250px; /* Deja espacio a la izquierda para el sidebar (250px) */
-  padding: 2.2rem 2.2rem 1.5rem 2.2rem; /* Espaciado interno (arriba, derecha, abajo, izquierda) */
-  box-sizing: border-box; /* Incluye el padding dentro del ancho total */
+.customer-layout {
+  margin-left: 250px; /* Deja espacio para el sidebar */
+  min-height: 100vh;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
 }
 
-/* Sección principal de características/beneficios */
-.featu-section {
-  background: #ffffff; /* Fondo blanco para resaltar la sección */
-  border-radius: 12px; /* Bordes redondeados */
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07); /* Sombra suave para profundidad */
-  padding: 2.5rem 2rem; /* Espaciado interno amplio */
-  margin-bottom: 2.3rem; /* Espacio debajo de la sección */
-}
-
-
-
-/* Texto descriptivo dentro de la sección de características */
-.featu-section p {
-  font-size: 1.16rem; /* Tamaño del texto descriptivo */
-  color: #4e5761; /* Color gris oscuro para legibilidad */
-  margin-bottom: 1.3rem; /* Espacio debajo del párrafo */
-}
-
-/* Grid que contiene los diferentes items de características */
-.features-grid {
-  display: grid; /* Usar grid para organizar los items */
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Columnas automáticas, mínimo 220px cada una */
-  gap: 1.4rem; /* Espacio entre los items */
-  margin-top: 1.2rem; /* Espacio arriba del grid */
-}
-
-/* Cada item de característica */
-.feature-item {
-  background: #f7f7fc; /* Fondo claro para distinguir cada item */
-  border-radius: 8px; /* Bordes redondeados */
-  padding: 1.1rem 1rem; /* Espaciado interno */
-  box-shadow: 0 1px 6px rgba(0,0,0,0.05); /* Sombra suave */
-  display: flex;
-  flex-direction: column; /* Apilar contenido verticalmente */
-  align-items: flex-start; /* Alinear a la izquierda */
-}
-
-/* Ícono en cada item de característica */
-.feature-item .icon {
-  font-size: 2.2rem; /* Ícono grande y visible */
-  margin-bottom: 0.7rem; /* Espacio debajo del ícono */
-}
-
-/* Título de cada item de característica */
-.feature-item h3 {
-  font-size: 1.22rem; /* Tamaño destacado para el título del item */
-  color: #23272b; /* Color oscuro */
-  font-weight: 600; /* Negrita media */
-  margin-bottom: 0.5rem; /* Espacio debajo del título */
-}
-
-/* Texto del item de característica */
-.feature-item p {
-  font-size: 1rem; /* Tamaño del texto */
-  color: #676b74; /* Color gris medio */
-  margin-bottom: 0; /* Sin espacio extra debajo */
-}
-
-/* Botón principal para comenzar */
-.ctaa-button {
-  display: inline-block; /* Permite margen y padding personalizados */
-  background: #23272b; /* Color de fondo oscuro */
-  color: #ffd700; /* Texto dorado */
-  border: none; /* Sin borde */
-  border-radius: 6px; /* Bordes redondeados */
-  padding: 0.8rem 2.1rem; /* Espaciado interno */
-  font-size: 1.12rem; /* Tamaño del texto */
-  font-weight: 600; /* Negrita media */
-  cursor: pointer; /* Cursor de mano al pasar */
-  transition: background 0.17s, color 0.17s; /* Transiciones suaves */
-  box-shadow: 0 1px 6px rgba(0,0,0,0.05); /* Sombra ligera */
-}
-
-/* Efecto hover/focus en el botón principal */
-.ctaa-button:hover,
-.ctaa-button:focus {
-  background: #ffd700; /* Fondo dorado al pasar */
-  color: #23272b; /* Texto oscuro al pasar */
-}
-
-/* RESPONSIVIDAD PARA PANTALLAS PEQUEÑAS */
-/* Sidebar más pequeño y contenido más compacto para resoluciones menores a 900px */
 @media (max-width: 900px) {
-  .customer-content {
-    margin-left: 190px; /* Sidebar más angosto */
-    padding: 1.1rem 0.7rem;
-  }
-  .featu-section {
-    padding: 1.5rem 0.5rem;
-  }
-  .features-grid {
-    gap: 0.7rem;
+  .customer-layout {
+    margin-left: 190px;
   }
 }
 
-/* Layout vertical para móviles, sidebar arriba y contenido abajo */
-@media (max-width: 600px) {
-  .customer-layout {
-    flex-direction: column;
-  }
-  .customer-content {
-    margin-left: 0; /* Sin espacio para el sidebar */
-    padding: 0.5rem 0.2rem;
-  }
-  .featu-section h2 {
-    font-size: 1.25rem;
-  }
-  .features-grid {
-    grid-template-columns: 1fr; /* Una sola columna */
-    gap: 0.5rem;
-  }
+.customer-layout .customer-content {
+  flex: 1;
+  width: 100%;        /* Ocupa todo el ancho disponible */
+  min-height: 100vh;  /* Ocupa toda la altura de la ventana */
+  background: #fff;
+  border-radius: 0;   /* Sin bordes redondeados */
+  margin: 0;          /* Sin margen externo */
+  box-shadow: none;   /* Sin sombra */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Contenido desde arriba */
+  align-items: center;         /* Opcional: centra horizontalmente */
+  padding: 40px 32px;
+}
+
+.customer-layout .featu-section {
+  width: 100%;
+  max-width: 1200px; /* Opcional: limita ancho en monitores muy grandes */
+}
+
+.customer-layout .featu-section h2 {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #3f4246;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.customer-layout .featu-section p {
+  font-size: 1.08rem;
+  color: #000000;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.customer-layout .features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 40px;
+  margin-top: 20px;
+  width: 80%;
+  margin-left: 130px;
+}
+
+.customer-layout .feature-item {
+  background: #e3e5e8;
+  border-radius: 8px;
+  padding: 22px;
+  box-shadow: 0 1px 6px rgba(49,105,212,0.07);
+  text-align: center;
+}
+
+.customer-layout .feature-item .icon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.customer-layout .feature-item h3 {
+  font-size: 1.15rem;
+  color: #05265b;
+  margin-bottom: 8px;
+}
+
+.customer-layout .feature-item p {
+  font-size: 0.98rem;
+  color: #222121;
+  margin-top: 15px;
+}
+
+.customer-layout .ctaa-button {
+  background: #3169d4;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 13px 34px;
+  font-size: 1.04rem;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+  margin-left: 530px;
+}
+
+.customer-layout .ctaa-button:hover {
+  background: #234a94;
 }

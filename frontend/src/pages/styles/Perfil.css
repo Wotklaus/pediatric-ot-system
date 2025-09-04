@@ -1,186 +1,218 @@
-/* ===========================
-   PERFIL DE USUARIO - SOLO CSS
-   NO MODIFICA SIDEBAR
-   =========================== */
-
-/* Layout del área de contenido (NO sidebar) */
-.customer-content {
-  flex: 1;
-  padding: 48px 36px 36px 36px; /* Espaciado profesional */
-  background: #f4f7fb;          /* Fondo suave */
+.perfil-elegante-main {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  min-height: 100vh;
+  width: 100vw;
+  background: #f6faff;
 }
 
-/* Card principal del perfil */
-.perfil-container {
-  max-width: 500px;
-  width: 100%;
+/* Sidebar ocupa 250px (ajusta si tu sidebar cambia de ancho) */
+.perfil-elegante-content {
+  flex: 1;
+  margin-left: 250px;
+  padding-top: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Card principal en modo flex horizontal */
+.perfil-elegante-card.perfil-elegante-row-flex {
   background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 8px 32px rgba(70, 80, 110, 0.13); /* Sombra suave */
-  border: 1.5px solid #e4e8ef;                     /* Borde delicado */
-  padding: 36px 32px 26px 32px;
-  margin-top: 40px;
-  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  width: 100%;
+  max-width: 480px;
+  margin: 38px auto 0 auto;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(34,92,168,0.10);
+  padding: 38px 34px 32px 34px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 36px;
 }
 
-/* Imagen de perfil circular editable */
-.perfil-icon {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 32px auto;
+/* Avatar minimalista a la izquierda */
+.perfil-elegante-avatar-col {
+  width: 108px;
+  min-width: 108px;
+  height: 108px;
+  background: linear-gradient(90deg, #e3f0ff 0%, #dbeeff 100%);
   border-radius: 50%;
-  background: #f0f2f6;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 54px;
-  cursor: pointer;
   overflow: hidden;
-  border: 2px solid #3f4e6b;
-  transition: border 0.18s;
+  cursor: pointer;
+  border: 2.5px solid #2264a8;
+  box-shadow: 0 1px 8px rgba(34,92,168,0.08);
+  margin-top: 12px;
+  transition: box-shadow 0.18s;
 }
-/* Hover para dar feedback visual al editar */
-.perfil-icon:hover {
-  border-color: #4b90ff;
+.perfil-elegante-avatar-col:hover {
+  box-shadow: 0 3px 16px rgba(34,92,168,0.16);
 }
-.perfil-icon img {
+.perfil-elegante-avatar-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
 }
+.perfil-elegante-svg-icon {
+  width: 86px;
+  height: 86px;
+  display: block;
+}
 
-/* Info general del perfil */
-.perfil-info {
+/* Datos y botones a la derecha */
+.perfil-elegante-info-col {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Espaciado entre campos */
+  gap: 18px;
+  min-width: 0;
 }
 
-/* Cada fila de campo */
-.perfil-row {
+.perfil-elegante-title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #225ca8;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+/* Datos en una sola columna tipo ficha */
+.perfil-elegante-data-col {
   display: flex;
-  align-items: center;
-  gap: 20px;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
-/* Etiqueta del campo */
-.perfil-row label {
-  width: 120px;
+.perfil-elegante-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+}
+.perfil-elegante-label {
+  font-size: 1.07rem;
+  color: #2264a8;
   font-weight: 600;
-  color: #2d395c;
-  font-size: 1rem;
-  letter-spacing: 0.4px;
+  margin-bottom: 3px;
+}
+.perfil-elegante-value {
+  font-size: 1.08rem;
+  color: #222;
+  font-weight: 500;
+  padding-left: 2px;
 }
 
-/* Campo editable */
-.perfil-row input {
-  flex: 1;
-  padding: 8px 13px;
-  border: 1.5px solid #dbe1ee;
-  border-radius: 5px;
-  font-size: 1rem;
-  background: #f6f8fa;
-  color: #273050;
+.perfil-elegante-input {
+  padding: 7px 10px;
+  font-size: 1.08rem;
+  border: 1.3px solid #b9d0ef;
+  border-radius: 6px;
+  background: #f4fafd;
+  color: #1a1a1a;
+  outline: none;
   transition: border 0.18s;
 }
-.perfil-row input:focus {
-  border-color: #4b90ff;
-  outline: none;
+.perfil-elegante-input:focus {
+  border-color: #2264a8;
+  background: #eaf3fb;
 }
 
-/* Campo no editable */
-.perfil-row span {
-  flex: 1;
-  font-size: 1rem;
-  color: #34405b;
-  font-weight: 500;
-}
-
-/* Botones de acción */
-.perfil-buttons {
+.perfil-elegante-btn-group {
   display: flex;
-  gap: 16px;
-  margin-top: 20px;
+  gap: 18px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
-
-/* Botón principal (guardar/editar) */
-button.editar,
-button.guardar {
-  padding: 9px 28px;
-  background: linear-gradient(90deg, #4567c7, #2d395c 90%);
+.perfil-elegante-btn {
+  background: #2264a8;
   color: #fff;
   border: none;
   border-radius: 7px;
-  cursor: pointer;
+  padding: 9px 24px;
   font-weight: 600;
   font-size: 1rem;
-  transition: background 0.18s, box-shadow 0.18s;
-  box-shadow: 0 2px 8px rgba(70, 80, 110, 0.09);
-}
-button.editar:hover,
-button.guardar:hover {
-  background: linear-gradient(90deg, #4b90ff, #4567c7 90%);
-}
-
-/* Botón cancelar */
-button.cancelar {
-  padding: 9px 28px;
-  background: #f2f4f9;
-  color: #405070;
-  border: 1.5px solid #dbe1ee;
-  border-radius: 7px;
+  box-shadow: 0 1px 4px rgba(34,100,168,0.13);
+  transition: background 0.2s;
   cursor: pointer;
+}
+.perfil-elegante-btn.guardar {
+  background: #267a3c;
+}
+.perfil-elegante-btn.cancelar {
+  background: #e05b5b;
+}
+.perfil-elegante-btn.editar {
+  background: #2264a8;
+}
+.perfil-elegante-btn:hover {
+  opacity: 0.94;
+}
+
+/* Toast de mensajes */
+.perfil-elegante-toast {
+  border-radius: 6px;
+  padding: 10px 24px;
+  margin-bottom: 22px;
+  font-size: 1.08rem;
   font-weight: 600;
-  font-size: 1rem;
-  transition: background 0.18s;
+  text-align: center;
+  background: #eaf3fb;
+  color: #2264a8;
+  box-shadow: 0 1px 8px rgba(34,92,168,0.11);
 }
-button.cancelar:hover {
-  background: #e4e8ef;
+.perfil-elegante-toast.success {
+  background: #e7fbe7;
+  color: #267a3c;
+}
+.perfil-elegante-toast.error {
+  background: #fde7e7;
+  color: #e05b5b;
 }
 
-/* Mensaje flotante (toast) para feedback */
-.mensaje-toast {
-  position: fixed;
-  top: 30px;
-  right: 30px;
-  z-index: 999;
-  padding: 13px 34px;
-  border-radius: 9px;
+.perfil-elegante-loading {
+  margin-top: 120px;
+  text-align: center;
+  color: #225ca8;
+  font-size: 1.18rem;
   font-weight: 600;
-  font-size: 1.05rem;
-  box-shadow: 0 2px 14px rgba(70, 80, 110, 0.13);
-  animation: toast-in 0.35s;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
 }
 
-.mensaje-toast.success {
-  background: #eafbe7;
-  color: #229451;
-  border: 1.5px solid #b7e2c1;
-}
-.mensaje-toast.error {
-  background: #fbeaea;
-  color: #b14242;
-  border: 1.5px solid #e2b7b7;
-}
-
-@keyframes toast-in {
-  from { opacity: 0; transform: translateY(-22px);}
-  to { opacity: 1; transform: translateY(0);}
-}
-
-/* Responsive SOLO para perfil */
-@media (max-width: 700px) {
-  .perfil-container {
-    max-width: 99vw;
-    margin-top: 12px;
-    padding: 18px 3vw;
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .perfil-elegante-content {
+    margin-left: 190px;
+    padding-top: 54px;
+    padding-left: 2px;
+    padding-right: 2px;
   }
-  .customer-content {
-    padding: 24px 2vw;
+  .perfil-elegante-card.perfil-elegante-row-flex {
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 5px 8px 5px;
+    max-width: 98vw;
+    gap: 16px;
+  }
+  .perfil-elegante-avatar-col {
+    margin-top: 0;
+    margin-bottom: 14px;
+  }
+  .perfil-elegante-title {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  .perfil-elegante-data-col {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .perfil-elegante-row, .perfil-elegante-label, .perfil-elegante-value, .perfil-elegante-input {
+    font-size: 0.98rem;
   }
 }

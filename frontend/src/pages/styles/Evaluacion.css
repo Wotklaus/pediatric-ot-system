@@ -1,0 +1,147 @@
+.evaluacion-layout {
+  min-height: 100vh;
+  background: #eaf1fb;
+  display: flex;
+  flex-direction: column;
+}
+
+.evaluacion-content {
+  width: 100vw;
+  min-height: 100vh;
+  padding: 50px 50px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #000000;
+  background-color: #fafafa;
+  box-sizing: border-box;
+  margin-top: 50px;
+}
+
+.evaluacion-section {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.evaluacion-section h2 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #3e3c3c;
+}
+
+.evaluacion-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.evaluacion-form fieldset {
+  border: 1px solid #a1a3a6;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #ffffff;
+}
+
+.evaluacion-form fieldset:nth-child(1) { background-color: #f0f8ff; }
+.evaluacion-form fieldset:nth-child(2) { background-color: #d6c19a; }
+.evaluacion-form fieldset:nth-child(3) { background-color: #e6f7ff; }
+
+.evaluacion-form legend {
+  font-weight: bold;
+  font-size: 18px;
+  color: #255380;
+  padding: 0 10px;
+}
+
+.evaluacion-form label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.evaluacion-form input[type="text"],
+.evaluacion-form input[type="number"] {
+  width: 100%;
+  height: 35px;
+  padding: 10px 14px;
+  margin-bottom: 15px;
+  border: 1px solid #babcbe;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  color: #000000;
+}
+
+.evaluacion-form input[type="text"]:focus,
+.evaluacion-form input[type="number"]:focus {
+  border-color: #c3cbd1;
+  box-shadow: 0 0 4px rgba(162, 167, 170, 0.4);
+  outline: none;
+}
+
+.evaluacion-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.evaluacion-btn {
+  background-color: #4b7bac;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.evaluacion-btn:hover {
+  background-color: #0059b3;
+  transform: translateY(-2px);
+}
+
+.evaluacion-btn-danger {
+  background-color: #ff0e0e;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.evaluacion-btn-danger:hover {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+}
+
+/* Mensaje de éxito o error */
+.evaluacion-toast {
+  padding: 12px 20px;
+  border-radius: 6px;
+  margin: 10px 0;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.evaluacion-toast.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.evaluacion-toast.exito {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}

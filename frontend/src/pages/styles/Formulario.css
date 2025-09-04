@@ -1,7 +1,7 @@
 /* ===========================
    CONTENEDOR PRINCIPAL
    =========================== */
-.anamnesis-container {
+.formulario-content {
   width: 100vw;                     
   min-height: 100vh;                
   padding: 50px 50px;               
@@ -15,18 +15,22 @@
 /* ===========================
    FORMULARIO PRINCIPAL
    =========================== */
-.anamnesis-form {
+.formulario-section {
   max-width: 1000px;               
   margin: 0 auto;                  
   display: flex;                    
   flex-direction: column;           
-  gap: 30px;                        
+  gap: 30px; 
+  background-color: #ffffff;  
+  margin-left: 340px;
+  margin-top: -70px;
+                      
 }
 
 /* ===========================
    FIELDSETS POR SECCIÓN
    =========================== */
-.anamnesis-form fieldset {
+.formulario-form fieldset {
   border: 1px solid #a1a3a6;        
   border-radius: 8px;               
   padding: 20px;                    
@@ -34,15 +38,15 @@
 }
 
 /* Colores por sección */
-.anamnesis-form fieldset:nth-child(1) { background-color: #f0f8ff; } /* Sección 1: azul claro */
-.anamnesis-form fieldset:nth-child(2) { background-color: #fee9c3; } /* Sección 2: crema */
-.anamnesis-form fieldset:nth-child(3) { background-color: #f5f5dc; } /* Sección 3: beige */
-.anamnesis-form fieldset:nth-child(4) { background-color: #e6f7ff; } /* Sección 4: celeste muy claro */
+.formulario-form fieldset:nth-child(1) { background-color: #ebedef; } /* Sección 1: azul claro */
+.formulario-form fieldset:nth-child(2) { background-color: #c4ffa276; } /* Sección 2: crema */
+.formulario-form fieldset:nth-child(3) { background-color: #f5f5dc; } /* Sección 3: beige */
+.formulario-form fieldset:nth-child(4) { background-color: #e6f7ff; } /* Sección 4: celeste muy claro */
 
 /* ===========================
    ENCABEZADOS
    =========================== */
-.anamnesis-container h2 {
+.formulario-section h2 {
   text-align: center;               
   font-size: 28px;                  
   margin-bottom: 20px;              
@@ -52,7 +56,7 @@
 /* ===========================
    TITULOS DE SECCIÓN
    =========================== */
-.anamnesis-form legend {
+.formulario-form legend {
   font-weight: bold;
   font-size: 18px;
   color: #3984ce;       
@@ -62,22 +66,21 @@
 /* ===========================
    LABELS
    =========================== */
-.anamnesis-form label {
+.formulario-form label {
   display: block;                    
   margin-bottom: 10px;
   font-size: 15px;
   font-weight: 500;
   color: #000000;
-  
 }
 
 /* ===========================
    INPUTS DE TEXTO, NÚMERO, TELÉFONO Y FECHA
    =========================== */
-.anamnesis-form input[type="text"],
-.anamnesis-form input[type="number"],
-.anamnesis-form input[type="tel"],
-.anamnesis-form input[type="date"] {
+.formulario-form input[type="text"],
+.formulario-form input[type="number"],
+.formulario-form input[type="tel"],
+.formulario-form input[type="date"] {
   width: 100%;            
   height: 35px;           
   padding: 10px 14px;
@@ -91,10 +94,10 @@
 }
 
 /* Focus */
-.anamnesis-form input[type="text"]:focus,
-.anamnesis-form input[type="number"]:focus,
-.anamnesis-form input[type="tel"]:focus,
-.anamnesis-form input[type="date"]:focus {
+.formulario-form input[type="text"]:focus,
+.formulario-form input[type="number"]:focus,
+.formulario-form input[type="tel"]:focus,
+.formulario-form input[type="date"]:focus {
   border-color: #c3cbd1;
   box-shadow: 0 0 4px rgba(162, 167, 170, 0.4);
   outline: none;
@@ -103,7 +106,7 @@
 /* ===========================
    RADIOS SÍ/NO REDONDOS
    =========================== */
-.radio-group input[type="radio"] {
+.formulario-radio-group input[type="radio"] {
   appearance: none;
   width: 15px;
   height: 15px;
@@ -116,7 +119,7 @@
   position: relative;
 }
 
-.radio-group input[type="radio"]:checked {
+.formulario-radio-group input[type="radio"]:checked {
   background-color: #40aff8;
   border-color: #23475f63;
 }
@@ -124,7 +127,7 @@
 /* ===========================
    CHECKBOXES SIMPLES
    =========================== */
-.checkbox-group input[type="checkbox"] {
+.formulario-checkbox-group input[type="checkbox"] {
   appearance: none;
   width: 18px;
   height: 18px;
@@ -137,13 +140,13 @@
   position: relative;
 }
 
-.checkbox-group input[type="checkbox"]:checked {
+.formulario-checkbox-group input[type="checkbox"]:checked {
   background-color: #3498db;
   border-color: #3498db;
 }
 
 /* Marca de check simple */
-.checkbox-group input[type="checkbox"]:checked::after {
+.formulario-checkbox-group input[type="checkbox"]:checked::after {
   content: '✓';
   color: white;
   font-size: 14px;
@@ -155,7 +158,7 @@
 /* ===========================
    BOTONES
    =========================== */
-.submit-button {
+.formulario-btn {
   background-color: #4b7bac;
   color: white;
   padding: 12px 24px;
@@ -166,12 +169,12 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.submit-button:hover {
+.formulario-btn:hover {
   background-color: #0059b3;
   transform: translateY(-2px);
 }
 
-.cancel-button {
+.formulario-btn-danger {
   background-color: #ff0e0e;
   color: white;
   padding: 12px 24px;
@@ -182,7 +185,7 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.cancel-button:hover {
+.formulario-btn-danger:hover {
   background-color: #d32f2f;
   transform: translateY(-2px);
 }
@@ -190,7 +193,7 @@
 /* ===========================
    GRUPOS DE BOTONES
    =========================== */
-.button-group {
+.formulario-buttons {
   display: flex;
   justify-content: center;
   gap: 20px;
@@ -198,26 +201,38 @@
 }
 
 /* Mensaje de éxito o error */
-.toast {
+.formulario-toast {
   padding: 12px 20px;
   border-radius: 6px;
   margin: 10px 0;
   font-weight: bold;
   text-align: center;
   transition: all 0.3s ease;
-  position: relative; /* importante para no afectar layout de botones */
+  position: relative;
 }
 
 /* Mensaje de error */
-.toast.error {
+.formulario-toast.error {
   background-color: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;
 }
 
 /* Mensaje de éxito */
-.toast.exito {
+.formulario-toast.exito {
   background-color: #d4edda;
   color: #155724;
   border: 1px solid #c3e6cb;
+}
+
+/* ===========================
+   GRUPOS DE RADIO Y CHECKBOX
+   =========================== */
+.formulario-radio-group,
+.formulario-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+  align-items: flex-start;
 }

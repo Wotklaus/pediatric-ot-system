@@ -12,9 +12,7 @@ const Sidebar = () => {
       {/* Logo superior */}
       <div className="sidebar-logo">
         CATOPI
-        <span className="sidebar-menu-icon">
-          <i className="fas fa-bars"></i>
-        </span>
+        
       </div>
       {/* Contenido del sidebar */}
       <div className="sidebar-content">
@@ -101,7 +99,7 @@ const Sidebar = () => {
             <div className="sidebar-heading">CLIENTE</div>
             {/* Acceso directo a dashboard */}
             <Link className="sidebar-link" to="/customer">
-              <i className="fas fa-home"></i> Dashboard
+              <i className="fas fa-home"></i> Inicio
             </Link>
             {/* Menú desplegable para perfil */}
             <div className="sidebar-group">
@@ -148,25 +146,48 @@ const Sidebar = () => {
               {/* Submenú de formularios */}
               <div className="collapse" id="collapseFormulariosCliente">
                 <div className="sidebar-nested">
-                  <Link className="sidebar-link" to="/cliente-anamnesis">
+                  <Link className="sidebar-link" to="/formulario">
                     Anamnesis
                   </Link>
-                  <Link className="sidebar-link" to="/cliente-evaluacion">
+                  <Link className="sidebar-link" to="/evaluacion">
                     Evaluación
                   </Link>
                 </div>
               </div>
             </div>
-            {/* Acceso directo a Resultados */}
-            <Link className="sidebar-link" to="/cliente-resultados">
-              <i className="fas fa-chart-bar"></i> Resultados
-            </Link>
+            {/* Menú desplegable para Reportes */}
+            <div className="sidebar-group">
+              <button
+                className="sidebar-link collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseReportesCliente"
+                aria-expanded="false"
+                aria-controls="collapseReportesCliente"
+              >
+                <i className="fas fa-file-alt"></i> Reportes
+                <span className="sidebar-collapse-arrow">
+                  <i className="fas fa-angle-down"></i>
+                </span>
+              </button>
+              {/* Submenú de reportes */}
+              <div className="collapse" id="collapseReportesCliente">
+                <div className="sidebar-nested">
+                  <Link className="sidebar-link" to="/misformularios">
+                    Historia Clínica
+                  </Link>
+                  <Link className="sidebar-link" to="/misresultados">
+                    Resultados
+                  </Link>
+                </div>
+              </div>
+            </div>
           </>
         )}
       </div>
       {/* Footer con botón salir (siempre visible) */}
       <div className="sidebar-footer">
-        <Link className="sidebar-link sidebar-logout" to="/logout">
+        <Link className="sidebar-link sidebar-logout" to="/home">
           <i className="fas fa-sign-out-alt"></i> Salir
         </Link>
       </div>

@@ -1,0 +1,157 @@
+.resultados-main-content {
+  margin-left: 250px;
+  padding-top: 64px;
+  min-height: 100vh;
+  background: #f4f3f3;
+  width: 142%;
+}
+
+.resultados-container {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 36px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+}
+
+.resultados-titulo {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #3b3e42;
+  margin-bottom: 2px;
+  text-align: center;
+  letter-spacing: 1px;
+  margin-top: -50px;
+}
+
+.resultados-card {
+  background: #fff;
+  border: 1.5px solid #d1d1d1;
+  border-radius: 18px;
+  box-shadow: 0 2px 14px rgba(0,0,0,0.10);
+  padding: 28px 28px 18px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.resultados-info p {
+  font-size: 1.15rem;
+  margin-bottom: 6px;
+}
+.puntaje {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2264a8;
+}
+.id-evaluacion {
+  color: #3a3a3a;
+  font-size: 1.1em;
+}
+
+.resultados-recomendacion h3 {
+  font-size: 1.16rem;
+  color: #2264a8;
+  margin-bottom: 7px;
+}
+.resultados-recomendacion p {
+  font-size: 1.12rem;
+  color: #1a1a1a;
+  margin-bottom: 0;
+}
+
+.resultados-casa h4 {
+  font-size: 1.1rem;
+  color: #267a3c;
+  margin-bottom: 6px;
+}
+.resultados-casa ul {
+  margin: 0 0 0 14px;
+  padding: 0;
+}
+.resultados-casa li {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.resultados-btn-group {
+  display: flex;
+  gap: 16px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.resultados-btn {
+  background-color: #225ca8;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 8px 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: not-allowed;
+  opacity: 0.85;
+  box-shadow: 0 1px 4px rgba(34,100,168,0.13);
+  transition: background 0.2s;
+}
+
+.resultados-secundario h4 {
+  font-size: 1rem;
+  color: #225ca8;
+  margin-bottom: 7px;
+}
+.resultados-secundario ul {
+  margin: 0 0 0 10px;
+  padding: 0;
+}
+.resultados-secundario li {
+  font-size: 0.97rem;
+  color: #333;
+  margin-bottom: 2px;
+}
+.pregunta-id {
+  font-weight: bold;
+  color: #225ca8;
+}
+.respuesta {
+  margin-left: 4px;
+}
+
+.resultados-volver {
+  display: flex;
+  justify-content: center;
+}
+.resultados-volver-btn {
+  background: #e05b5b;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 18px;
+  box-shadow: 0 1px 4px rgba(224,91,91,0.13);
+  transition: background 0.2s;
+}
+.resultados-volver-btn:hover {
+  background: #c94848;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .resultados-main-content {
+    margin-left: 190px;
+    padding-top: 54px;
+  }
+  .resultados-container {
+    padding: 18px 2px;
+    gap: 16px;
+  }
+  .resultados-card {
+    padding: 12px 4px 10px 4px;
+  }
+  .resultados-btn-group {
+    gap: 8px;
+  }
+}

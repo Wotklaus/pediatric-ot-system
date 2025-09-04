@@ -2,8 +2,8 @@
 .sidebar {
   width: 250px; /* Ancho del sidebar */
   min-height: 100vh; /* Altura mínima: toda la ventana */
-  background: #23272b; /* Color de fondo */
-  color: #ececec; /* Color de texto principal */
+  background: #383e43; /* Color de fondo */
+  color: #ffffff; /* Color de texto principal */
   position: fixed; /* Fijo en la pantalla */
   left: 0;
   top: 0;
@@ -18,19 +18,13 @@
   font-size: 1.5rem; /* Tamaño del texto del logo */
   font-weight: 600; /* Negrita */
   padding: 1.3rem 1.2rem 0.7rem 1.2rem; /* Espaciado alrededor */
-  color: #ececec; /* Color del logo */
+  color: hwb(194 0% 0%); /* Color del logo */
   letter-spacing: 0.04em; /* Espaciado entre letras */
   display: flex; /* Flex para alinear elementos */
   align-items: center; /* Centra verticalmente */
   justify-content: space-between; /* Espacia logo e ícono de menú */
 }
 
-/* Ícono del menú (hamburguesa/barras) */
-.sidebar-menu-icon i {
-  font-size: 1.3rem; /* Tamaño del ícono */
-  color: #ececec; /* Color del ícono */
-  cursor: pointer; /* Cambia cursor al pasar */
-}
 
 /* Contenedor del contenido principal del sidebar */
 .sidebar-content {
@@ -50,7 +44,7 @@
 
 /* Enlaces del sidebar (navegación, botones, etc.) */
 .sidebar-link {
-  color: #ececec; /* Color del texto */
+  color: #e9e8e8; /* Color del texto */
   display: flex; /* Flex para alinear íconos y texto */
   align-items: center; /* Centra verticalmente */
   padding: 0.7rem 0.7rem; /* Espaciado interno */
@@ -74,8 +68,8 @@
 /* Efectos hover y focus para los enlaces */
 .sidebar-link:hover,
 .sidebar-link:focus {
-  background: #2a3136; /* Fondo oscuro al pasar */
-  color: #ffd700; /* Texto dorado al pasar */
+  background: #4e555c; /* Fondo oscuro al pasar */
+  color: #b3b3b0; /* Texto dorado al pasar */
   outline: none; /* Sin borde al tomar foco */
 }
 
@@ -107,15 +101,15 @@
 /* Pie de página del sidebar (botón salir) */
 .sidebar-footer {
   padding: 1.1rem 1.2rem; /* Espaciado interno */
-  background: #23272b; /* Fondo igual al sidebar */
-  border-top: 1px solid #282c34; /* Línea superior de separación */
+  background: #383e43; /* Fondo igual al sidebar */
+  border-top: 1px solid #383e43; /* Línea superior de separación */
   margin-top: auto; /* Empuja el footer al final */
   text-align: left; /* Alinea contenido a la izquierda */
 }
 
 /* Estilos del botón de salir */
 .sidebar-logout {
-  color: #e05b5b; /* Rojo para resaltar */
+  color: #d6d3d3; /* Rojo para resaltar */
   font-weight: 600; /* Negrita */
   font-size: 1.1rem; /* Tamaño de fuente */
   padding-left: 0; /* Sin sangría izquierda */

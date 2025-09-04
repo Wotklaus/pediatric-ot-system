@@ -1,8 +1,27 @@
 import React, { useEffect, useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/sidebar";
+import Sidebar from "../components/Sidebar";
 import "./styles/Perfil.css";
+
+function MinimalUserIcon() {
+  return (
+    <svg
+      width="86"
+      height="86"
+      viewBox="0 0 86 86"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="perfil-elegante-svg-icon"
+    >
+      <circle cx="43" cy="43" r="42" fill="#e3f0ff" stroke="#2264a8" strokeWidth="2"/>
+      <circle cx="43" cy="36" r="18" fill="#2264a8" opacity="0.18"/>
+      <ellipse cx="43" cy="60" rx="21" ry="12" fill="#2264a8" opacity="0.11"/>
+      <circle cx="43" cy="36" r="12" fill="#2264a8"/>
+      <ellipse cx="43" cy="60" rx="14" ry="8" fill="#2264a8"/>
+    </svg>
+  );
+}
 
 function Perfil() {
   const [usuario, setUsuario] = useState(null);
@@ -53,19 +72,31 @@ function Perfil() {
     }
   };
 
-  if (!usuario) return <p>⏳ Cargando datos de usuario...</p>;
+  if (!usuario) return (
+    <div className="perfil-elegante-main">
+      <Sidebar />
+      <div className="perfil-elegante-content">
+        <p className="perfil-elegante-loading">⏳ Cargando datos de usuario...</p>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="customer-layout">
+    <div className="perfil-elegante-main">
       <Sidebar />
-      <div className="customer-content">
-        {mensaje && <div className={`mensaje-toast ${tipoMensaje}`}>{mensaje}</div>}
-        <div className="perfil-container">
+      <div className="perfil-elegante-content">
+        {mensaje && <div className={`perfil-elegante-toast ${tipoMensaje}`}>{mensaje}</div>}
+        <div className="perfil-elegante-card perfil-elegante-row-flex">
           <div
-            className="perfil-icon"
+            className="perfil-elegante-avatar-col"
             onClick={() => document.getElementById("fotoInput").click()}
+            title="Cambiar foto de perfil"
           >
-            {usuario.foto ? <img src={usuario.foto} alt="Usuario" /> : "🧑‍💼"}
+            {usuario.foto ? (
+              <img src={usuario.foto} alt="Usuario" className="perfil-elegante-avatar-img"/>
+            ) : (
+              <MinimalUserIcon />
+            )}
             <input
               type="file"
               id="fotoInput"
@@ -82,43 +113,105 @@ function Perfil() {
               }}
             />
           </div>
-          <div className="perfil-info">
-            {["nombre", "apellido", "cedula", "telefono", "email"].map((campo) => (
-              <div className="perfil-row" key={campo}>
-                <label>{campo.toUpperCase()}:</label>
+          <div className="perfil-elegante-info-col">
+            <h2 className="perfil-elegante-title">Mi Perfil</h2>
+            <div className="perfil-elegante-data-col">
+              {/* Datos en una sola columna, tipo ficha */}
+              <div className="perfil-elegante-row">
+                <label className="perfil-elegante-label">Nombre:</label>
                 {editando ? (
                   <input
+                    className="perfil-elegante-input"
                     type="text"
-                    name={campo}
-                    value={formulario[campo] || ""}
+                    name="nombre"
+                    value={formulario.nombre || ""}
                     onChange={handleChange}
-                    disabled={campo === "email" || campo === "cedula"}
                   />
                 ) : (
-                  <span>{usuario[campo]}</span>
+                  <span className="perfil-elegante-value">{usuario.nombre}</span>
                 )}
               </div>
-            ))}
-            {editando ? (
-              <div className="perfil-buttons">
-                <button className="guardar" onClick={handleUpdate}>
-                  Guardar
-                </button>
-                <button
-                  className="cancelar"
-                  onClick={() => {
-                    setFormulario(usuario);
-                    setEditando(false);
-                  }}
-                >
-                  Cancelar
-                </button>
+              <div className="perfil-elegante-row">
+                <label className="perfil-elegante-label">Apellido:</label>
+                {editando ? (
+                  <input
+                    className="perfil-elegante-input"
+                    type="text"
+                    name="apellido"
+                    value={formulario.apellido || ""}
+                    onChange={handleChange}
+                  />
+                ) : (
+                  <span className="perfil-elegante-value">{usuario.apellido}</span>
+                )}
               </div>
-            ) : (
-              <button className="editar" onClick={() => setEditando(true)}>
-                Actualizar Información
-              </button>
-            )}
+              <div className="perfil-elegante-row">
+                <label className="perfil-elegante-label">Cédula:</label>
+                {editando ? (
+                  <input
+                    className="perfil-elegante-input"
+                    type="text"
+                    name="cedula"
+                    value={formulario.cedula || ""}
+                    onChange={handleChange}
+                    disabled
+                  />
+                ) : (
+                  <span className="perfil-elegante-value">{usuario.cedula}</span>
+                )}
+              </div>
+              <div className="perfil-elegante-row">
+                <label className="perfil-elegante-label">Teléfono:</label>
+                {editando ? (
+                  <input
+                    className="perfil-elegante-input"
+                    type="text"
+                    name="telefono"
+                    value={formulario.telefono || ""}
+                    onChange={handleChange}
+                  />
+                ) : (
+                  <span className="perfil-elegante-value">{usuario.telefono}</span>
+                )}
+              </div>
+              <div className="perfil-elegante-row">
+                <label className="perfil-elegante-label">Email:</label>
+                {editando ? (
+                  <input
+                    className="perfil-elegante-input"
+                    type="text"
+                    name="email"
+                    value={formulario.email || ""}
+                    onChange={handleChange}
+                    disabled
+                  />
+                ) : (
+                  <span className="perfil-elegante-value">{usuario.email}</span>
+                )}
+              </div>
+            </div>
+            <div className="perfil-elegante-btn-group">
+              {editando ? (
+                <>
+                  <button className="perfil-elegante-btn guardar" onClick={handleUpdate}>
+                    Guardar
+                  </button>
+                  <button
+                    className="perfil-elegante-btn cancelar"
+                    onClick={() => {
+                      setFormulario(usuario);
+                      setEditando(false);
+                    }}
+                  >
+                    Cancelar
+                  </button>
+                </>
+              ) : (
+                <button className="perfil-elegante-btn editar" onClick={() => setEditando(true)}>
+                  Actualizar Información
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

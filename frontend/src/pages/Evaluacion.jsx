@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Header from "../components/header";
-import "./styles/Formulario.css";
+import Sidebar from "../components/sidebar";
+import "./styles/Evaluacion.css";
 
-// 🔹 RadioGroup reutilizable
-const RadioGroup = ({ name, value, options, onChange }) => {
-  return (
-    <div className="radio-group">
-      {options.map((opt) => (
-        <label key={opt.value}>
-          <input
-            type="radio"
-            name={name}
-            value={opt.value}
-            checked={value === opt.value}
-            onChange={onChange}
-          />
-          {opt.label}
-        </label>
-      ))}
-    </div>
-  );
-};
+const RadioGroup = ({ name, value, options, onChange }) => (
+  <div className="formulario-radio-group">
+    {options.map((opt) => (
+      <label key={opt.value}>
+        <input
+          type="radio"
+          name={name}
+          value={opt.value}
+          checked={value === opt.value}
+          onChange={onChange}
+        />
+        {opt.label}
+      </label>
+    ))}
+  </div>
+);
 
 const Evaluacion = () => {
   const navigate = useNavigate();
@@ -31,36 +28,32 @@ const Evaluacion = () => {
   const [preguntas, setPreguntas] = useState([]);
   const [respuestas, setRespuestas] = useState({});
   const [contextos, setContextos] = useState({});
-  const [puntajeTotal, setPuntajeTotal] = useState(null);
+  const [mensaje, setMensaje] = useState("");
+  const [mensajeTipo, setMensajeTipo] = useState("");
 
-  // Cargar preguntas del backend
   useEffect(() => {
     const cargarPreguntas = async () => {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch("http://localhost:5000/api/postgres/evaluaciones/preguntas", {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          headers: { Authorization: `Bearer ${token}` }
         });
         const data = await response.json();
         setPreguntas(data);
 
-        // Inicializar respuestas y contextos vacíos
         const respuestasIniciales = {};
         const contextosIniciales = {};
-        data.forEach(pregunta => {
-          respuestasIniciales[pregunta.id] = "";
-          contextosIniciales[pregunta.id] = [];
+        data.forEach(p => {
+          respuestasIniciales[p.id] = "";
+          contextosIniciales[p.id] = [];
         });
         setRespuestas(respuestasIniciales);
         setContextos(contextosIniciales);
       } catch (error) {
-        console.error("Error cargando preguntas:", error);
-        alert("Error cargando el formulario");
+        setMensaje("Error cargando el formulario");
+        setMensajeTipo("error");
       }
     };
-
     cargarPreguntas();
   }, []);
 
@@ -72,29 +65,45 @@ const Evaluacion = () => {
   const handleContextoChange = (preguntaId, valor, checked) => {
     setContextos(prev => {
       const arr = new Set(prev[preguntaId] || []);
-      if (checked) arr.add(valor);
-      else arr.delete(valor);
+      checked ? arr.add(valor) : arr.delete(valor);
       return { ...prev, [preguntaId]: Array.from(arr) };
     });
   };
 
-  const calculateScore = () => {
-    return Object.values(respuestas).reduce((total, val) => total + (parseInt(val) || 0), 0);
+  const calculateScore = () =>
+    Object.values(respuestas).reduce((total, val) => total + (parseInt(val) || 0), 0);
+
+  const interpretar = (puntajeTotal) => {
+    if (puntajeTotal <= 7) return "Desarrollo adecuado, no se requiere intervención inmediata.";
+    if (puntajeTotal <= 15) return "Se recomienda seguimiento y acompañamiento.";
+    return "Es necesaria intervención en Terapia Ocupacional.";
+  };
+
+  const validateFields = () => {
+    for (let pregunta of preguntas) {
+      if (!respuestas[pregunta.id]) {
+        setMensaje("Responde todas las preguntas antes de continuar.");
+        setMensajeTipo("error");
+        return false;
+      }
+    }
+    setMensaje("");
+    setMensajeTipo("");
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const totalPuntaje = calculateScore();
-    setPuntajeTotal(totalPuntaje);
-
+    if (!validateFields()) return;
     if (!formularioId) {
-      alert("Error: formularioId no disponible");
+      setMensaje("Error: formularioId no disponible");
+      setMensajeTipo("error");
       return;
     }
 
+    const puntajeTotal = calculateScore();
     const payload = {
-      formularioId: formularioId,
+      formularioId,
       respuestas: Object.keys(respuestas).map(preguntaId => ({
         pregunta_id: preguntaId,
         respuesta: respuestas[preguntaId],
@@ -117,29 +126,22 @@ const Evaluacion = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // En lugar de navegar a /misformularios, navegamos a la página de resultados
-        // con la información necesaria
-        navigate(`/resultados/${data.evaluacionId}`, {
+        navigate("/MisResultados", {
           state: {
-            puntajeTotal: totalPuntaje,
+            puntajeTotal,
+            recomendacion: interpretar(puntajeTotal),
             respuestas: payload.respuestas,
             fecha: new Date().toISOString()
           }
         });
       } else {
-        console.error("Error del servidor:", data);
-        alert(data.error || "Error guardando la evaluación");
+        setMensaje(data.error || "Error guardando la evaluación");
+        setMensajeTipo("error");
       }
     } catch (error) {
-      console.error("Error de conexión:", error);
-      alert("Error de conexión con el servidor");
+      setMensaje("Error de conexión con el servidor");
+      setMensajeTipo("error");
     }
-  };
-
-  const interpretar = () => {
-    if (puntajeTotal <= 7) return "Desarrollo adecuado, no se requiere intervención inmediata.";
-    if (puntajeTotal <= 15) return "Se recomienda seguimiento y acompañamiento.";
-    return "Es necesaria intervención en Terapia Ocupacional.";
   };
 
   const renderContextos = (preguntaId, contextosDisponibles) => {
@@ -147,7 +149,7 @@ const Evaluacion = () => {
     return (
       <div className="contextos-adicionales">
         <p className="contextos-titulo">Contextos asociados (marque los que apliquen):</p>
-        <div className="checkbox-group">
+        <div className="formulario-checkbox-group">
           {contextosDisponibles.map(txt => (
             <label key={txt}>
               <input
@@ -164,60 +166,58 @@ const Evaluacion = () => {
   };
 
   return (
-    <div className="formulario-page">
-      <Header />
-      <div className="anamnesis-container">
-        <h2>SECCIÓN II – EVALUACIÓN DEL PERFIL OCUPACIONAL</h2>
-        <h3>Niños y niñas entre los 18 meses hasta los 5 años de edad</h3>
+    <div className="formulario-layout">
+      <Sidebar />
+      <div className="formulario-content">
+        <section className="formulario-section">
+          <h2>SECCIÓN II – EVALUACIÓN DEL PERFIL OCUPACIONAL</h2>
+         
 
-        <form onSubmit={handleSubmit} className="anamnesis-form">
-          {preguntas.map(pregunta => (
-            <fieldset
-              key={pregunta.id}
-              style={{
-                backgroundColor:
-                  pregunta.area === "Actividades Básicas" ? "#f0f8ff" :
+          <form onSubmit={handleSubmit} className="formulario-form">
+            {preguntas.map(pregunta => (
+              <fieldset
+                key={pregunta.id}
+                style={{
+                  backgroundColor:
+                    pregunta.area === "Actividades Básicas" ? "#f0f8ff" :
                     pregunta.area === "Juego y Participación Social" ? "#e6ffe6" :
-                      "#fff5e6"
-              }}
-            >
-              {/* Solo mostramos la leyenda del área cuando cambia */}
-              {preguntas.findIndex(p => p.area === pregunta.area) === preguntas.findIndex(p => p.id === pregunta.id) && (
-                <legend>ÁREA: {pregunta.area}</legend>
-              )}
+                    "#fff5e6"
+                }}
+              >
+                {preguntas.findIndex(p => p.area === pregunta.area) === preguntas.findIndex(p => p.id === pregunta.id) && (
+                  <legend>ÁREA: {pregunta.area}</legend>
+                )}
 
-              <label>{pregunta.id}. {pregunta.pregunta}</label>
-              <RadioGroup
-                name={pregunta.id}
-                value={respuestas[pregunta.id]}
-                onChange={handleChange}
-                options={pregunta.opciones.map((opt, idx) => ({
-                  value: String(idx),
-                  label: opt
-                }))}
-              />
-              {renderContextos(pregunta.id, pregunta.contextos)}
-            </fieldset>
-          ))}
+                <label>{pregunta.id}. {pregunta.pregunta}</label>
+                <RadioGroup
+                  name={pregunta.id}
+                  value={respuestas[pregunta.id]}
+                  onChange={handleChange}
+                  options={pregunta.opciones.map((opt, idx) => ({
+                    value: String(idx),
+                    label: opt
+                  }))}
+                />
+                {renderContextos(pregunta.id, pregunta.contextos)}
+              </fieldset>
+            ))}
 
-          <div className="button-group">
-            <button type="submit" className="submit-button">Calcular Puntaje</button>
-            <button
-              type="button"
-              className="cancel-button"
-              onClick={() => navigate("/misformularios")}
-            >
-              Cancelar
-            </button>
-          </div>
+            {mensaje && (
+              <div className={`formulario-toast ${mensajeTipo}`}>{mensaje}</div>
+            )}
 
-          {puntajeTotal !== null && (
-            <div className="resultado">
-              <h3>Puntaje total: {puntajeTotal}</h3>
-              <p>{interpretar()}</p>
+            <div className="formulario-buttons">
+              <button type="submit" className="formulario-btn">Guardar </button>
+              <button
+                type="button"
+                className="formulario-btn formulario-btn-danger"
+                onClick={() => navigate("/customer")}
+              >
+                Cancelar
+              </button>
             </div>
-          )}
-        </form>
+          </form>
+        </section>
       </div>
     </div>
   );
