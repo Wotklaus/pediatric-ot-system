@@ -120,9 +120,9 @@ const Sidebar = () => {
               <div className="collapse" id="collapsePerfilCliente">
                 <div className="sidebar-nested">
                   <Link className="sidebar-link" to="/perfil">
-                    Personal
+                    Mi perfil
                   </Link>
-                  <Link className="sidebar-link" to="/cliente-nino">
+                  <Link className="sidebar-link" to="/perfilpaciente">
                     Perfil del Niño
                   </Link>
                 </div>

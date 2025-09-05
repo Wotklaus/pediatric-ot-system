@@ -342,6 +342,8 @@ JOIN usuarios u ON u.id = f.user_id;
 -- =============================================
 --                ENTIDAD EVALUACION
 -- =============================================
+
+-- Guardar evaluación
 CREATE OR REPLACE FUNCTION fn_guardar_evaluacion(
     p_formulario_id INT,
     p_user_id INT,
@@ -349,21 +351,95 @@ CREATE OR REPLACE FUNCTION fn_guardar_evaluacion(
 ) RETURNS INT AS $$
 DECLARE
     v_evaluacion_id INT;
+    v_puntaje_total INT;
+    v_recomendacion TEXT;
 BEGIN
+    -- Calcular el puntaje total sumando los puntajes de las respuestas
+    SELECT COALESCE(SUM((r->>'puntaje')::INT), 0) INTO v_puntaje_total
+    FROM jsonb_array_elements(p_respuestas) AS r;
+
+    -- Calcular la recomendación según el puntaje total
+    IF v_puntaje_total < 10 THEN
+        v_recomendacion := 'No se recomienda atención';
+    ELSIF v_puntaje_total < 20 THEN
+        v_recomendacion := 'Se recomienda atención';
+    ELSE
+        v_recomendacion := 'Atención urgente';
+    END IF;
+
+    -- Insertar evaluación con puntaje y recomendación
     INSERT INTO evaluaciones (
         formulario_id,
         user_id, 
         respuestas, 
-        fecha
+        fecha,
+        puntaje_total,
+        recomendacion
     )
     VALUES (
         p_formulario_id,
         p_user_id, 
         p_respuestas, 
-        CURRENT_TIMESTAMP
+        CURRENT_TIMESTAMP,
+        v_puntaje_total,
+        v_recomendacion
     )
     RETURNING id INTO v_evaluacion_id;
     
     RETURN v_evaluacion_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Obtener evaluación por formulario_id (la más reciente)
+CREATE OR REPLACE FUNCTION fn_obtener_evaluacion_por_formulario(p_formulario_id integer)
+RETURNS TABLE (
+  id integer,
+  formulario_id integer,
+  user_id integer,
+  fecha timestamp,
+  respuestas jsonb,
+  puntaje_total integer,
+  recomendacion text
+) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT
+    evaluaciones.id,
+    evaluaciones.formulario_id,
+    evaluaciones.user_id,
+    evaluaciones.fecha,
+    evaluaciones.respuestas,
+    evaluaciones.puntaje_total,
+    evaluaciones.recomendacion
+  FROM evaluaciones
+  WHERE evaluaciones.formulario_id = p_formulario_id
+  ORDER BY evaluaciones.fecha DESC;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Obtener TODAS las evaluaciones de un usuario (historial)
+CREATE OR REPLACE FUNCTION fn_mis_evaluaciones(
+    p_user_id INT
+) RETURNS TABLE (
+    id INT,
+    formulario_id INT,
+    fecha TIMESTAMP,
+    puntajeTotal INT,
+    recomendacion TEXT
+) AS $$
+BEGIN
+    RETURN QUERY
+        SELECT
+            evaluaciones.id,
+            evaluaciones.formulario_id,
+            evaluaciones.fecha,
+            (
+                SELECT COALESCE(SUM((r->>'puntaje')::INT), 0)::INT
+                FROM jsonb_array_elements(evaluaciones.respuestas) AS r
+            ) AS puntajeTotal,
+            'Sin recomendación' AS recomendacion
+        FROM evaluaciones
+        WHERE evaluaciones.user_id = p_user_id
+        ORDER BY evaluaciones.fecha DESC;
 END;
 $$ LANGUAGE plpgsql;

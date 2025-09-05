@@ -13,6 +13,7 @@ import Disclaimer from "./pages/Disclaimer";
 import Evaluacion from "./pages/Evaluacion";
 import MisResultados from "./pages/MisResultados";
 import Admin from "./pages/Admin";
+import PerfilPaciente from "./pages/PerfilPaciente";
 
 // Componente para proteger rutas
 import ProtectedRoute from "./components/protectedRoute";
@@ -85,7 +86,15 @@ function App() {
               </ProtectedRoute>
             }
           />
-
+          <Route
+            path="/perfilpaciente"
+            element={
+              <ProtectedRoute>
+                <PerfilPaciente />
+              </ProtectedRoute>
+            }
+          />
+    
         </Routes>
       </BrowserRouter>
     </UserProvider>

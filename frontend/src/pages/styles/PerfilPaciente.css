@@ -1,0 +1,149 @@
+/* ===========================
+   Layout principal
+   =========================== */
+.perfil-paciente-main {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  background: #f6faff;
+}
+.perfil-paciente-content {
+  flex: 1;
+  margin-left: 250px; /* Ajusta según el ancho de tu sidebar */
+  padding-top: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* ===========================
+   Card principal
+   =========================== */
+.perfil-paciente-card {
+  background: #fff;
+  width: 100%;
+  max-width: 580px;  /* Puedes modificar el ancho */
+  margin: 28px auto 0 auto;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(34,92,168,0.10);
+  padding: 36px 30px 28px 30px;
+}
+
+/* ===========================
+   Secciones internas
+   =========================== */
+.perfil-paciente-section {
+  margin-bottom: 32px;
+  padding-bottom: 12px;
+  border-bottom: 1.2px solid #e3eaf5;
+}
+.perfil-paciente-section:last-child {
+  border-bottom: none;
+}
+
+/* ===========================
+   Títulos y filas
+   =========================== */
+.perfil-paciente-section h2 {
+  font-size: 1.35rem;
+  color: #225ca8;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.perfil-paciente-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 16px;
+}
+.perfil-paciente-label {
+  width: 110px; /* Ajusta el ancho de las etiquetas */
+  color: #2264a8;
+  font-weight: 600;
+  font-size: 1.05rem;
+  text-align: right;
+}
+.perfil-paciente-value {
+  color: #222;
+  font-size: 1.08rem;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+/* ===========================
+   Listas de seguimiento y referencias
+   =========================== */
+.perfil-paciente-seguimiento-list,
+.perfil-paciente-referencia-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.perfil-paciente-seguimiento-item,
+.perfil-paciente-referencia-item {
+  background: #f4fafd;
+  border-radius: 7px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 5px rgba(34,92,168,0.07);
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+  align-items: flex-start;
+}
+.perfil-paciente-seg-fecha,
+.perfil-paciente-ref-fecha {
+  color: #267a3c;
+  font-weight: 600;
+  font-size: 0.98rem;
+  min-width: 90px;
+}
+.perfil-paciente-seg-detalle,
+.perfil-paciente-ref-detalle {
+  color: #222;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* ===========================
+   Mensajes vacíos y de carga
+   =========================== */
+.perfil-paciente-empty {
+  color: #888;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+.perfil-paciente-loading {
+  margin-top: 120px;
+  text-align: center;
+  color: #225ca8;
+  font-size: 1.18rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* ===========================
+   Responsive
+   =========================== */
+@media (max-width: 900px) {
+  .perfil-paciente-content {
+    margin-left: 0;
+    padding-top: 30px;
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+  .perfil-paciente-card {
+    max-width: 98vw;
+    padding: 12px 4vw;
+  }
+  .perfil-paciente-label {
+    width: 80px;
+    font-size: 0.96rem;
+  }
+  .perfil-paciente-section h2 {
+    font-size: 1.1rem;
+  }
+}

@@ -1,129 +1,230 @@
-.evaluacion-layout {
-  min-height: 100vh;
-  background: #eaf1fb;
-  display: flex;
-  flex-direction: column;
-}
-
+/* ===========================
+   CONTENEDOR PRINCIPAL
+   =========================== */
 .evaluacion-content {
   width: 100vw;
   min-height: 100vh;
   padding: 50px 50px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #000000;
-  background-color: #fafafa;
+  color: #222;
+  background-color: #ffffff;
   box-sizing: border-box;
   margin-top: 50px;
 }
 
+/* ===========================
+   SECCIÓN PRINCIPAL
+   =========================== */
 .evaluacion-section {
   max-width: 1000px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 30px;
+  background-color: #ffffff;
+  margin-left: 340px;
+  margin-top: -70px;
+  padding-bottom: 32px;
 }
 
+/* ===========================
+   TITULO PRINCIPAL
+   =========================== */
 .evaluacion-section h2 {
   text-align: center;
-  font-size: 28px;
-  margin-bottom: 20px;
-  color: #3e3c3c;
+  font-size: 30px;
+  margin-bottom: 15px;
+  color: #404245;
+  letter-spacing: 1px;
+  font-weight: 700;
 }
 
+/* ===========================
+   FORMULARIO DE EVALUACIÓN
+   =========================== */
 .evaluacion-form {
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 32px;
 }
 
+/* ===========================
+   FIELDSETS POR ÁREA/SECCIÓN
+   =========================== */
 .evaluacion-form fieldset {
-  border: 1px solid #a1a3a6;
-  border-radius: 8px;
-  padding: 20px;
-  background-color: #ffffff;
+  border: 1.5px solid #d3d3d3;
+  border-radius: 10px;
+  padding: 24px 22px 18px 22px;
+  margin-bottom: 18px;
+  background-color: #f2f7fd;
+  box-shadow: 0 1px 7px rgba(120,150,200,0.07);
+  position: relative;
 }
 
-.evaluacion-form fieldset:nth-child(1) { background-color: #f0f8ff; }
-.evaluacion-form fieldset:nth-child(2) { background-color: #d6c19a; }
-.evaluacion-form fieldset:nth-child(3) { background-color: #e6f7ff; }
+/* COLORES POR ÁREA */
+.evaluacion-form fieldset[data-area="Actividades Básicas"] {
+  background-color: #f6f6f6;
+}
+.evaluacion-form fieldset[data-area="Juego y Participación Social"] {
+  background-color: #f6fdf6;
+}
+.evaluacion-form fieldset[data-area="Otra Área"] {
+  background-color: #fff5e6;
+}
 
+/* ===========================
+   TITULOS DE ÁREA/SECCIÓN
+   =========================== */
 .evaluacion-form legend {
   font-weight: bold;
-  font-size: 18px;
-  color: #255380;
-  padding: 0 10px;
+  font-size: 20px;
+  color: #276495;
+  padding: 0 12px;
+  margin-bottom: 18px;
+  letter-spacing: 0.5px;
 }
 
+/* ===========================
+   PREGUNTAS Y LABELS
+   =========================== */
+.evaluacion-pregunta {
+  margin-bottom: 26px;
+  padding-bottom: 8px;
+}
 .evaluacion-form label {
   display: block;
   margin-bottom: 10px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 500;
-  color: #000000;
+  color: #292929;
 }
 
-.evaluacion-form input[type="text"],
-.evaluacion-form input[type="number"] {
-  width: 100%;
-  height: 35px;
-  padding: 10px 14px;
-  margin-bottom: 15px;
-  border: 1px solid #babcbe;
-  border-radius: 6px;
+/* ===========================
+   RADIOGROUP PERSONALIZADO
+   =========================== */
+.evaluacion-radio-group {
+  display: flex;
+  flex-direction: column;    /* Opciones ahora en columna */
+  gap: 10px;                 /* Espacio entre opciones */
+  margin-bottom: 16px;
+  align-items: flex-start;
+}
+.evaluacion-radio-group input[type="radio"] {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #8db7df;
+  border-radius: 50%;
+  background-color: #fff;
+  cursor: pointer;
+  margin-right: 8px;
+  position: relative;
+}
+.evaluacion-radio-group input[type="radio"]:checked {
+  background-color: #59a8e8;
+  border-color: #2981c9;
+}
+
+/* ===========================
+   CHECKBOXGROUP PERSONALIZADO
+   =========================== */
+.evaluacion-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+}
+.evaluacion-checkbox-group input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #8db7df;
+  border-radius: 3px;
+  background-color: #fff;
+  cursor: pointer;
+  margin-right: 8px;
+  position: relative;
+}
+.evaluacion-checkbox-group input[type="checkbox"]:checked {
+  background-color: #59a8e8;
+  border-color: #2981c9;
+}
+.evaluacion-checkbox-group input[type="checkbox"]:checked::after {
+  content: '✓';
+  color: white;
   font-size: 15px;
-  background-color: #ffffff;
-  box-sizing: border-box;
-  color: #000000;
+  position: absolute;
+  top: -2px;
+  left: 2px;
 }
 
-.evaluacion-form input[type="text"]:focus,
-.evaluacion-form input[type="number"]:focus {
-  border-color: #c3cbd1;
-  box-shadow: 0 0 4px rgba(162, 167, 170, 0.4);
-  outline: none;
+/* ===========================
+   CONTEXTOS ADICIONALES
+   =========================== */
+.evaluacion-contextos-adicionales {
+  padding: 14px 18px 8px 18px;
+  border: 1px dashed #98b3cb;
+  border-radius: 6px;
+  background-color: #f7fbff;
+  margin-bottom: 12px;
+  margin-top: 4px;
+}
+.evaluacion-contextos-titulo {
+  font-size: 15px;
+  color: #1b4965;
+  font-weight: 600;
+  margin-bottom: 6px;
 }
 
+/* ===========================
+   BOTONES
+   =========================== */
+.evaluacion-btn {
+  background-color: #3984ce;
+  color: white;
+  padding: 12px 28px;
+  font-size: 17px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.18s;
+  font-weight: 500;
+}
+.evaluacion-btn:hover {
+  background-color: #105699;
+  transform: translateY(-1px);
+}
+.evaluacion-btn-danger {
+  background-color: #ff2a2a;
+  color: white;
+  padding: 12px 28px;
+  font-size: 17px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.18s;
+  font-weight: 500;
+}
+.evaluacion-btn-danger:hover {
+  background-color: #d32f2f;
+  transform: translateY(-1px);
+}
+
+/* ===========================
+   GRUPO DE BOTONES
+   =========================== */
 .evaluacion-buttons {
   display: flex;
   justify-content: center;
   gap: 20px;
-  margin-top: 20px;
+  margin-top: 22px;
 }
 
-.evaluacion-btn {
-  background-color: #4b7bac;
-  color: white;
-  padding: 12px 24px;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.evaluacion-btn:hover {
-  background-color: #0059b3;
-  transform: translateY(-2px);
-}
-
-.evaluacion-btn-danger {
-  background-color: #ff0e0e;
-  color: white;
-  padding: 12px 24px;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.evaluacion-btn-danger:hover {
-  background-color: #d32f2f;
-  transform: translateY(-2px);
-}
-
-/* Mensaje de éxito o error */
+/* ===========================
+   MENSAJE DE ÉXITO O ERROR
+   =========================== */
 .evaluacion-toast {
   padding: 12px 20px;
   border-radius: 6px;
@@ -133,15 +234,43 @@
   transition: all 0.3s ease;
   position: relative;
 }
-
 .evaluacion-toast.error {
   background-color: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;
 }
-
 .evaluacion-toast.exito {
   background-color: #d4edda;
   color: #155724;
   border: 1px solid #c3e6cb;
 }
+
+/* ===========================
+   RESPONSIVE
+   =========================== */
+@media (max-width: 900px) {
+  .evaluacion-section {
+    margin-left: 0;
+    max-width: 98vw;
+    padding: 6px;
+  }
+  .evaluacion-content {
+    padding: 12px 2vw;
+  }
+  .evaluacion-buttons {
+    flex-direction: column;
+    gap: 14px;
+  }
+}
+
+/* ===========================
+   GUÍA DE MODIFICACIÓN RÁPIDA
+   =========================== */
+/*
+- Cambia los colores de fondo de cada área en:
+  .evaluacion-form fieldset[data-area="NOMBRE-DEL-ÁREA"] { background-color: ... }
+- Cambia el espacio entre secciones: ajusta 'margin-bottom' en .evaluacion-form fieldset
+- Cambia el color o fuente de títulos: .evaluacion-section h2 y .evaluacion-form legend
+- Botones: .evaluacion-btn y .evaluacion-btn-danger
+- Mensaje de error o éxito: .evaluacion-toast.error / .evaluacion-toast.exito
+*/

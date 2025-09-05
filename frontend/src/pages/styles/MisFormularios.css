@@ -178,3 +178,101 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Panel de detalles de evaluación expandido */
+.evaluacion-detalles-expanded {
+  background-color: #f8fafc;
+  border: 1.2px solid #bdd2ed;
+  border-radius: 14px;
+  box-shadow: 0 1px 8px rgba(34,100,168,0.08);
+  padding: 24px 28px 18px 28px;
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Título de resultados */
+.evaluacion-detalles-expanded h3 {
+  font-size: 22px;
+  color: #45484c;
+  margin-bottom: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Listado de respuestas */
+.evaluacion-respuestas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 3px;
+}
+
+/* Card para cada pregunta respondida */
+.evaluacion-respuesta-item {
+  background-color: #eaeef4;
+  border: 1px solid #cce2fa;
+  border-radius: 10px;
+  box-shadow: 0 1px 5px rgba(34,100,168,0.06);
+  padding: 18px 14px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+/* Pregunta */
+.evaluacion-respuesta-item > div:first-child {
+  font-size: 17px;
+  color: #46494d;
+  font-weight: 600;
+  margin-bottom: 1px;
+}
+
+/* Opción elegida */
+.evaluacion-respuesta-item > div:nth-child(2) {
+  font-size: 15px;
+  color: #46494d;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+/* Contextos asociados */
+.evaluacion-respuesta-item ul {
+  margin: 6px 0 0 18px;
+  padding: 0;
+  list-style-type: disc;
+}
+.evaluacion-respuesta-item li {
+  font-size: 13px;
+  color: #080808;
+  margin-bottom: 2px;
+}
+
+/* Subtítulo Contextos */
+.evaluacion-respuesta-item strong {
+  color: #1d3670;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Responsive para detalles expandido */
+@media (max-width: 900px) {
+  .evaluacion-detalles-expanded {
+    padding: 13px 4px 8px 4px;
+    gap: 10px;
+  }
+  .evaluacion-respuesta-item {
+    padding: 8px 3px 7px 3px;
+    gap: 5px;
+  }
+  .evaluacion-respuesta-item > div:first-child {
+    font-size: 15px;
+  }
+  .evaluacion-respuesta-item > div:nth-child(2) {
+    font-size: 13px;
+  }
+  .evaluacion-respuesta-item li {
+    font-size: 12px;
+  }
+}

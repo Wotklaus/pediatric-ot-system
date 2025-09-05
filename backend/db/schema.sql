@@ -80,8 +80,10 @@ CREATE TABLE IF NOT EXISTS evaluaciones (
     formulario_id INTEGER NOT NULL REFERENCES formularios(id),
     user_id INTEGER NOT NULL REFERENCES usuarios(id),
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    respuestas JSONB NOT NULL DEFAULT '[]'
-    -- Las respuestas serán así:
+    respuestas JSONB NOT NULL DEFAULT '[]',
+    puntaje_total INT,
+    recomendacion TEXT
+    -- Ejemplo de respuestas:
     -- [
     --     {
     --         "pregunta_id": 1,
@@ -91,6 +93,5 @@ CREATE TABLE IF NOT EXISTS evaluaciones (
     --     }
     -- ]
 );
-
 
 

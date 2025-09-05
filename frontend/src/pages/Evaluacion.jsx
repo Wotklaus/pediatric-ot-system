@@ -3,8 +3,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import "./styles/Evaluacion.css";
 
+// RadioGroup reutilizable
 const RadioGroup = ({ name, value, options, onChange }) => (
-  <div className="formulario-radio-group">
+  <div className="evaluacion-radio-group">
     {options.map((opt) => (
       <label key={opt.value}>
         <input
@@ -56,6 +57,13 @@ const Evaluacion = () => {
     };
     cargarPreguntas();
   }, []);
+
+  // Agrupa preguntas por área
+  const preguntasPorArea = preguntas.reduce((acc, pregunta) => {
+    if (!acc[pregunta.area]) acc[pregunta.area] = [];
+    acc[pregunta.area].push(pregunta);
+    return acc;
+  }, {});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -126,11 +134,12 @@ const Evaluacion = () => {
       const data = await response.json();
 
       if (response.ok) {
+        // AQUÍ navegas y pasas el evaluacionId y datos
         navigate("/MisResultados", {
           state: {
+            evaluacionId: data.evaluacionId, // <-- El ID que te devuelve el backend
             puntajeTotal,
             recomendacion: interpretar(puntajeTotal),
-            respuestas: payload.respuestas,
             fecha: new Date().toISOString()
           }
         });
@@ -147,9 +156,9 @@ const Evaluacion = () => {
   const renderContextos = (preguntaId, contextosDisponibles) => {
     if (respuestas[preguntaId] !== "2") return null;
     return (
-      <div className="contextos-adicionales">
-        <p className="contextos-titulo">Contextos asociados (marque los que apliquen):</p>
-        <div className="formulario-checkbox-group">
+      <div className="evaluacion-contextos-adicionales">
+        <p className="evaluacion-contextos-titulo">Contextos asociados (marque los que apliquen):</p>
+        <div className="evaluacion-checkbox-group">
           {contextosDisponibles.map(txt => (
             <label key={txt}>
               <input
@@ -166,51 +175,42 @@ const Evaluacion = () => {
   };
 
   return (
-    <div className="formulario-layout">
+    <div className="evaluacion-layout">
       <Sidebar />
-      <div className="formulario-content">
-        <section className="formulario-section">
+      <div className="evaluacion-content">
+        <section className="evaluacion-section">
           <h2>SECCIÓN II – EVALUACIÓN DEL PERFIL OCUPACIONAL</h2>
-         
-
-          <form onSubmit={handleSubmit} className="formulario-form">
-            {preguntas.map(pregunta => (
-              <fieldset
-                key={pregunta.id}
-                style={{
-                  backgroundColor:
-                    pregunta.area === "Actividades Básicas" ? "#f0f8ff" :
-                    pregunta.area === "Juego y Participación Social" ? "#e6ffe6" :
-                    "#fff5e6"
-                }}
-              >
-                {preguntas.findIndex(p => p.area === pregunta.area) === preguntas.findIndex(p => p.id === pregunta.id) && (
-                  <legend>ÁREA: {pregunta.area}</legend>
-                )}
-
-                <label>{pregunta.id}. {pregunta.pregunta}</label>
-                <RadioGroup
-                  name={pregunta.id}
-                  value={respuestas[pregunta.id]}
-                  onChange={handleChange}
-                  options={pregunta.opciones.map((opt, idx) => ({
-                    value: String(idx),
-                    label: opt
-                  }))}
-                />
-                {renderContextos(pregunta.id, pregunta.contextos)}
+          <form onSubmit={handleSubmit} className="evaluacion-form">
+            {Object.entries(preguntasPorArea).map(([area, preguntasArea]) => (
+              <fieldset key={area} data-area={area}>
+                <legend> {area}</legend>
+                {preguntasArea.map((pregunta) => (
+                  <div className="evaluacion-pregunta" key={pregunta.id}>
+                    <label>
+                      {pregunta.id}. {pregunta.pregunta}
+                    </label>
+                    <RadioGroup
+                      name={pregunta.id}
+                      value={respuestas[pregunta.id]}
+                      onChange={handleChange}
+                      options={pregunta.opciones.map((opt, idx) => ({
+                        value: String(idx),
+                        label: opt
+                      }))}
+                    />
+                    {renderContextos(pregunta.id, pregunta.contextos)}
+                  </div>
+                ))}
               </fieldset>
             ))}
-
             {mensaje && (
-              <div className={`formulario-toast ${mensajeTipo}`}>{mensaje}</div>
+              <div className={`evaluacion-toast ${mensajeTipo}`}>{mensaje}</div>
             )}
-
-            <div className="formulario-buttons">
-              <button type="submit" className="formulario-btn">Guardar </button>
+            <div className="evaluacion-buttons">
+              <button type="submit" className="evaluacion-btn">Guardar</button>
               <button
                 type="button"
-                className="formulario-btn formulario-btn-danger"
+                className="evaluacion-btn evaluacion-btn-danger"
                 onClick={() => navigate("/customer")}
               >
                 Cancelar

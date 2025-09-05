@@ -1,5 +1,5 @@
-// dao/postgres/evaluacionDAO.js
 const pool = require('../../config/postgres');
+const EvaluacionDTO = require('../../dto/postgres/evaluacionDTO');
 
 class EvaluacionDAO {
     async guardarEvaluacion(evaluacion) {
@@ -15,7 +15,7 @@ class EvaluacionDAO {
             console.log("🔍 Respuestas preparadas para BD:", JSON.stringify(respuestasLimpias, null, 2));
 
             const result = await pool.query(
-                'SELECT fn_guardar_evaluacion($1, $2, $3::jsonb)',
+                'SELECT * FROM fn_guardar_evaluacion($1, $2, $3::jsonb)',
                 [
                     evaluacion.formulario_id,
                     evaluacion.user_id,
@@ -23,14 +23,43 @@ class EvaluacionDAO {
                 ]
             );
 
-            console.log("✅ Resultado de BD:", result.rows[0]);
-            return result.rows[0];
+            // Instanciar el DTO con todos los campos incluyendo puntaje_total y recomendacion
+            return new EvaluacionDTO(result.rows[0]);
         } catch (error) {
             console.error("❌ Error en DAO:", error);
             throw error;
         }
     }
+
+    async obtenerPorFormularioId(formularioId) {
+        try {
+            const result = await pool.query(
+                'SELECT * FROM fn_obtener_evaluacion_por_formulario($1)',
+                [formularioId]
+            );
+
+            if (result.rows.length === 0) return null;
+            // Instanciar el DTO con todos los campos
+            return new EvaluacionDTO(result.rows[0]);
+        } catch (error) {
+            console.error("❌ Error en obtenerPorFormularioId:", error);
+            throw error;
+        }
+    }
+
+    async obtenerEvaluacionesPorUsuario(userId) {
+        try {
+            const result = await pool.query(
+                'SELECT * FROM fn_mis_evaluaciones($1)',
+                [userId]
+            );
+            // Mapear cada resultado a un DTO que incluye puntaje_total y recomendacion
+            return result.rows.map(row => new EvaluacionDTO(row));
+        } catch (error) {
+            console.error("❌ Error en obtenerEvaluacionesPorUsuario:", error);
+            throw error;
+        }
+    }
 }
 
-// Exportar la clase (no una instancia)
 module.exports = EvaluacionDAO;

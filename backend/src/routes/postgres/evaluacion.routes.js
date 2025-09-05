@@ -39,13 +39,66 @@ router.post("/", authMiddleware, async (req, res) => {
 
 
 router.get("/preguntas", authMiddleware, async (req, res) => {
-  try {
-    console.log("📝 Enviando preguntas desde archivo de configuración");
-    res.json(PREGUNTAS);
-  } catch (error) {
-    console.error("❌ Error al obtener preguntas:", error);
-    res.status(500).json({ error: "Error cargando preguntas" });
-  }
+    try {
+        console.log("📝 Enviando preguntas desde archivo de configuración");
+        res.json(PREGUNTAS);
+    } catch (error) {
+        console.error("❌ Error al obtener preguntas:", error);
+        res.status(500).json({ error: "Error cargando preguntas" });
+    }
 });
+
+// Ruta para obtener evaluación por formulario_id
+router.get('/by-formulario/:formularioId', authMiddleware, async (req, res) => {
+    const { formularioId } = req.params;
+    try {
+        // Buscar la evaluación vinculada a ese formulario
+        const result = await evaluacionDAO.obtenerPorFormularioId(formularioId);
+
+        if (!result) {
+            return res.status(404).json({ error: "No existe una evaluación para este formulario." });
+        }
+
+        // Puedes calcular puntajeTotal y recomendación aquí si lo necesitas
+        // Ejemplo:
+        let puntajeTotal = 0;
+        if (Array.isArray(result.respuestas)) {
+            puntajeTotal = result.respuestas.reduce((acc, r) => acc + (r.puntaje || 0), 0);
+        }
+        // Puedes agregar lógica para recomendación si tienes reglas
+
+        res.json({
+            ...result,
+            puntajeTotal,
+            recomendacion: "Pendiente de lógica." // Cambia según tu algoritmo, si tienes uno
+        });
+    } catch (error) {
+        console.error("❌ Error obteniendo evaluación:", error);
+        res.status(500).json({ error: "Error obteniendo evaluación" });
+    }
+});
+
+// Ruta para obtener TODAS las evaluaciones del usuario autenticado
+router.get('/mis-evaluaciones', authMiddleware, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        // Busca todas las evaluaciones del usuario, puedes adaptar los campos que necesites
+        const evaluaciones = await evaluacionDAO.obtenerEvaluacionesPorUsuario(userId);
+
+        // Si no hay evaluaciones, retorna array vacío (no error)
+        res.json(
+            (evaluaciones || []).map(ev => ({
+                id: ev.id,
+                puntajeTotal: ev.puntajeTotal || 0,
+                fecha: ev.fecha,
+                recomendacion: ev.recomendacion || "Sin recomendación"
+            }))
+        );
+    } catch (error) {
+        console.error("❌ Error obteniendo historial de evaluaciones:", error);
+        res.status(500).json({ error: "Error obteniendo historial de evaluaciones" });
+    }
+});
+
 
 module.exports = router;

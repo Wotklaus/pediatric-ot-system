@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar";
 import "./styles/MisFormularios.css";
 
+// Mapea "razones" técnicas a frases amigables
 const convertirRazon = (razon) => {
   const mapa = {
     siempreCuna: "Siempre en la cuna",
@@ -30,6 +31,14 @@ export default function MisFormularios() {
   const [formularios, setFormularios] = useState([]);
   const [error, setError] = useState(null);
 
+  // Controla qué tarjeta está expandida (índice) y las evaluaciones cargadas por formulario
+  const [expandedIdx, setExpandedIdx] = useState(null);
+  const [evaluaciones, setEvaluaciones] = useState({});
+
+  // Configuración de preguntas para mapeo de textos
+  const [preguntasConfig, setPreguntasConfig] = useState([]);
+
+  // Carga los formularios del usuario
   useEffect(() => {
     const fetchFormularios = async () => {
       try {
@@ -50,6 +59,53 @@ export default function MisFormularios() {
     };
     fetchFormularios();
   }, []);
+
+  // Carga la configuración de preguntas desde el backend
+  useEffect(() => {
+    const fetchPreguntasConfig = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch("http://localhost:5000/api/postgres/evaluaciones/preguntas", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setPreguntasConfig(data);
+        }
+      } catch (err) {
+        // Puedes mostrar un error si lo deseas
+      }
+    };
+    fetchPreguntasConfig();
+  }, []);
+
+  // Cuando tocas el botón Detalles: expande/colapsa y carga la evaluación si no está cargada
+  const handleExpand = async (formularioId, idx) => {
+    if (expandedIdx === idx) {
+      setExpandedIdx(null);
+      return;
+    }
+    setExpandedIdx(idx);
+
+    if (!evaluaciones[formularioId]) {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch(
+          `http://localhost:5000/api/postgres/evaluaciones/by-formulario/${formularioId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setEvaluaciones(prev => ({ ...prev, [formularioId]: data }));
+        }
+      } catch (err) {
+        setEvaluaciones(prev => ({
+          ...prev,
+          [formularioId]: { error: "No se pudo cargar la evaluación." }
+        }));
+      }
+    }
+  };
 
   return (
     <>
@@ -129,11 +185,57 @@ export default function MisFormularios() {
                         </div>
                       ))}
                   </div>
-                  {/* Botón Detalles */}
-                  <div className="evaluacion-detalles-btn-container">
-                    <button className="evaluacion-detalles-btn" disabled>Detalles</button>
-                  </div>
                 </div>
+                {/* Botón Detalles */}
+                <div className="evaluacion-detalles-btn-container">
+                  <button
+                    className="evaluacion-detalles-btn"
+                    onClick={() => handleExpand(f.id, idx)}
+                  >
+                    {expandedIdx === idx ? "Ocultar detalles" : "Detalles"}
+                  </button>
+                </div>
+                {/* Panel de detalles de evaluación */}
+                {expandedIdx === idx && (
+                  <div className="evaluacion-detalles-expanded">
+                    {!evaluaciones[f.id] ? (
+                      <p>Cargando evaluación...</p>
+                    ) : evaluaciones[f.id]?.error ? (
+                      <p className="error">{evaluaciones[f.id].error}</p>
+                    ) : (
+                      <>
+                        <h3>Resultados de la Evaluación</h3>
+                        <div className="evaluacion-respuestas-list">
+                          {evaluaciones[f.id].respuestas?.map((resp, i) => {
+                            const preguntaObj = preguntasConfig.find(p => p.id === Number(resp.pregunta_id));
+                            const opcionTexto = preguntaObj?.opciones?.[Number(resp.respuesta)] || resp.respuesta;
+
+                            return (
+                              <div key={i} className="evaluacion-respuesta-item">
+                                <div>
+                                  <strong> {i + 1}:</strong> {preguntaObj?.pregunta || `Pregunta ${resp.pregunta_id}`}
+                                </div>
+                                <div>
+                                  <strong>Respuesta:</strong> {opcionTexto}
+                                </div>
+                                {resp.contextos && resp.contextos.length > 0 && (
+                                  <div>
+                                    <strong>Contextos asociados:</strong>
+                                    <ul>
+                                      {resp.contextos.map((c, idx) => (
+                                        <li key={idx}>{c}</li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             ))}
           </div>

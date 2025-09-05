@@ -1,14 +1,21 @@
+/* ===========================
+   CONTENEDOR PRINCIPAL
+   =========================== */
+/* Estructura principal, organiza el sidebar y el contenido */
 .perfil-elegante-main {
   display: flex;
   min-height: 100vh;
   width: 100vw;
-  background: #f6faff;
+  background: #ffffff; /* Fondo general de la página */
 }
 
-/* Sidebar ocupa 250px (ajusta si tu sidebar cambia de ancho) */
+/* ===========================
+   CONTENIDO PRINCIPAL
+   =========================== */
+/* Ajusta el contenido para dejar espacio al sidebar */
 .perfil-elegante-content {
   flex: 1;
-  margin-left: 250px;
+  margin-left: 250px; /* Ajusta según el ancho de tu sidebar */
   padding-top: 64px;
   display: flex;
   flex-direction: column;
@@ -17,54 +24,66 @@
   box-sizing: border-box;
 }
 
-/* Card principal en modo flex horizontal */
+/* ===========================
+   CARD DE PERFIL
+   =========================== */
+/* Tarjeta de perfil con avatar y datos a la derecha */
 .perfil-elegante-card.perfil-elegante-row-flex {
-  background: #fff;
+  background: #edecec;
   width: 100%;
-  max-width: 480px;
+  max-width: 1150px; /* Puedes modificar el ancho máximo de la tarjeta */
+  height: 550px;
   margin: 38px auto 0 auto;
   border-radius: 18px;
   box-shadow: 0 2px 16px rgba(34,92,168,0.10);
   padding: 38px 34px 32px 34px;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  gap: 36px;
+  align-items: center;  /* Centra verticalmente el avatar respecto a los datos */
+  gap: 42px;            /* Espacio entre avatar y datos */
+
 }
 
-/* Avatar minimalista a la izquierda */
+/* ===========================
+   AVATAR DE USUARIO
+   =========================== */
+/* Columna del avatar, centrado verticalmente */
 .perfil-elegante-avatar-col {
-  width: 108px;
-  min-width: 108px;
-  height: 108px;
-  background: linear-gradient(90deg, #e3f0ff 0%, #dbeeff 100%);
+  width: 300px;                /* Tamaño del círculo del avatar (ajusta aquí) */
+  min-width: 300px;
+  height: 300px;
+  background: linear-gradient(90deg, #e3f0ff 0%, #3d4a55 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   cursor: pointer;
-  border: 2.5px solid #2264a8;
+  border: 2.5px solid #5e6367;
   box-shadow: 0 1px 8px rgba(34,92,168,0.08);
-  margin-top: 12px;
   transition: box-shadow 0.18s;
 }
 .perfil-elegante-avatar-col:hover {
   box-shadow: 0 3px 16px rgba(34,92,168,0.16);
 }
+/* Imagen de usuario */
 .perfil-elegante-avatar-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
 }
+/* Ícono SVG de usuario */
 .perfil-elegante-svg-icon {
-  width: 86px;
-  height: 86px;
+  width: 90px;
+  height: 90px;
   display: block;
 }
 
-/* Datos y botones a la derecha */
+/* ===========================
+   INFORMACIÓN DEL PERFIL
+   =========================== */
+/* Columna de datos personales */
 .perfil-elegante-info-col {
   flex: 1;
   display: flex;
@@ -73,41 +92,60 @@
   min-width: 0;
 }
 
+/* Título del perfil */
 .perfil-elegante-title {
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: 1px;
-  color: #225ca8;
+  color: #4a4a48d2;
   margin-bottom: 10px;
   text-align: left;
+  margin-left: 80px;
 }
 
-/* Datos en una sola columna tipo ficha */
+/* ===========================
+   DATOS EN FILAS HORIZONTALES
+   =========================== */
+/* Contenedor de los datos personales */
 .perfil-elegante-data-col {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  margin-left: 80px;
 }
 
+/* Cada fila de datos: etiqueta a la izquierda y valor/input a la derecha */
 .perfil-elegante-row {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 4px;
-}
-.perfil-elegante-label {
-  font-size: 1.07rem;
-  color: #2264a8;
-  font-weight: 600;
-  margin-bottom: 3px;
-}
-.perfil-elegante-value {
-  font-size: 1.08rem;
-  color: #222;
-  font-weight: 500;
-  padding-left: 2px;
+  flex-direction: row;           /* Fila horizontal para etiqueta y valor */
+  align-items: left;           /* Centra verticalmente el valor/input */
+  margin-bottom: 6px;
+  gap: 12px;                     /* Espacio entre etiqueta y valor/input */
+  text-align: left;
 }
 
+/* Etiqueta del dato */
+.perfil-elegante-label {
+  width: 110px;                  /* Ancho fijo para alinear las etiquetas (ajusta aquí) */
+  font-size: 1.07rem;
+  color: #000000;
+  font-weight: 600;
+  margin-bottom: 0;
+  text-align: left;
+  margin-right: 30px;
+}
+
+/* Valor del dato (modo vista) */
+.perfil-elegante-value {
+  font-size: 1.08rem;
+  color: #5b5959;
+  font-weight: 500;
+  padding-left: 2px;
+  word-break: break-word;
+}
+
+/* Input de edición del dato */
 .perfil-elegante-input {
   padding: 7px 10px;
   font-size: 1.08rem;
@@ -117,12 +155,18 @@
   color: #1a1a1a;
   outline: none;
   transition: border 0.18s;
+  min-width: 220px;              /* Ancho mínimo del input (ajusta aquí) */
+  max-width: 270px;
 }
 .perfil-elegante-input:focus {
   border-color: #2264a8;
   background: #eaf3fb;
 }
 
+/* ===========================
+   BOTONES
+   =========================== */
+/* Agrupación de botones */
 .perfil-elegante-btn-group {
   display: flex;
   gap: 18px;
@@ -130,6 +174,7 @@
   flex-wrap: wrap;
   justify-content: flex-start;
 }
+/* Botón base */
 .perfil-elegante-btn {
   background: #2264a8;
   color: #fff;
@@ -155,7 +200,9 @@
   opacity: 0.94;
 }
 
-/* Toast de mensajes */
+/* ===========================
+   TOAST DE MENSAJES
+   =========================== */
 .perfil-elegante-toast {
   border-radius: 6px;
   padding: 10px 24px;
@@ -176,6 +223,9 @@
   color: #e05b5b;
 }
 
+/* ===========================
+   MENSAJE DE CARGA
+   =========================== */
 .perfil-elegante-loading {
   margin-top: 120px;
   text-align: center;
@@ -185,11 +235,14 @@
   letter-spacing: 1px;
 }
 
-/* RESPONSIVE */
+/* ===========================
+   RESPONSIVE
+   =========================== */
+/* Para pantallas pequeñas, apila la tarjeta y ajusta fuentes */
 @media (max-width: 900px) {
   .perfil-elegante-content {
-    margin-left: 190px;
-    padding-top: 54px;
+    margin-left: 0;
+    padding-top: 30px;
     padding-left: 2px;
     padding-right: 2px;
   }
@@ -198,11 +251,11 @@
     align-items: center;
     padding: 15px 5px 8px 5px;
     max-width: 98vw;
-    gap: 16px;
+    gap: 18px;
   }
   .perfil-elegante-avatar-col {
     margin-top: 0;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
   .perfil-elegante-title {
     font-size: 1.5rem;
@@ -212,7 +265,17 @@
     gap: 8px;
     margin-bottom: 10px;
   }
-  .perfil-elegante-row, .perfil-elegante-label, .perfil-elegante-value, .perfil-elegante-input {
+  .perfil-elegante-row,
+  .perfil-elegante-label,
+  .perfil-elegante-value,
+  .perfil-elegante-input {
     font-size: 0.98rem;
+  }
+  .perfil-elegante-label {
+    width: 90px;
+  }
+  .perfil-elegante-input {
+    min-width: 120px;
+    max-width: 96vw;
   }
 }
