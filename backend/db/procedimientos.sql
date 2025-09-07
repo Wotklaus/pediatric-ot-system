@@ -2,9 +2,6 @@
 -- Procedimientos Almacenados - Sistema Caryan
 -- Base de datos: caryan
 
-
-
-
 -- =============================================
 --                  LOGIN
 -- =============================================
@@ -29,11 +26,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
 -- =============================================
 --                 ENTIDAD ROLES
 -- =============================================
-
 --    Crear nuevo rol
 CREATE OR REPLACE FUNCTION nuevo_rol(_nombre TEXT)
 RETURNS VOID AS $$
@@ -41,7 +36,6 @@ BEGIN
   INSERT INTO roles (nombre) VALUES (_nombre);
 END;
 $$ LANGUAGE plpgsql;
-
 -- =============================================
 ---   Listar roles
 CREATE OR REPLACE FUNCTION listar_roles()
@@ -55,7 +49,6 @@ BEGIN
   FROM roles r;
 END;
 $$ LANGUAGE plpgsql;
-
 -- =============================================
 ---   Actualizar un rol 
 CREATE OR REPLACE FUNCTION actualizar_rol(_id INT, _nombre TEXT)
@@ -64,7 +57,6 @@ BEGIN
   UPDATE roles SET nombre = _nombre WHERE id = _id;
 END;
 $$ LANGUAGE plpgsql;
-
 -- =============================================
 ---   Eliminar un rol
 CREATE OR REPLACE FUNCTION eliminar_rol(_id INT)
@@ -73,11 +65,9 @@ BEGIN
   DELETE FROM roles WHERE id = _id;
 END;
 $$ LANGUAGE plpgsql;
-
 -- =============================================
 --                ENTIDAD USUARIO
 -- =============================================
-
 -- Insertar nuevo usuario
 CREATE OR REPLACE FUNCTION nuevo_usuario(
   _nombre VARCHAR(100),
@@ -105,141 +95,25 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- =============================================
---      Ver todos los usuarios
-CREATE OR REPLACE FUNCTION listar_usuarios()
-RETURNS TABLE(
+-- Obtener lista de usuarios por rol (ejemplo: rol 3 = personal médico)
+-- Solución: referencia explícita con usuarios.id
+CREATE OR REPLACE FUNCTION obtener_personal_medico()
+RETURNS TABLE (
   id INTEGER,
-  nombre VARCHAR(100),
-  apellido VARCHAR(100),
-  cedula VARCHAR(20),
-  telefono VARCHAR(20),
-  email VARCHAR(255),
-  contrasena VARCHAR(255),
-  fecha_registro TIMESTAMP,
-  rol_id INTEGER
+  nombre VARCHAR,
+  apellido VARCHAR,
+  cedula VARCHAR,
+  telefono VARCHAR,
+  email VARCHAR,
+  fecha_registro TIMESTAMP
 ) AS $$
 BEGIN
   RETURN QUERY
-  SELECT 
-    u.id,
-    u.nombre,
-    u.apellido,
-    u.cedula,
-    u.telefono,
-    u.email,
-    u.contrasena,
-    u.fecha_registro,
-    u.rol_id
-  FROM usuarios u;
-END;
-$$ LANGUAGE plpgsql;
-
--- =============================================
---     Ver usuario por filtro (nombre o email)
-CREATE OR REPLACE FUNCTION ver_usuarios(filtro TEXT)
-RETURNS TABLE(
-  id INT,
-  email TEXT,
-  nombre TEXT,
-  apellido TEXT,
-  cedula TEXT,
-  telefono TEXT,
-  contrasena VARCHAR,
-  rol_id INT,
-  activo BOOLEAN
-)AS $$
-BEGIN
-  RETURN QUERY
-  SELECT id, email, nombre, apellido, cedula, telefono, contrasena, rol_id, activo
+  SELECT usuarios.id, usuarios.nombre, usuarios.apellido, usuarios.cedula, usuarios.telefono, usuarios.email, usuarios.fecha_registro
   FROM usuarios
-  WHERE nombre ILIKE '%' || filtro || '%' OR email ILIKE '%' || filtro || '%';
+  WHERE usuarios.rol_id = 3;
 END;
 $$ LANGUAGE plpgsql;
-
--- =============================================
---          Ver usuarios por rol
-CREATE OR REPLACE FUNCTION ver_usuarios_por_rol(_rol_id INT)
-RETURNS TABLE(
-  id INT,
-  email TEXT,
-  nombre TEXT,
-  apellido TEXT,
-  cedula TEXT,
-  telefono TEXT,
-  contrasena VARCHAR,
-  activo BOOLEAN
-)AS $$
-BEGIN
-  RETURN QUERY
-  SELECT id, email, nombre, apellido, cedula, telefono, contrasena, activo
-  FROM usuarios
-  WHERE rol_id = _rol_id;
-END;
-$$ LANGUAGE plpgsql;
-
--- =============================================
---        Buscar usuario 
-CREATE OR REPLACE FUNCTION buscar_usuario_email(_email VARCHAR(255))
-RETURNS TABLE (
-  id INT,
-  email VARCHAR(255),
-  nombre VARCHAR(100),
-  apellido VARCHAR(100),
-  cedula VARCHAR(20),
-  telefono VARCHAR(20),
-  contrasena VARCHAR,
-  rol_id INT
-)
-AS $$
-BEGIN
-  RETURN QUERY
-  SELECT 
-    usuarios.id, 
-    usuarios.email, 
-    usuarios.nombre, 
-    usuarios.apellido,
-    usuarios.cedula, 
-    usuarios.telefono,
-    usuarios.contrasena,
-    usuarios.rol_id
-  FROM usuarios
-  WHERE usuarios.email = _email;
-END;
-$$ LANGUAGE plpgsql;
-
--- =============================================
---        Actualizar usuario
-CREATE OR REPLACE FUNCTION actualizar_usuario(
-    p_email TEXT,
-    p_nombre TEXT,
-    p_apellido TEXT,
-    p_cedula TEXT,
-    p_telefono TEXT
-)
-RETURNS VOID AS $$
-BEGIN
-    UPDATE usuarios
-    SET
-        nombre   = COALESCE(NULLIF(p_nombre, ''), nombre),
-        apellido = COALESCE(NULLIF(p_apellido, ''), apellido),
-        cedula   = COALESCE(NULLIF(p_cedula, ''), cedula),
-        telefono = COALESCE(NULLIF(p_telefono, ''), telefono)
-    WHERE email = p_email;
-END;
-$$ LANGUAGE plpgsql;
-
-
-
--- =============================================
---       Desactivar (eliminar)
-CREATE OR REPLACE FUNCTION desactivar_usuario_por_email(_email TEXT)
-RETURNS VOID AS $$
-BEGIN
-  UPDATE usuarios SET activo = FALSE WHERE email = _email;
-END;
-$$ LANGUAGE plpgsql;
-
 
 -- =============================================
 --                ENTIDAD FORMULARIO
@@ -424,7 +298,7 @@ CREATE OR REPLACE FUNCTION fn_mis_evaluaciones(
     id INT,
     formulario_id INT,
     fecha TIMESTAMP,
-    puntajeTotal INT,
+    puntaje_total INT,
     recomendacion TEXT
 ) AS $$
 BEGIN
@@ -433,11 +307,8 @@ BEGIN
             evaluaciones.id,
             evaluaciones.formulario_id,
             evaluaciones.fecha,
-            (
-                SELECT COALESCE(SUM((r->>'puntaje')::INT), 0)::INT
-                FROM jsonb_array_elements(evaluaciones.respuestas) AS r
-            ) AS puntajeTotal,
-            'Sin recomendación' AS recomendacion
+            evaluaciones.puntaje_total AS puntaje_total,
+            evaluaciones.recomendacion
         FROM evaluaciones
         WHERE evaluaciones.user_id = p_user_id
         ORDER BY evaluaciones.fecha DESC;

@@ -89,7 +89,7 @@ router.get('/mis-evaluaciones', authMiddleware, async (req, res) => {
         res.json(
             (evaluaciones || []).map(ev => ({
                 id: ev.id,
-                puntajeTotal: ev.puntajeTotal || 0,
+                puntajeTotal: ev.puntaje_total || 0,
                 fecha: ev.fecha,
                 recomendacion: ev.recomendacion || "Sin recomendación"
             }))

@@ -21,7 +21,7 @@ const Sidebar = () => {
           <>
             {/* Sección CORE solo para admin */}
             <div className="sidebar-heading">CORE</div>
-            <Link className="sidebar-link" to="/admin-panel">
+            <Link className="sidebar-link" to="/admin">
               <i className="fas fa-tachometer-alt"></i> Admin Panel
             </Link>
 
@@ -45,7 +45,7 @@ const Sidebar = () => {
               {/* Submenú de usuarios */}
               <div className="collapse" id="collapseUsuarios">
                 <div className="sidebar-nested">
-                  <Link className="sidebar-link" to="/personal-medico">
+                  <Link className="sidebar-link" to="/personalmedico">
                     Personal Médico
                   </Link>
                   <Link className="sidebar-link" to="/clientes">
@@ -80,8 +80,11 @@ const Sidebar = () => {
               {/* Submenú de reportes */}
               <div className="collapse" id="collapseReportes">
                 <div className="sidebar-nested">
-                  <Link className="sidebar-link" to="/historias-clinicas">
+                  <Link className="sidebar-link" to="/historiasclinicas">
                     Historias Clínicas
+                  </Link>
+                  <Link className="sidebar-link" to="/resultadosEvaluacion">
+                    Resultados
                   </Link>
                   <Link className="sidebar-link" to="/estadisticas">
                     Estadísticas
@@ -91,6 +94,137 @@ const Sidebar = () => {
             </div>
           </>
         )}
+         {/* ----------------------------------------------------------------------------- */}
+
+        {/* SI EL USUARIO LOGUEADO ES ENCARGADO */}
+        {user?.role === "encargado" && (
+          <>
+            {/* Sección exclusiva para encargado */}
+            <div className="sidebar-heading">ENCARGADO</div>
+            {/* Acceso directo a dashboard */}
+            <Link className="sidebar-link" to="/encargado">
+              <i className="fas fa-home"></i> Inicio
+            </Link>
+            {/* Menú desplegable para perfil */}
+            <div className="sidebar-group">
+              <button
+                className="sidebar-link collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapsePerfilCliente"
+                aria-expanded="false"
+                aria-controls="collapsePerfilCliente"
+              >
+                <i className="fas fa-user"></i> Perfil
+                <span className="sidebar-collapse-arrow">
+                  <i className="fas fa-angle-down"></i>
+                </span>
+              </button>
+              {/* Submenú de perfil */}
+              <div className="collapse" id="collapsePerfilCliente">
+                <div className="sidebar-nested">
+                  <Link className="sidebar-link" to="/perfil">
+                    Mi perfil
+                  </Link>
+                </div>
+              </div>
+            </div>
+            {/* ----------------------------------------------------------------------------- */}
+            {/* Sección ACCESOS solo para encargado */}
+            <div className="sidebar-heading">ACCESOS</div>
+            <div className="sidebar-group">
+              {/* Botón para desplegar Usuarios */}
+              <button
+                className="sidebar-link collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseUsuarios"
+                aria-expanded="false"
+                aria-controls="collapseUsuarios"
+              >
+                <i className="fas fa-table"></i> Usuarios
+                <span className="sidebar-collapse-arrow">
+                  <i className="fas fa-angle-down"></i>
+                </span>
+              </button>
+              {/* Submenú de usuarios */}
+              <div className="collapse" id="collapseUsuarios">
+                <div className="sidebar-nested">
+                  <Link className="sidebar-link" to="/clientes">
+                    Clientes
+                  </Link>
+                  <Link className="sidebar-link" to="/pacientes">
+                    Pacientes
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* ----------------------------------------------------------------------------- */}
+
+            {/* Menú desplegable para formularios */}
+            <div className="sidebar-group">
+              <button
+                className="sidebar-link collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseFormulariosCliente"
+                aria-expanded="false"
+                aria-controls="collapseFormulariosCliente"
+              >
+                <i className="fas fa-file-alt"></i> Formularios
+                <span className="sidebar-collapse-arrow">
+                  <i className="fas fa-angle-down"></i>
+                </span>
+              </button>
+              {/* Submenú de formularios */}
+              <div className="collapse" id="collapseFormulariosCliente">
+                <div className="sidebar-nested">
+                  <Link className="sidebar-link" to="/registrorepresentante">
+                    Registro del Representante
+                  </Link>
+                  <Link className="sidebar-link" to="/formulario">
+                    Anamnesis
+                  </Link>
+                  <Link className="sidebar-link" to="/evaluacion">
+                    Evaluación
+                  </Link>
+                </div>
+              </div>
+            </div>
+            {/* Menú desplegable para Reportes */}
+            <div className="sidebar-group">
+              <button
+                className="sidebar-link collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseReportesCliente"
+                aria-expanded="false"
+                aria-controls="collapseReportesCliente"
+              >
+                <i className="fas fa-file-alt"></i> Reportes
+                <span className="sidebar-collapse-arrow">
+                  <i className="fas fa-angle-down"></i>
+                </span>
+              </button>
+              {/* Submenú de reportes */}
+              <div className="collapse" id="collapseReportesCliente">
+                <div className="sidebar-nested">
+                  <Link className="sidebar-link" to="/historiasclinicas">
+                    Historia Clínica
+                  </Link>
+                  <Link className="sidebar-link" to="/resultadosEvaluacion">
+                    Resultados
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+
+
+
+         {/* ----------------------------------------------------------------------------- */}
 
         {/* SI EL USUARIO LOGUEADO ES CLIENTE */}
         {user?.role === "cliente" && (

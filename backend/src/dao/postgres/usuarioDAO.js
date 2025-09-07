@@ -5,7 +5,7 @@ class usuarioDAO {
   // Método crear con campo contrasena
   async crear({ nombre, apellido, cedula, telefono, email, contrasena, rol_id }) {
     const resultado = await pool.query(
-      "SELECT nuevo_usuario($1, $2, $3, $4, $5, $6, $7)", 
+      "SELECT nuevo_usuario($1, $2, $3, $4, $5, $6, $7)",
       [nombre, apellido, cedula, telefono, email, contrasena, rol_id]
     );
     return { id: resultado.rows[0].nuevo_usuario };
@@ -15,16 +15,6 @@ class usuarioDAO {
     const res = await pool.query("SELECT * FROM buscar_usuario_email($1)", [email]);
     if (res.rows.length === 0) return null;
     return new usuarioDTO(res.rows[0]);
-  }
-
-  async listar_completo() {
-    const result = await pool.query("SELECT * FROM listar_usuarios();");
-    return result.rows;
-  }
-
-  async listar(filtro = "") {
-    const res = await pool.query("SELECT * FROM ver_usuarios($1)", [filtro]);
-    return res.rows.map(row => new usuarioDTO(row));
   }
 
   // Actualizar también debe incluir contrasena
@@ -45,8 +35,22 @@ class usuarioDAO {
     );
   }
 
-  async desactivar(id) {
-    await pool.query("SELECT desactivar_usuario_por_email($1)", [id]);
+  async listarPersonalMedico() {
+    const res = await pool.query("SELECT * FROM obtener_personal_medico();");
+    // Mapear cada fila a un DTO (sin contraseña por seguridad)
+    return res.rows.map(row => {
+      // Si el procedimiento incluye el campo 'rol' como string, pásalo; si no, omítelo o setéalo como 'Personal Médico'
+      return new usuarioDTO({
+        id: row.id,
+        nombre: row.nombre,
+        apellido: row.apellido,
+        cedula: row.cedula,
+        telefono: row.telefono,
+        email: row.email,
+        contrasena: undefined, // Nunca envíes la contraseña
+        rol: row.rol || "Personal Médico" // Ajusta según lo que retorne el procedimiento
+      });
+    });
   }
 }
 

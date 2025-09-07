@@ -2,16 +2,21 @@
 
 
 --    ENTIDAD ROLES
-INSERT INTO roles (nombre) VALUES
-  ('Administrador'),
-  ('Cliente');
+
+INSERT INTO roles (id, nombre) VALUES
+  (1, 'ADMINISTRADOR'),
+  (2, 'CLIENTE'),
+  (3, 'ENCARGADO')
+ON CONFLICT (id) DO NOTHING;
 
 
   --  ENTIDAD USUARIO 
-INSERT INTO usuarios (email, nombre, apellido, cedula, telefono, contrasena, rol_id) VALUES
-  ('admin@universidad.edu', 'Admin', 'Principal', '0101010101', '0999999999', '$2b$10$bqMHB.m8XuxAIPcyZ2dyfeRSB1r4r3xkf8oFTEHEuu7fZSmPQfkFG', 1), --admin123
-  ('cliente@universidad.edu', 'Carlos', 'Estudiante', '0202020202', '0988888888', 'cliente123', 2),
-  ('invitado@universidad.edu', 'Iván', 'Invitado', '0303030303', '0977777777', 'invitado123', 3);
+INSERT INTO usuarios (id, nombre, apellido, cedula, telefono, email, contrasena, rol_id)
+VALUES
+  (1, 'Admin', 'Principal', '100000001', '0991111111', 'admin@sistema.com', 'admin123', 1),
+  (2, 'Cliente', 'Ejemplo', '100000002', '0992222222', 'cliente@sistema.com', 'cliente123', 2),
+  (3, 'Encargado', 'Asistente', '100000003', '0993333333', 'encargado@sistema.com', 'encargado123', 3)
+ON CONFLICT (id) DO NOTHING;
 
 
  

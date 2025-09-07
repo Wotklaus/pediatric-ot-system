@@ -47,7 +47,7 @@ export default function MisResultados() {
               <div className="resultados-info">
                 <p>
                   <strong>Puntaje Total:</strong>{" "}
-                  <span className="puntaje">{datos.puntaje_total}</span>
+                  <span className="puntaje">{datos.puntajeTotal}</span>
                 </p>
                 <p>
                   <strong>Fecha de evaluación:</strong>{" "}
