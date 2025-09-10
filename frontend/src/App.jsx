@@ -23,6 +23,7 @@ import PersonalMedico from "./pages/PersonalMedico";
 import RegistroRepresentante from "./pages/RegistroRepresentante";
 import ResultadosEvaluacion from "./pages/ResultadosEvaluacion";
 import Roles from "./pages/Roles";
+import FormularioDetalle from "./pages/FormularioDetalle";
 
 // Componente para proteger rutas
 import ProtectedRoute from "./components/protectedRoute";
@@ -58,6 +59,7 @@ function App() {
           <Route path="/registrorepresentante" element={<ProtectedRoute><RegistroRepresentante /></ProtectedRoute>} />
           <Route path="/resultadosevaluacion" element={<ProtectedRoute><ResultadosEvaluacion /></ProtectedRoute>} />
           <Route path="/roles" element={<ProtectedRoute><Roles /></ProtectedRoute>} />
+          <Route path="/formulariodetalle/:id" element={<ProtectedRoute><FormularioDetalle /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </UserProvider>

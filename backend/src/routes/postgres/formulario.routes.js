@@ -95,5 +95,19 @@ router.get("/mis-formularios", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/vista/:id", authMiddleware, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const formulario = await formularioDAO.buscarPorIdVista(id);
+    if (!formulario) {
+      return res.status(404).json({ error: "Formulario no encontrado" });
+    }
+    res.json(formulario);
+  } catch (error) {
+    console.error("Error al obtener formulario por ID (vista):", error);
+    res.status(500).json({ error: "Error obteniendo formulario por ID (vista)" });
+  }
+});
+
 
 module.exports = router;

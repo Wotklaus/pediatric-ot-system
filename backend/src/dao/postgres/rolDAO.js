@@ -2,7 +2,7 @@ const pool = require("../../config/postgres");
 const rolDTO = require("../../dto/postgres/rolDTO");
 
 class rolDAO {
-  
+
   // Crear nuevo rol
   async crear(nombre) {
     const query = `SELECT nuevo_rol($1)`;
@@ -16,7 +16,7 @@ class rolDAO {
     return result.rows.map(row => new rolDTO(row));
   }
 
-  // Obtener rol por ID
+  // Obtener rol por ID (asegúrate de tener este procedimiento en la DB)
   async obtenerPorId(id) {
     const query = `SELECT * FROM ver_rol_por_id($1)`;
     const result = await pool.query(query, [id]);
@@ -29,7 +29,7 @@ class rolDAO {
     await pool.query(query, [id, nombre]);
   }
 
-  // Eliminar (desactivar) rol
+  // Eliminar rol
   async eliminar(id) {
     const query = `SELECT eliminar_rol($1)`;
     await pool.query(query, [id]);

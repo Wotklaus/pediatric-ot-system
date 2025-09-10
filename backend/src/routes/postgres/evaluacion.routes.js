@@ -100,5 +100,24 @@ router.get('/mis-evaluaciones', authMiddleware, async (req, res) => {
     }
 });
 
+router.get('/admin-evaluaciones', authMiddleware, async (req, res) => {
+    try {
+        const evaluaciones = await evaluacionDAO.obtenerTodasEvaluacionesConNino();
+
+        // Si no hay evaluaciones, retorna array vacío (no error)
+        res.json(
+            (evaluaciones || []).map(ev => ({
+                id: ev.id,
+                nombre_nino: ev.nombre_nino,
+                puntajeTotal: ev.puntaje_total,
+                fecha: ev.fecha,
+                recomendacion: ev.recomendacion
+            }))
+        );
+    } catch (error) {
+        console.error("❌ Error obteniendo todas las evaluaciones (admin):", error);
+        res.status(500).json({ error: "Error obteniendo todas las evaluaciones" });
+    }
+});
 
 module.exports = router;

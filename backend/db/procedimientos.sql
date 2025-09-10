@@ -46,12 +46,13 @@ RETURNS TABLE(
 BEGIN
   RETURN QUERY
   SELECT r.id, r.nombre
-  FROM roles r;
+  FROM roles r
+  ORDER BY r.id;
 END;
 $$ LANGUAGE plpgsql;
 -- =============================================
 ---   Actualizar un rol 
-CREATE OR REPLACE FUNCTION actualizar_rol(_id INT, _nombre TEXT)
+CREATE OR REPLACE FUNCTION actualizar_rol(_id INT, _nombre VARCHAR(50))
 RETURNS VOID AS $$
 BEGIN
   UPDATE roles SET nombre = _nombre WHERE id = _id;
@@ -272,6 +273,81 @@ SELECT
 FROM formularios f
 JOIN usuarios u ON u.id = f.user_id;
 
+-- Mostrar detalle de un formulario por ID
+CREATE OR REPLACE FUNCTION buscar_formulario_vista_id(p_id INT)
+RETURNS TABLE (
+    id INT,
+    user_id INT,
+    usuario TEXT,
+    nombre_nino TEXT,
+    edad TEXT, -- 👈 OJO: es TEXT, no INT
+    fecha_nacimiento DATE,
+    sexo TEXT,
+    cuidador_principal TEXT,
+    parentesco TEXT,
+    nacionalidad TEXT,
+    contacto TEXT,
+    convivencia TEXT,
+    hermanos TEXT,
+    dificultades_hermanos TEXT,
+    cuidador_dia TEXT,
+    cuidador_dia_otro TEXT,
+    embarazo_controlado TEXT,
+    complicaciones TEXT[],
+    complicaciones_otro TEXT,
+    embarazo_planeado TEXT,
+    tipo_parto TEXT,
+    prematuro TEXT,
+    hospitalizacion TEXT,
+    tiempo_hospitalizacion TEXT,
+    dificultad_nacimiento TEXT,
+    dificultad_nacimiento_detalle TEXT,
+    lactancia TEXT,
+    dificultades_alimentacion TEXT,
+    dificultades_alimentacion_desc TEXT,
+    temperamento TEXT,
+    estimulacion TEXT,
+    hitos JSONB,
+    created_at TIMESTAMP
+)
+AS $$
+    SELECT
+        id,
+        user_id,
+        usuario,
+        nombre_nino,
+        edad, -- 👈 sin castear, como sale de la vista
+        fecha_nacimiento,
+        sexo,
+        cuidador_principal,
+        parentesco,
+        nacionalidad,
+        contacto,
+        convivencia,
+        hermanos,
+        dificultades_hermanos,
+        cuidador_dia,
+        cuidador_dia_otro,
+        embarazo_controlado,
+        complicaciones,
+        complicaciones_otro,
+        embarazo_planeado,
+        tipo_parto,
+        prematuro,
+        hospitalizacion,
+        tiempo_hospitalizacion,
+        dificultad_nacimiento,
+        dificultad_nacimiento_detalle,
+        lactancia,
+        dificultades_alimentacion,
+        dificultades_alimentacion_desc,
+        temperamento,
+        estimulacion,
+        hitos,
+        created_at
+    FROM vista_formularios
+    WHERE id = p_id;
+$$ LANGUAGE sql STABLE;
 
 -- =============================================
 --                ENTIDAD EVALUACION
@@ -372,5 +448,32 @@ BEGIN
         FROM evaluaciones
         WHERE evaluaciones.user_id = p_user_id
         ORDER BY evaluaciones.fecha DESC;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Obtener TODAS las evaluaciones (sin filtro)
+CREATE OR REPLACE FUNCTION fn_todas_evaluaciones_con_nino()
+RETURNS TABLE (
+    id INT,
+    formulario_id INT,
+    nombre_nino VARCHAR(100), -- <-- Aquí el cambio crítico
+    user_id INT,
+    fecha TIMESTAMP,
+    puntaje_total INT,
+    recomendacion TEXT
+) AS $$
+BEGIN
+    RETURN QUERY
+        SELECT
+            e.id,
+            e.formulario_id,
+            f.nombre_nino, -- O f."nombreNino" si lo tienes así en tu tabla
+            e.user_id,
+            e.fecha,
+            e.puntaje_total,
+            e.recomendacion
+        FROM evaluaciones e
+        JOIN formularios f ON e.formulario_id = f.id
+        ORDER BY e.fecha DESC;
 END;
 $$ LANGUAGE plpgsql;

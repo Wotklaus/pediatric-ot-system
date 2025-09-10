@@ -62,7 +62,16 @@ class FormularioDAO {
   }
 }
 
-
+async buscarPorIdVista(id) {
+    try {
+      const res = await pool.query("SELECT * FROM buscar_formulario_vista_id($1);", [id]);
+      if (res.rows.length === 0) return null;
+      return res.rows[0];
+    } catch (error) {
+      console.error("Error en DAO.buscarPorIdVista:", error);
+      throw error;
+    }
+  }
 
 
 

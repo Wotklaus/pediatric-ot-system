@@ -60,6 +60,18 @@ class EvaluacionDAO {
             throw error;
         }
     }
+
+    async obtenerTodasEvaluacionesConNino() {
+    try {
+        const result = await pool.query('SELECT * FROM fn_todas_evaluaciones_con_nino()');
+        return result.rows.map(row => new EvaluacionDTO(row)); // row.nombre_nino
+    } catch (error) {
+        console.error("❌ Error en obtenerTodasEvaluacionesConNino:", error);
+        throw error;
+    }
+}
+
+    
 }
 
 module.exports = EvaluacionDAO;
