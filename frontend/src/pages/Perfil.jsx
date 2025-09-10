@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/sidebar";
 import "./styles/Perfil.css";
 
 function MinimalUserIcon() {
@@ -14,11 +14,11 @@ function MinimalUserIcon() {
       xmlns="http://www.w3.org/2000/svg"
       className="perfil-elegante-svg-icon"
     >
-      <circle cx="43" cy="43" r="42" fill="#e3f0ff" stroke="#2264a8" strokeWidth="2"/>
-      <circle cx="43" cy="36" r="18" fill="#2264a8" opacity="0.18"/>
-      <ellipse cx="43" cy="60" rx="21" ry="12" fill="#2264a8" opacity="0.11"/>
-      <circle cx="43" cy="36" r="12" fill="#2264a8"/>
-      <ellipse cx="43" cy="60" rx="14" ry="8" fill="#2264a8"/>
+      <circle cx="43" cy="43" r="42" fill="#e3f0ff" stroke="#2264a8" strokeWidth="2" />
+      <circle cx="43" cy="36" r="18" fill="#2264a8" opacity="0.18" />
+      <ellipse cx="43" cy="60" rx="21" ry="12" fill="#2264a8" opacity="0.11" />
+      <circle cx="43" cy="36" r="12" fill="#2264a8" />
+      <ellipse cx="43" cy="60" rx="14" ry="8" fill="#2264a8" />
     </svg>
   );
 }
@@ -56,11 +56,21 @@ function Perfil() {
   };
 
   const handleUpdate = async () => {
+    // Solo los campos que el backend acepta actualizar en perfil
+    const datos = {
+      nombre: formulario.nombre || null,
+      apellido: formulario.apellido || null,
+      cedula: formulario.cedula || null,
+      telefono: formulario.telefono || null,
+      // Si quieres permitir foto y tu backend la soporta, agrega aquí
+      // foto: formulario.foto || null
+    };
+
     try {
-      await api.put(`/api/pg/usuarios`, formulario, {
+      await api.put(`/api/pg/usuarios`, datos, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` },
       });
-      setUsuario(formulario);
+      setUsuario({ ...usuario, ...datos });
       setEditando(false);
       setTipoMensaje("success");
       setMensaje("✅ Perfil actualizado correctamente");
@@ -93,7 +103,7 @@ function Perfil() {
             title="Cambiar foto de perfil"
           >
             {usuario.foto ? (
-              <img src={usuario.foto} alt="Usuario" className="perfil-elegante-avatar-img"/>
+              <img src={usuario.foto} alt="Usuario" className="perfil-elegante-avatar-img" />
             ) : (
               <MinimalUserIcon />
             )}

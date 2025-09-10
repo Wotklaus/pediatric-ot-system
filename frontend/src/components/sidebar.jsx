@@ -7,28 +7,20 @@ const Sidebar = () => {
   const { user } = useUser(); // Obtener el usuario actual del contexto
 
   return (
-    // Navbar lateral principal
     <nav className="sidebar" id="sidebar">
-      {/* Logo superior */}
       <div className="sidebar-logo">
         CATOPI
-        
       </div>
-      {/* Contenido del sidebar */}
       <div className="sidebar-content">
         {/* SI EL USUARIO LOGUEADO ES ADMIN */}
         {user?.role === "admin" && (
           <>
-            {/* Sección CORE solo para admin */}
             <div className="sidebar-heading">CORE</div>
             <Link className="sidebar-link" to="/admin">
               <i className="fas fa-tachometer-alt"></i> Admin Panel
             </Link>
-
-            {/* Sección ACCESOS solo para admin */}
             <div className="sidebar-heading">ACCESOS</div>
             <div className="sidebar-group">
-              {/* Botón para desplegar Usuarios */}
               <button
                 className="sidebar-link collapsed"
                 type="button"
@@ -42,7 +34,6 @@ const Sidebar = () => {
                   <i className="fas fa-angle-down"></i>
                 </span>
               </button>
-              {/* Submenú de usuarios */}
               <div className="collapse" id="collapseUsuarios">
                 <div className="sidebar-nested">
                   <Link className="sidebar-link" to="/personalmedico">
@@ -60,10 +51,8 @@ const Sidebar = () => {
                 </div>
               </div>
             </div>
-            {/* Sección REPORTES solo para admin */}
             <div className="sidebar-heading">REPORTES</div>
             <div className="sidebar-group">
-              {/* Botón para desplegar Reportes */}
               <button
                 className="sidebar-link collapsed"
                 type="button"
@@ -77,7 +66,6 @@ const Sidebar = () => {
                   <i className="fas fa-angle-down"></i>
                 </span>
               </button>
-              {/* Submenú de reportes */}
               <div className="collapse" id="collapseReportes">
                 <div className="sidebar-nested">
                   <Link className="sidebar-link" to="/historiasclinicas">
@@ -94,18 +82,14 @@ const Sidebar = () => {
             </div>
           </>
         )}
-         {/* ----------------------------------------------------------------------------- */}
 
         {/* SI EL USUARIO LOGUEADO ES ENCARGADO */}
         {user?.role === "encargado" && (
           <>
-            {/* Sección exclusiva para encargado */}
             <div className="sidebar-heading">ENCARGADO</div>
-            {/* Acceso directo a dashboard */}
             <Link className="sidebar-link" to="/encargado">
               <i className="fas fa-home"></i> Inicio
             </Link>
-            {/* Menú desplegable para perfil */}
             <div className="sidebar-group">
               <button
                 className="sidebar-link collapsed"
@@ -120,7 +104,6 @@ const Sidebar = () => {
                   <i className="fas fa-angle-down"></i>
                 </span>
               </button>
-              {/* Submenú de perfil */}
               <div className="collapse" id="collapsePerfilCliente">
                 <div className="sidebar-nested">
                   <Link className="sidebar-link" to="/perfil">
@@ -129,11 +112,8 @@ const Sidebar = () => {
                 </div>
               </div>
             </div>
-            {/* ----------------------------------------------------------------------------- */}
-            {/* Sección ACCESOS solo para encargado */}
             <div className="sidebar-heading">ACCESOS</div>
             <div className="sidebar-group">
-              {/* Botón para desplegar Usuarios */}
               <button
                 className="sidebar-link collapsed"
                 type="button"
@@ -147,7 +127,6 @@ const Sidebar = () => {
                   <i className="fas fa-angle-down"></i>
                 </span>
               </button>
-              {/* Submenú de usuarios */}
               <div className="collapse" id="collapseUsuarios">
                 <div className="sidebar-nested">
                   <Link className="sidebar-link" to="/clientes">
@@ -159,10 +138,6 @@ const Sidebar = () => {
                 </div>
               </div>
             </div>
-
-            {/* ----------------------------------------------------------------------------- */}
-
-            {/* Menú desplegable para formularios */}
             <div className="sidebar-group">
               <button
                 className="sidebar-link collapsed"
@@ -177,7 +152,6 @@ const Sidebar = () => {
                   <i className="fas fa-angle-down"></i>
                 </span>
               </button>
-              {/* Submenú de formularios */}
               <div className="collapse" id="collapseFormulariosCliente">
                 <div className="sidebar-nested">
                   <Link className="sidebar-link" to="/registrorepresentante">
@@ -192,7 +166,6 @@ const Sidebar = () => {
                 </div>
               </div>
             </div>
-            {/* Menú desplegable para Reportes */}
             <div className="sidebar-group">
               <button
                 className="sidebar-link collapsed"
@@ -207,7 +180,6 @@ const Sidebar = () => {
                   <i className="fas fa-angle-down"></i>
                 </span>
               </button>
-              {/* Submenú de reportes */}
               <div className="collapse" id="collapseReportesCliente">
                 <div className="sidebar-nested">
                   <Link className="sidebar-link" to="/historiasclinicas">
@@ -222,20 +194,13 @@ const Sidebar = () => {
           </>
         )}
 
-
-
-         {/* ----------------------------------------------------------------------------- */}
-
         {/* SI EL USUARIO LOGUEADO ES CLIENTE */}
         {user?.role === "cliente" && (
           <>
-            {/* Sección exclusiva para cliente */}
             <div className="sidebar-heading">CLIENTE</div>
-            {/* Acceso directo a dashboard */}
             <Link className="sidebar-link" to="/customer">
               <i className="fas fa-home"></i> Inicio
             </Link>
-            {/* Menú desplegable para perfil */}
             <div className="sidebar-group">
               <button
                 className="sidebar-link collapsed"
@@ -250,7 +215,6 @@ const Sidebar = () => {
                   <i className="fas fa-angle-down"></i>
                 </span>
               </button>
-              {/* Submenú de perfil */}
               <div className="collapse" id="collapsePerfilCliente">
                 <div className="sidebar-nested">
                   <Link className="sidebar-link" to="/perfil">
@@ -262,7 +226,6 @@ const Sidebar = () => {
                 </div>
               </div>
             </div>
-            {/* Menú desplegable para formularios */}
             <div className="sidebar-group">
               <button
                 className="sidebar-link collapsed"
@@ -277,7 +240,6 @@ const Sidebar = () => {
                   <i className="fas fa-angle-down"></i>
                 </span>
               </button>
-              {/* Submenú de formularios */}
               <div className="collapse" id="collapseFormulariosCliente">
                 <div className="sidebar-nested">
                   <Link className="sidebar-link" to="/formulario">
@@ -289,7 +251,6 @@ const Sidebar = () => {
                 </div>
               </div>
             </div>
-            {/* Menú desplegable para Reportes */}
             <div className="sidebar-group">
               <button
                 className="sidebar-link collapsed"
@@ -304,7 +265,6 @@ const Sidebar = () => {
                   <i className="fas fa-angle-down"></i>
                 </span>
               </button>
-              {/* Submenú de reportes */}
               <div className="collapse" id="collapseReportesCliente">
                 <div className="sidebar-nested">
                   <Link className="sidebar-link" to="/misformularios">
@@ -319,7 +279,6 @@ const Sidebar = () => {
           </>
         )}
       </div>
-      {/* Footer con botón salir (siempre visible) */}
       <div className="sidebar-footer">
         <Link className="sidebar-link sidebar-logout" to="/home">
           <i className="fas fa-sign-out-alt"></i> Salir

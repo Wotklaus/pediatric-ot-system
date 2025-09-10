@@ -16,25 +16,26 @@ class usuarioDAO {
     if (res.rows.length === 0) return null;
     return new usuarioDTO(res.rows[0]);
   }
+  
+  // Actualizar 
+  async actualizarUsuario(email, datos) {
+    // Extrae los campos, si no existen se manda null
+    const {
+      nombre = null,
+      apellido = null,
+      cedula = null,
+      telefono = null,
+      contrasena = null,
+      rol_id = null
+    } = datos;
 
-  // Actualizar también debe incluir contrasena
-  async actualizar(email, datos) {
-    const { nombre, apellido, cedula, telefono, contrasena, rol_id } = datos;
     await pool.query(
       "SELECT actualizar_usuario($1, $2, $3, $4, $5, $6, $7)",
       [email, nombre, apellido, cedula, telefono, contrasena, rol_id]
     );
   }
 
-  async actualizarPerfil(email, nuevosDatosPerfil) {
-    const { nombre, apellido, cedula, telefono } = nuevosDatosPerfil;
-    // Llama a la nueva función de PostgreSQL que solo actualiza el perfil
-    await pool.query(
-      "SELECT actualizar_usuario($1, $2, $3, $4, $5)",
-      [email, nombre, apellido, cedula, telefono]
-    );
-  }
-
+  // Listar personal médico
   async listarPersonalMedico() {
     const res = await pool.query("SELECT * FROM obtener_personal_medico();");
     // Mapear cada fila a un DTO (sin contraseña por seguridad)
@@ -52,6 +53,30 @@ class usuarioDAO {
       });
     });
   }
+
+  // Listar clientes
+  async listarClientes() {
+    const res = await pool.query("SELECT * FROM obtener_clientes();");
+    return res.rows.map(row => {
+      return new usuarioDTO({
+        id: row.id,
+        nombre: row.nombre,
+        apellido: row.apellido,
+        cedula: row.cedula,
+        telefono: row.telefono,
+        email: row.email,
+        contrasena: undefined, // Nunca envíes la contraseña
+        rol: row.rol || "Cliente" // Ajusta según lo que retorne el procedimiento
+      });
+    });
+  }
+
+  async eliminarPorEmail(email) {
+    await pool.query("SELECT eliminar_usuario($1)", [email]);
+  }
+
 }
+
+
 
 module.exports = usuarioDAO;

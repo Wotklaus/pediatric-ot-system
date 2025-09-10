@@ -76,7 +76,7 @@ CREATE OR REPLACE FUNCTION nuevo_usuario(
   _telefono VARCHAR(20),
   _email VARCHAR(255),
   _contrasena VARCHAR(255),
-  _rol_id INT DEFAULT 2 -- 1=admin, 2=votante
+  _rol_id INT DEFAULT 2 -- 1=admin, 2=cliente
 )
 RETURNS INTEGER AS $$
 DECLARE
@@ -105,13 +105,73 @@ RETURNS TABLE (
   cedula VARCHAR,
   telefono VARCHAR,
   email VARCHAR,
-  fecha_registro TIMESTAMP
+  fecha_registro TIMESTAMP,
+  rol VARCHAR
 ) AS $$
 BEGIN
   RETURN QUERY
-  SELECT usuarios.id, usuarios.nombre, usuarios.apellido, usuarios.cedula, usuarios.telefono, usuarios.email, usuarios.fecha_registro
-  FROM usuarios
-  WHERE usuarios.rol_id = 3;
+  SELECT u.id, u.nombre, u.apellido, u.cedula, u.telefono, u.email, u.fecha_registro, r.nombre AS rol
+  FROM usuarios u
+  JOIN roles r ON u.rol_id = r.id
+  WHERE u.rol_id = 3;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Obtener clientes
+CREATE OR REPLACE FUNCTION obtener_clientes()
+RETURNS TABLE (
+  id INTEGER,
+  nombre VARCHAR,
+  apellido VARCHAR,
+  cedula VARCHAR,
+  telefono VARCHAR,
+  email VARCHAR,
+  fecha_registro TIMESTAMP,
+  rol VARCHAR
+) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT u.id, u.nombre, u.apellido, u.cedula, u.telefono, u.email, u.fecha_registro, r.nombre AS rol
+  FROM usuarios u
+  JOIN roles r ON u.rol_id = r.id
+  WHERE u.rol_id = 2;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+-- Eliminar usuario por email
+CREATE OR REPLACE FUNCTION eliminar_usuario(
+  _email VARCHAR(255)
+)
+RETURNS VOID AS $$
+BEGIN
+  DELETE FROM usuarios WHERE email = _email;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Actualizar datos de usuario
+
+CREATE OR REPLACE FUNCTION actualizar_usuario(
+    p_email TEXT,
+    p_nombre TEXT DEFAULT NULL,
+    p_apellido TEXT DEFAULT NULL,
+    p_cedula TEXT DEFAULT NULL,
+    p_telefono TEXT DEFAULT NULL,
+    p_contrasena TEXT DEFAULT NULL,
+    p_rol_id INT DEFAULT NULL
+)
+RETURNS VOID AS $$
+BEGIN
+    UPDATE usuarios
+    SET
+        nombre      = COALESCE(NULLIF(p_nombre, ''), nombre),
+        apellido    = COALESCE(NULLIF(p_apellido, ''), apellido),
+        cedula      = COALESCE(NULLIF(p_cedula, ''), cedula),
+        telefono    = COALESCE(NULLIF(p_telefono, ''), telefono),
+        contrasena  = COALESCE(NULLIF(p_contrasena, ''), contrasena),
+        rol_id      = COALESCE(p_rol_id, rol_id)
+    WHERE email = p_email;
 END;
 $$ LANGUAGE plpgsql;
 

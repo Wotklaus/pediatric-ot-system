@@ -30,19 +30,27 @@ function Login() {
       localStorage.setItem("token", token || "");
       localStorage.setItem("nombre", usuario.nombre);
 
-      // 🔑 Actualizar contexto
+      // Traducción de rol_id a nombre de rol
+      let role;
+      if (usuario.rol_id === 1) role = "admin";        // ADMINISTRADOR
+      else if (usuario.rol_id === 2) role = "cliente"; // CLIENTE
+      else if (usuario.rol_id === 3) role = "encargado"; // ENCARGADO
+      else role = "cliente"; // Por defecto
+
+      // Actualizar contexto
       setUser({
         nombre: usuario.nombre,
         email: usuario.email,
-        role: usuario.rol_id === 1 ? "admin" : "cliente",
+        role,
         token: token || "",
       });
 
-      setMensaje(`✅ Bienvenido, ${usuario.nombre} (rol: ${usuario.rol_id})`);
+      setMensaje(`✅ Bienvenido, ${usuario.nombre} (rol: ${role})`);
 
       // Redirección según rol
-      if (usuario.rol_id === 1) navigate("/admin");
-      else if (usuario.rol_id === 2) navigate("/customer");
+      if (role === "admin") navigate("/admin");
+      else if (role === "encargado") navigate("/encargado");
+      else if (role === "cliente") navigate("/customer");
       else navigate("/home");
 
     } catch (error) {

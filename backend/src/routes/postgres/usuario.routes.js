@@ -2,11 +2,60 @@ const express = require("express");
 const router = express.Router();
 const UsuarioDAO = require("../../dao/postgres/usuarioDAO");
 const usuarioDAO = new UsuarioDAO();
-const authMiddleware = require("../../middleware/auth"); // ✅ importar middleware
+const authMiddleware = require("../../middleware/auth");
 
-// GET protegido: obtener usuario por email
+const ADMIN = 1;
+const ENCARGADO = 3;
+
+// Listar personal médico (solo admin o encargado)
+router.get("/personal-medico", authMiddleware, async (req, res) => {
+  try {
+    // Log para depuración
+    console.log("Petición recibida por:", req.user.email, "rol:", req.user.rol_id);
+
+    // Control de acceso por rol
+    if (req.user.rol_id === ADMIN) { // Admin
+      const lista = await usuarioDAO.listarPersonalMedico();
+      console.log("Admin obtuvo la lista:", lista.length);
+      return res.json(lista);
+    }
+    if (req.user.rol_id === ENCARGADO) { // Encargado
+      const user = await usuarioDAO.buscarPorEmail(req.user.email);
+      console.log("Encargado obtuvo su perfil:", user ? user.email : "No encontrado");
+      return res.json(user ? [user] : []);
+    }
+    // Otros roles
+    console.log("Acceso denegado para:", req.user.email, "rol:", req.user.rol_id);
+    return res.status(403).json({ error: "No tienes permiso" });
+  } catch (err) {
+    console.error("Error en /personal-medico:", err);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
+// Listar clientes (solo admin)
+router.get("/clientes", authMiddleware, async (req, res) => {
+  try {
+    // Solo el admin puede ver todos los clientes
+    if (req.user.rol_id !== ADMIN) {
+      return res.status(403).json({ error: "No tienes permiso" });
+    }
+    const lista = await usuarioDAO.listarClientes();
+    res.json(lista);
+  } catch (err) {
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
+
+
+// Consultar usuario por email (solo propio o admin)
 router.get("/:email", authMiddleware, async (req, res) => {
   try {
+    // Solo el propio usuario o el admin puede consultar
+    if (req.user.email !== req.params.email && req.user.rol_id !== ADMIN) {
+      return res.status(403).json({ error: "No tienes permiso para ver este perfil" });
+    }
     const user = await usuarioDAO.buscarPorEmail(req.params.email);
     if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
 
@@ -18,55 +67,48 @@ router.get("/:email", authMiddleware, async (req, res) => {
       email: user.email,
     });
   } catch (error) {
-    console.error("Error obteniendo usuario:", error);
     res.status(500).json({ error: "Error interno" });
   }
 });
 
-// PUT protegido: actualizar perfil de usuario usando el email del token
+// Actualizar perfil (solo propio)
 router.put("/", authMiddleware, async (req, res) => {
-  const email = req.user.email; // ✅ email del usuario desde el token
-  const { nombre, apellido, cedula, telefono } = req.body;
+  const email = req.user.email;
+  const datos = req.body; // Solo contiene los campos del perfil
   try {
-    await usuarioDAO.actualizarPerfil(email, { nombre, apellido, cedula, telefono });
-    res.json({
-      mensaje: "Perfil actualizado correctamente",
-      usuario: { nombre, apellido, cedula, telefono, email },
-    });
+    await usuarioDAO.actualizarUsuario(email, datos);
+    res.json({ mensaje: "Perfil actualizado correctamente" });
   } catch (error) {
-    console.error("Error al actualizar perfil de usuario:", error);
     res.status(500).json({ error: "Error interno al actualizar perfil de usuario" });
   }
 });
 
-router.get("/personal-medico", authMiddleware, async (req, res) => {
+// Actualizar usuario (solo admin)
+router.put("/:email", authMiddleware, async (req, res) => {
+  if (req.user.rol_id !== ADMIN) {
+    return res.status(403).json({ error: "Solo el administrador puede realizar esta acción" });
+  }
+  const { email } = req.params;
+  const datos = req.body;
   try {
-    console.log("Petición recibida en /personal-medico por usuario:", req.user);
-
-    if (req.user.rol_id === 1) {
-      // Log antes de llamar al DAO
-      console.log("El usuario es ADMIN, consultando lista de personal médico...");
-      const lista = await usuarioDAO.listarPersonalMedico();
-      // Log después de llamar al DAO
-      console.log("Lista obtenida desde DAO:", lista);
-      return res.json(Array.isArray(lista) ? lista : []);
-    }
-
-    if (req.user.rol_id === 3) {
-      console.log("El usuario es PERSONAL MÉDICO, buscando sus datos...");
-      const user = await usuarioDAO.buscarPorEmail(req.user.email);
-      console.log("Usuario obtenido por email:", user);
-      if (!user) {
-        return res.status(404).json({ error: "Usuario no encontrado" });
-      }
-      return res.json([user]);
-    }
-
-    console.log("El usuario no tiene permiso para ver esta información.");
-    res.status(403).json({ error: "No tienes permiso para ver esta información" });
+    await usuarioDAO.actualizarUsuario(email, datos);
+    res.json({ mensaje: "Usuario actualizado correctamente" });
   } catch (err) {
-    console.error("Error en /personal-medico:", err);
-    res.status(500).json({ error: "Error interno del servidor" });
+    res.status(500).json({ error: "Error actualizando usuario" });
+  }
+});
+
+// Eliminar usuario (solo admin)
+router.delete("/:email", authMiddleware, async (req, res) => {
+  if (req.user.rol_id !== ADMIN) {
+    return res.status(403).json({ error: "Solo el administrador puede eliminar usuarios" });
+  }
+  const { email } = req.params;
+  try {
+    await usuarioDAO.eliminarPorEmail(email);
+    res.json({ mensaje: "Usuario eliminado correctamente" });
+  } catch (err) {
+    res.status(500).json({ error: "Error eliminando usuario" });
   }
 });
 
