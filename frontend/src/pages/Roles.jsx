@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar";
-import "./styles/PersonalMedico.css";
+import "./styles/Roles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash, faSave, faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
 
-const ENDPOINT = "http://localhost:5000/api/roles"; // endpoint correcto
+const ENDPOINT = "http://localhost:5000/api/roles";
 
 const Roles = () => {
   const [roles, setRoles] = useState([]);
@@ -169,32 +169,28 @@ const Roles = () => {
   };
 
   return (
-    <div className="personalmedico-layout">
+    <div className="roles-layout">
       <Sidebar />
-      <div className="personalmedico-content container">
-        <h2 className="mt-4">Roles</h2>
-        <ol className="breadcrumb mb-4">
-          <li className="breadcrumb-item">
-            <a href="/admin">Dashboard</a>
-          </li>
-          <li className="breadcrumb-item active">Roles</li>
-        </ol>
-        <div className="card mb-4">
-          <div className="card-header">
+      <div className="roles-content container">
+        <h2 className="mt-4">Roles de Usuario</h2>
+        <br />
+        <br />
+        <div className="roles-card mb-4">
+          <div className="roles-card-header">
             <i className="fas fa-user-shield me-1"></i>
-            Tabla de Roles
+            Registro de Roles
           </div>
-          <div className="card-body">
+          <div className="roles-card-body">
             {loading ? (
               <div>Cargando...</div>
             ) : error ? (
-              <div className="alert alert-danger">{error}</div>
+              <div className="roles-alert roles-alert-danger">{error}</div>
             ) : (
               <>
-                <table className="table table-striped table-bordered" id="rolesTable">
+                <table className="roles-table table table-striped table-bordered" id="rolesTable">
                   <thead>
                     <tr>
-                      <th>Nombre</th>
+                      <th>Rol</th>
                       <th style={{ textAlign: "center" }}>Acciones</th>
                     </tr>
                   </thead>
@@ -223,14 +219,14 @@ const Roles = () => {
                             {editId === rol.id ? (
                               <>
                                 <button
-                                  className="btn btn-success btn-sm me-2"
+                                  className="roles-btn roles-btn-success btn btn-sm me-2"
                                   onClick={handleEditSave}
                                   title="Guardar"
                                 >
                                   <FontAwesomeIcon icon={faSave} />
                                 </button>
                                 <button
-                                  className="btn btn-secondary btn-sm"
+                                  className="roles-btn roles-btn-secondary btn btn-sm"
                                   onClick={() => setEditId(null)}
                                   title="Cancelar"
                                 >
@@ -240,14 +236,14 @@ const Roles = () => {
                             ) : (
                               <>
                                 <button
-                                  className="btn btn-primary btn-sm me-2"
+                                  className="roles-btn roles-btn-primary btn btn-sm me-2"
                                   onClick={() => handleEditClick(rol)}
                                   title="Editar"
                                 >
                                   <FontAwesomeIcon icon={faEdit} />
                                 </button>
                                 <button
-                                  className="btn btn-danger btn-sm"
+                                  className="roles-btn roles-btn-danger btn btn-sm"
                                   onClick={() => handleDelete(rol.id)}
                                   title="Eliminar"
                                 >
@@ -264,7 +260,7 @@ const Roles = () => {
                 {/* Botón Añadir rol */}
                 <div style={{ textAlign: "right", marginTop: "1rem" }}>
                   <button
-                    className="btn btn-success"
+                    className="roles-btn roles-btn-success"
                     onClick={() => setShowAddForm(!showAddForm)}
                   >
                     <FontAwesomeIcon icon={faPlus} /> Añadir rol
@@ -274,13 +270,7 @@ const Roles = () => {
                 {showAddForm && (
                   <form
                     onSubmit={handleAddRol}
-                    className="mt-3"
-                    style={{
-                      background: "#f8f9fa",
-                      padding: "1rem",
-                      borderRadius: "8px",
-                      boxShadow: "0 2px 8px rgba(0,0,0,.05)"
-                    }}
+                    className="roles-add-form mt-3"
                   >
                     <div className="mb-3">
                       <label htmlFor="rolNombre" className="form-label">
@@ -301,14 +291,14 @@ const Roles = () => {
                     <div>
                       <button
                         type="submit"
-                        className="btn btn-success me-2"
+                        className="roles-btn roles-btn-success me-2"
                         disabled={addLoading}
                       >
                         <FontAwesomeIcon icon={faSave} /> Guardar
                       </button>
                       <button
                         type="button"
-                        className="btn btn-secondary"
+                        className="roles-btn roles-btn-secondary"
                         onClick={() => {
                           setShowAddForm(false);
                           setNewRolData({ nombre: "" });

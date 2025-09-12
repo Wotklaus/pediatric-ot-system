@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Sidebar from "../components/sidebar";
 import "./styles/PersonalMedico.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,133 +6,185 @@ import { faEdit, faTrash, faSave, faTimes } from "@fortawesome/free-solid-svg-ic
 
 const ENDPOINT = "http://localhost:5000/api/pg/usuarios/personal-medico";
 
+const getRowKey = (u) => (u?.id ?? u?.email);
+
+/**
+ * Normaliza strings: recorta y convierte vacíos a null
+ */
+const norm = (v) => {
+  if (typeof v !== "string") return v ?? null;
+  const t = v.trim();
+  return t === "" ? null : t;
+};
+
 const PersonalMedico = () => {
   const [usuarios, setUsuarios] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingList, setLoadingList] = useState(true);
   const [error, setError] = useState("");
-  const [editId, setEditId] = useState(null);
+  const [editKey, setEditKey] = useState(null);
   const [editData, setEditData] = useState({});
+  const [savingKey, setSavingKey] = useState(null);
+  const [deletingKey, setDeletingKey] = useState(null);
 
-  // Cargar lista
-  useEffect(() => {
-    fetchLista();
-    // eslint-disable-next-line
-  }, []);
-
-  const fetchLista = () => {
+  const fetchLista = useCallback(async () => {
     const token = localStorage.getItem("token");
     if (!token) {
       setError("No hay token de autenticación. Inicia sesión.");
-      setLoading(false);
+      setUsuarios([]);
+      setLoadingList(false);
       return;
     }
-    setLoading(true);
-    fetch(ENDPOINT, {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    })
-      .then(async (res) => {
-        if (!res.ok) {
-          const errData = await res.json().catch(() => { });
-          let errMsg = errData?.error ? errData.error : `Error HTTP ${res.status}`;
-          setError(errMsg);
-          setUsuarios([]);
-          setLoading(false);
-          return;
-        }
-        return res.json();
-      })
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setUsuarios(data);
-          setError("");
-        } else {
-          setUsuarios([]);
-          setError("No se obtuvo la lista esperada.");
-        }
-        setLoading(false);
-      })
-      .catch(() => {
-        setError("Error de conexión con el servidor.");
-        setLoading(false);
+
+    setLoadingList(true);
+    setError("");
+    try {
+      const res = await fetch(ENDPOINT, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
-  };
+      if (!res.ok) {
+        let msg = `Error HTTP ${res.status}`;
+        try {
+          const errData = await res.json();
+          if (errData?.error) msg = errData.error;
+        } catch {}
+        throw new Error(msg);
+      }
+
+      const data = await res.json();
+      if (!Array.isArray(data)) throw new Error("No se obtuvo la lista esperada.");
+      setUsuarios(data);
+      setError("");
+    } catch (e) {
+      setUsuarios([]);
+      setError(e?.message || "Error de conexión con el servidor.");
+    } finally {
+      setLoadingList(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchLista();
+  }, [fetchLista]);
 
   // Editar
   const handleEditClick = (usuario) => {
-    setEditId(usuario.id);
+    const key = getRowKey(usuario);
+    setEditKey(key);
     setEditData({ ...usuario });
   };
 
   const handleEditChange = (e) => {
-    setEditData({ ...editData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setEditData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleEditCancel = () => {
+    setEditKey(null);
+    setEditData({});
   };
 
   const handleEditSave = async () => {
-  const token = localStorage.getItem("token");
-  setLoading(true);
+    if (!editData?.email) {
+      setError("No se puede actualizar: falta el email del usuario.");
+      return;
+    }
 
-  // Solo los campos que realmente pueden ser editados
-  const datos = {
-    nombre: editData.nombre || null,
-    apellido: editData.apellido || null,
-    cedula: editData.cedula || null,
-    telefono: editData.telefono || null,
-    // Si tienes más campos en tu backend (ej: contrasena, rol_id), agrégalos aquí
-    // contrasena: editData.contrasena || null,
-    // rol_id: editData.rol_id || null,
-  };
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("No hay token de autenticación. Inicia sesión.");
+      return;
+    }
 
-  try {
-    const res = await fetch(
-      `http://localhost:5000/api/pg/usuarios/${editData.email}`,
-      {
+    const rowKey = editKey ?? getRowKey(editData);
+    setSavingKey(rowKey);
+    setError("");
+
+    const datos = {
+      nombre: norm(editData.nombre),
+      apellido: norm(editData.apellido),
+      cedula: norm(editData.cedula),
+      telefono: norm(editData.telefono),
+      // Agrega campos permitidos por tu backend si aplica:
+      // contrasena: norm(editData.contrasena),
+      // rol_id: editData.rol_id ?? null,
+    };
+
+    try {
+      const emailEncoded = encodeURIComponent(editData.email);
+      const res = await fetch(`http://localhost:5000/api/pg/usuarios/${emailEncoded}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(datos),
+      });
+
+      if (!res.ok) {
+        let msg = "Error actualizando usuario";
+        try {
+          const err = await res.json();
+          if (err?.error) msg = err.error;
+        } catch {}
+        throw new Error(msg);
       }
-    );
-    if (!res.ok) {
-      const err = await res.json().catch(() => {});
-      setError(err?.error || "Error actualizando usuario");
-    } else {
-      setEditId(null);
-      setEditData({});
-      fetchLista();
+
+      // Actualización optimista del estado local
+      setUsuarios((prev) =>
+        prev.map((u) =>
+          getRowKey(u) === rowKey ? { ...u, ...datos } : u
+        )
+      );
+      setError("");
+      handleEditCancel();
+    } catch (e) {
+      setError(e?.message || "Error de conexión al actualizar usuario.");
+    } finally {
+      setSavingKey(null);
     }
-  } catch {
-    setError("Error de conexión al actualizar usuario.");
-  }
-  setLoading(false);
-};
+  };
 
   // Eliminar
-  const handleDelete = async (id, email) => {
+  const handleDelete = async (usuario) => {
+    const rowKey = getRowKey(usuario);
     if (!window.confirm("¿Seguro que deseas eliminar este usuario?")) return;
+
     const token = localStorage.getItem("token");
-    setLoading(true);
+    if (!token) {
+      setError("No hay token de autenticación. Inicia sesión.");
+      return;
+    }
+
+    setDeletingKey(rowKey);
+    setError("");
     try {
-      const res = await fetch(`http://localhost:5000/api/pg/usuarios/${email}`, {
+      const emailEncoded = encodeURIComponent(usuario.email);
+      const res = await fetch(`http://localhost:5000/api/pg/usuarios/${emailEncoded}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
+
       if (!res.ok) {
-        const err = await res.json().catch(() => { });
-        setError(err?.error || "Error eliminando usuario");
-      } else {
-        setUsuarios(usuarios.filter((u) => u.id !== id));
-        setError("");
+        let msg = "Error eliminando usuario";
+        try {
+          const err = await res.json();
+          if (err?.error) msg = err.error;
+        } catch {}
+        throw new Error(msg);
       }
-    } catch {
-      setError("Error de conexión al eliminar usuario.");
+
+      // Actualización optimista
+      setUsuarios((prev) => prev.filter((u) => getRowKey(u) !== rowKey));
+      setError("");
+    } catch (e) {
+      setError(e?.message || "Error de conexión al eliminar usuario.");
+    } finally {
+      setDeletingKey(null);
     }
-    setLoading(false);
   };
 
   return (
@@ -140,19 +192,16 @@ const PersonalMedico = () => {
       <Sidebar />
       <div className="personalmedico-content container">
         <h2 className="mt-4">Personal Médico</h2>
-        <ol className="breadcrumb mb-4">
-          <li className="breadcrumb-item">
-            <a href="/admin">Dashboard</a>
-          </li>
-          <li className="breadcrumb-item active">Personal Médico</li>
-        </ol>
+        <br />
+        <br />
+
         <div className="card mb-4">
           <div className="card-header">
             <i className="fas fa-user-md me-1"></i>
-            Tabla de Personal Médico
+            Registro del Personal Médico
           </div>
           <div className="card-body">
-            {loading ? (
+            {loadingList ? (
               <div>Cargando...</div>
             ) : error ? (
               <div className="alert alert-danger">{error}</div>
@@ -176,92 +225,107 @@ const PersonalMedico = () => {
                       </td>
                     </tr>
                   ) : (
-                    usuarios.map((usuario) => (
-                      <tr key={usuario.id || usuario.email}>
-                        <td>
-                          {editId === usuario.id ? (
-                            <input
-                              name="nombre"
-                              value={editData.nombre}
-                              onChange={handleEditChange}
-                            />
-                          ) : (
-                            usuario.nombre
-                          )}
-                        </td>
-                        <td>
-                          {editId === usuario.id ? (
-                            <input
-                              name="apellido"
-                              value={editData.apellido}
-                              onChange={handleEditChange}
-                            />
-                          ) : (
-                            usuario.apellido
-                          )}
-                        </td>
-                        <td>
-                          {editId === usuario.id ? (
-                            <input
-                              name="cedula"
-                              value={editData.cedula}
-                              onChange={handleEditChange}
-                            />
-                          ) : (
-                            usuario.cedula
-                          )}
-                        </td>
-                        <td>
-                          {editId === usuario.id ? (
-                            <input
-                              name="telefono"
-                              value={editData.telefono}
-                              onChange={handleEditChange}
-                            />
-                          ) : (
-                            usuario.telefono
-                          )}
-                        </td>
-                        <td>{usuario.email}</td>
-                        <td style={{ textAlign: "center" }}>
-                          {editId === usuario.id ? (
-                            <>
-                              <button
-                                className="btn btn-success btn-sm me-2"
-                                onClick={handleEditSave}
-                                title="Guardar"
-                              >
-                                <FontAwesomeIcon icon={faSave} />
-                              </button>
-                              <button
-                                className="btn btn-secondary btn-sm"
-                                onClick={() => setEditId(null)}
-                                title="Cancelar"
-                              >
-                                <FontAwesomeIcon icon={faTimes} />
-                              </button>
-                            </>
-                          ) : (
-                            <>
-                              <button
-                                className="btn btn-primary btn-sm me-2"
-                                onClick={() => handleEditClick(usuario)}
-                                title="Editar"
-                              >
-                                <FontAwesomeIcon icon={faEdit} />
-                              </button>
-                              <button
-                                className="btn btn-danger btn-sm"
-                                onClick={() => handleDelete(usuario.id, usuario.email)}
-                                title="Eliminar"
-                              >
-                                <FontAwesomeIcon icon={faTrash} />
-                              </button>
-                            </>
-                          )}
-                        </td>
-                      </tr>
-                    ))
+                    usuarios.map((usuario) => {
+                      const rowKey = getRowKey(usuario);
+                      const isEditing = editKey === rowKey;
+                      const isSaving = savingKey === rowKey;
+                      const isDeleting = deletingKey === rowKey;
+
+                      return (
+                        <tr key={rowKey}>
+                          <td>
+                            {isEditing ? (
+                              <input
+                                name="nombre"
+                                value={editData.nombre ?? ""}
+                                onChange={handleEditChange}
+                              />
+                            ) : (
+                              usuario.nombre
+                            )}
+                          </td>
+                          <td>
+                            {isEditing ? (
+                              <input
+                                name="apellido"
+                                value={editData.apellido ?? ""}
+                                onChange={handleEditChange}
+                              />
+                            ) : (
+                              usuario.apellido
+                            )}
+                          </td>
+                          <td>
+                            {isEditing ? (
+                              <input
+                                name="cedula"
+                                value={editData.cedula ?? ""}
+                                onChange={handleEditChange}
+                              />
+                            ) : (
+                              usuario.cedula
+                            )}
+                          </td>
+                          <td>
+                            {isEditing ? (
+                              <input
+                                name="telefono"
+                                value={editData.telefono ?? ""}
+                                onChange={handleEditChange}
+                              />
+                            ) : (
+                              usuario.telefono
+                            )}
+                          </td>
+                          <td>{usuario.email}</td>
+                          <td style={{ textAlign: "center" }}>
+                            {isEditing ? (
+                              <>
+                                <button
+                                  className="btn btn-success btn-sm me-2"
+                                  onClick={handleEditSave}
+                                  title="Guardar"
+                                  aria-label="Guardar"
+                                  disabled={isSaving}
+                                >
+                                  <FontAwesomeIcon icon={faSave} />
+                                </button>
+                                <button
+                                  className="btn btn-secondary btn-sm"
+                                  onClick={handleEditCancel}
+                                  title="Cancelar"
+                                  aria-label="Cancelar"
+                                  disabled={isSaving}
+                                >
+                                  <FontAwesomeIcon icon={faTimes} />
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                <button
+                                  className="btn btn-primary btn-sm me-2"
+                                  onClick={() => handleEditClick(usuario)}
+                                  title="Editar"
+                                  aria-label="Editar"
+                                  disabled={isDeleting}
+                                >
+                                  <FontAwesomeIcon icon={faEdit} />
+                                </button>
+                                <button
+                                  className="btn btn-danger btn-sm"
+                                  onClick={() => handleDelete(usuario)}
+                                  title="Eliminar"
+                                  aria-label="Eliminar"
+                                  disabled={isDeleting || isSaving}
+                                >
+                                  <FontAwesomeIcon icon={faTrash} />
+                                </button>
+                              </>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })
                   )}
                 </tbody>
               </table>

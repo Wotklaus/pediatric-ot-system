@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar";
-import "./styles/PersonalMedico.css";
+import "./styles/Clientes.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash, faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const ENDPOINT = "http://localhost:5000/api/pg/usuarios/clientes";
 
 const Clientes = () => {
+  // Estados
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [editId, setEditId] = useState(null);
   const [editData, setEditData] = useState({});
 
-  // Cargar lista
+  // Cargar lista al montar
   useEffect(() => {
     fetchLista();
     // eslint-disable-next-line
   }, []);
 
+  // Obtener lista de clientes
   const fetchLista = () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -61,7 +63,7 @@ const Clientes = () => {
       });
   };
 
-  // Editar
+  // Editar cliente
   const handleEditClick = (usuario) => {
     setEditId(usuario.id);
     setEditData({ ...usuario });
@@ -109,7 +111,7 @@ const Clientes = () => {
     setLoading(false);
   };
 
-  // Eliminar
+  // Eliminar cliente
   const handleDelete = async (id, email) => {
     if (!window.confirm("¿Seguro que deseas eliminar este cliente?")) return;
     const token = localStorage.getItem("token");
@@ -133,28 +135,24 @@ const Clientes = () => {
   };
 
   return (
-    <div className="personalmedico-layout">
-      <Sidebar />
-      <div className="personalmedico-content container">
+    <div className="clientes-layout">
+      <Sidebar className="clientes-sidebar" />
+      <div className="clientes-content container">
         <h2 className="mt-4">Clientes</h2>
-        <ol className="breadcrumb mb-4">
-          <li className="breadcrumb-item">
-            <a href="/admin">Dashboard</a>
-          </li>
-          <li className="breadcrumb-item active">Clientes</li>
-        </ol>
-        <div className="card mb-4">
-          <div className="card-header">
+        <br />
+        <br />
+        <div className="clientes-card mb-4">
+          <div className="clientes-card-header">
             <i className="fas fa-users me-1"></i>
-            Tabla de Clientes
+            Registro de Clientes
           </div>
           <div className="card-body">
             {loading ? (
-              <div>Cargando...</div>
+              <div className="clientes-loader">Cargando...</div>
             ) : error ? (
               <div className="alert alert-danger">{error}</div>
             ) : (
-              <table className="table table-striped table-bordered" id="clientesTable">
+              <table className="clientes-table table table-striped table-bordered" id="clientesTable">
                 <thead>
                   <tr>
                     <th>Nombre</th>
@@ -241,14 +239,14 @@ const Clientes = () => {
                           ) : (
                             <>
                               <button
-                                className="btn btn-primary btn-sm me-2"
+                                className="btn btn-primary btn-sm me-2 clientes-btn-action"
                                 onClick={() => handleEditClick(usuario)}
                                 title="Editar"
                               >
                                 <FontAwesomeIcon icon={faEdit} />
                               </button>
                               <button
-                                className="btn btn-danger btn-sm"
+                                className="btn btn-danger btn-sm clientes-btn-action"
                                 onClick={() => handleDelete(usuario.id, usuario.email)}
                                 title="Eliminar"
                               >

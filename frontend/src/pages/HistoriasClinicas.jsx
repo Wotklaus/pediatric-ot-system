@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar";
-import "./styles/PersonalMedico.css";
+import "./styles/HistoriaClinica.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faFileDownload, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { useNavigate } from "react-router-dom";   // <-- NUEVO
+import { useNavigate } from "react-router-dom";
 
 const ENDPOINT = "http://localhost:5000/api/formularios/vista";
 
@@ -21,11 +21,11 @@ const headers = [
   "Fecha de registro"
 ];
 
-const FormulariosResultados = () => {
+const HistoriaClinicaResultados = () => {
   const [formularios, setFormularios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const navigate = useNavigate();    // <-- NUEVO
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchLista();
@@ -74,12 +74,10 @@ const FormulariosResultados = () => {
       });
   };
 
-  // NUEVO: función para navegar al detalle
   const irADetalle = (id) => {
     navigate(`/formulariodetalle/${id}`);
   };
 
-  // --- GENERAR REPORTE CSV SOLO DE LA TABLA VISIBLE ---
   const generarReporteCSV = () => {
     if (!formularios.length) return;
     const rows = formularios.map(f => [
@@ -108,7 +106,6 @@ const FormulariosResultados = () => {
     URL.revokeObjectURL(url);
   };
 
-  // --- GENERAR REPORTE PDF SOLO DE LA TABLA VISIBLE ---
   const generarReportePDF = () => {
     if (!formularios.length) return;
     const doc = new jsPDF();
@@ -136,29 +133,25 @@ const FormulariosResultados = () => {
   };
 
   return (
-    <div className="personalmedico-layout">
+    <div className="historiaclinica-layout">
       <Sidebar />
-      <div className="personalmedico-content container">
-        <h2 className="mt-4">Resultados de Formularios</h2>
-        <ol className="breadcrumb mb-4">
-          <li className="breadcrumb-item">
-            <a href="/admin">Dashboard</a>
-          </li>
-          <li className="breadcrumb-item active">Formularios</li>
-        </ol>
-        <div className="card mb-4">
-          <div className="card-header">
+      <div className="historiaclinica-content container">
+        <h2 className="mt-4">Historias Clínicas</h2>
+        <br />
+        <br />
+        <div className="historiaclinica-card mb-4">
+          <div className="historiaclinica-card-header">
             <i className="fas fa-clipboard-list me-1"></i>
-            Tabla de Formularios
+            Registro Clínico de los pacientes 
           </div>
-          <div className="card-body">
+          <div className="historiaclinica-card-body">
             {loading ? (
               <div>Cargando...</div>
             ) : error ? (
-              <div className="alert alert-danger">{error}</div>
+              <div className="historiaclinica-alert historiaclinica-alert-danger">{error}</div>
             ) : (
-              <>
-                <table className="table table-striped table-bordered">
+              <div style={{overflowX: "auto", width: "100%"}}>
+                <table className="historiaclinica-table table table-striped table-bordered">
                   <thead>
                     <tr>
                       {headers.map((h, i) => (
@@ -188,7 +181,7 @@ const FormulariosResultados = () => {
                           <td>{f.created_at ? f.created_at.substring(0, 10) : ""}</td>
                           <td style={{ textAlign: "center" }}>
                             <button
-                              className="btn btn-info btn-sm"
+                              className="historiaclinica-btn historiaclinica-btn-info btn btn-sm"
                               onClick={() => irADetalle(f.id)}
                               title="Ver detalle"
                             >
@@ -203,21 +196,21 @@ const FormulariosResultados = () => {
                 {/* Botones para generar reporte CSV y PDF */}
                 <div style={{ textAlign: "right", marginTop: "1rem" }}>
                   <button
-                    className="btn btn-warning me-2"
+                    className="historiaclinica-btn historiaclinica-btn-warning me-2 btn btn-sm"
                     onClick={generarReporteCSV}
                     disabled={formularios.length === 0}
                   >
                     <FontAwesomeIcon icon={faFileDownload} /> Generar reporte CSV
                   </button>
                   <button
-                    className="btn btn-danger"
+                    className="historiaclinica-btn historiaclinica-btn-danger btn btn-sm"
                     onClick={generarReportePDF}
                     disabled={formularios.length === 0}
                   >
                     <FontAwesomeIcon icon={faFilePdf} /> Generar reporte PDF
                   </button>
                 </div>
-              </>
+              </div>
             )}
           </div>
         </div>
@@ -226,4 +219,4 @@ const FormulariosResultados = () => {
   );
 };
 
-export default FormulariosResultados;
+export default HistoriaClinicaResultados;

@@ -1,0 +1,211 @@
+/* Layout principal para la página de Historia Clínica */
+.historiaclinica-layout {
+  display: flex; /* Usar flex para sidebar y contenido */
+  min-height: 100vh; /* Ocupa toda la altura de la ventana */
+  background: #ffffff; /* Fondo blanco */
+  width: 100vw; /* Ocupa todo el ancho de la ventana */
+}
+
+/* Contenedor principal del contenido */
+.historiaclinica-content {
+  margin-left: 250px; /* Espacio para el sidebar fijo */
+  flex: 1; /* Ocupa el resto del espacio */
+  padding: 2.6rem 2.5rem 2rem 2.5rem; /* Espaciado interno */
+  background: #f6f7f9; /* Fondo gris claro */
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif; /* Fuente principal */
+  text-align: center; /* Centrar títulos */
+  width: 100vw; /* Ocupa todo el ancho disponible */
+  box-sizing: border-box; /* Incluye padding en el ancho */
+  /* No overflow-x: auto para evitar scroll horizontal */
+}
+
+/* Ajustes responsivos para pantallas medianas */
+@media (max-width: 900px) {
+  .historiaclinica-content {
+    margin-left: 190px; /* Sidebar más pequeño */
+    width: 100vw;
+    padding: 1.1rem 0.7rem 1rem 0.7rem;
+  }
+}
+/* Ajustes responsivos para móviles */
+@media (max-width: 600px) {
+  .historiaclinica-content {
+    margin-left: 0 !important;
+    width: 100vw !important;
+    padding: 10px 4px 4px 4px;
+  }
+  .historiaclinica-content h2 {
+    font-size: 1.3rem;
+  }
+}
+
+/* Estilo para el título principal */
+.historiaclinica-content h2 {
+  color: #353637;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin-bottom: 1.3rem;
+}
+
+/* Card contenedor para la tabla */
+.historiaclinica-card {
+  background: #fff;
+  border-radius: 11px;
+  box-shadow: 0 3px 17px rgba(0, 0, 0, 0.13);
+  border: 1px solid #d7d1d1;
+  overflow: hidden;
+  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Encabezado del card */
+.historiaclinica-card-header {
+  background: #eeefef;
+  color: #292828;
+  font-size: 1.18rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 1.1rem 1.6rem;
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+}
+/* Icono dentro del encabezado */
+.historiaclinica-card-header i {
+  margin-right: 0.7rem;
+  color: hwb(195 13% 34%);
+  font-size: 1.24em;
+}
+
+/* Tabla principal: todos los campos deben verse completos */
+.historiaclinica-table {
+  width: 98%; /* Ocupa todo el ancho disponible */
+  table-layout: auto; /* Permite que las columnas sean dinámicas */
+  margin-left: 1%;
+  margin-top: 0.9rem;
+  background: transparent;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #d4d3d3;
+  border-radius: 5px;
+  
+  overflow: visible;
+}
+
+/* Celdas y encabezados de la tabla */
+.historiaclinica-table th,
+.historiaclinica-table td {
+  padding: 0.8rem 0.85rem;
+  font-size: 0.95rem;
+  vertical-align: middle;
+  border: none;
+  /* Importante: se elimina el recorte y el ellipsis para mostrar todo */
+  /* min-width: 120px; */
+  /* max-width: 260px; */
+  /* overflow: hidden; */
+  /* text-overflow: ellipsis; */
+  /* white-space: nowrap; */
+  word-break: break-word;   /* Si el texto es largo, salta a siguiente línea */
+  white-space: normal;      /* Permite salto de línea para mostrar todo */
+}
+
+/* Encabezado */
+.historiaclinica-table th {
+  background: #f2f3f4;
+  color: #111112;
+  font-weight: 600;
+  border-bottom: 2.5px solid #9e9fa1;
+  text-align: center;
+}
+
+/* Botón columna */
+.historiaclinica-table th:last-child,
+.historiaclinica-table td:last-child {
+  text-align: center;
+}
+
+/* Efecto hover sobre renglón */
+.historiaclinica-table tbody tr {
+  transition: background 0.16s;
+}
+.historiaclinica-table tbody tr:hover {
+  background: #f2f4f7;
+}
+
+/* Color de texto de las celdas */
+.historiaclinica-table td {
+  color: #1f2020;
+}
+
+/* Botones de acción en la tabla */
+.historiaclinica-btn,
+.historiaclinica-btn-info,
+.historiaclinica-btn-warning,
+.historiaclinica-btn-danger {
+  padding: 0.34rem 0.68rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background 0.12s, color 0.12s;
+  margin-right: 0.17rem;
+  margin-left: 0.07rem;
+  border: none;
+  color: #fff;
+}
+.historiaclinica-btn-info {
+  background: #1d82d5;
+}
+.historiaclinica-btn-info:hover,
+.historiaclinica-btn-info:focus {
+  background: #2791fa;
+  color: #ffffff;
+}
+.historiaclinica-btn-warning {
+  background: #ffb92a;
+  color: #383e43;
+}
+.historiaclinica-btn-warning:hover,
+.historiaclinica-btn-warning:focus {
+  background: #ffd168;
+  color: #111112;
+}
+.historiaclinica-btn-danger {
+  background: #d02828;
+  color: #fff;
+}
+.historiaclinica-btn-danger:hover,
+.historiaclinica-btn-danger:focus {
+  background: #d52a2a;
+  color: #fff;
+}
+
+/* Mensajes y alertas */
+.historiaclinica-alert {
+  margin-top: 0.5rem;
+  border-radius: 8px;
+  padding: 0.85rem 1.2rem;
+  font-size: 1.05rem;
+}
+.historiaclinica-alert-danger {
+  background: #ffe2e2;
+  color: #a73030;
+  border: 1.2px solid #da4e4e;
+}
+
+/* Mensaje cuando no hay datos */
+.historiaclinica-table td[colspan] {
+  color: #7b848b;
+  font-style: italic;
+  background: #f7f7fa;
+}
+
+/* Estilos para íconos */
+.historiaclinica-table .fa-eye,
+.historiaclinica-table .fa-file-download,
+.historiaclinica-table .fa-file-pdf {
+  margin-right: 0.12em;
+  font-size: 1.09em;
+  vertical-align: middle;
+}

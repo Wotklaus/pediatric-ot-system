@@ -1,12 +1,12 @@
 /* Layout principal: respeta el ancho del sidebar */
-.personalmedico-layout {
+.clientes-layout {
   display: flex;
   min-height: 100vh;
   background: #ffffff;
   width: 100vw; /* Ocupa todo el ancho de la ventana */
 }
 
-.personalmedico-content {
+.clientes-content {
   margin-left: 250px;
   flex: 1;
   padding: 2.6rem 2.5rem 2rem 2.5rem;
@@ -21,7 +21,7 @@
 
 /* Responsividad para la vista principal */
 @media (max-width: 900px) {
-  .personalmedico-content {
+  .clientes-content {
     margin-left: 190px;
     padding: 1.1rem 0.7rem 1rem 0.7rem;
     min-width: 400px;
@@ -30,7 +30,7 @@
 }
 
 /* Títulos y encabezados */
-.personalmedico-content h2 {
+.clientes-content h2 {
   color: #353637;
   font-size: 2rem;
   font-weight: 700;
@@ -39,7 +39,7 @@
 }
 
 /* Card contenedor */
-.card {
+.clientes-card {
   background: #fff;
   border-radius: 11px;
   box-shadow: 0 3px 17px rgba(0, 0, 0, 0.13);
@@ -50,7 +50,7 @@
   box-sizing: border-box;
 }
 
-.card-header {
+.clientes-card-header {
   background: #eeefef;
   color: #292828;
   font-size: 1.18rem;
@@ -62,16 +62,24 @@
   align-items: center;
 }
 
-.card-header i {
+.clientes-card-header i {
   margin-right: 0.7rem;
-  color: hwb(195 16% 8%);
+  color: hwb(195 7% 17%);
   font-size: 1.24em;
 }
 
+/* Loader */
+.clientes-loader {
+  color: #383e43;
+  font-size: 1.09rem;
+  font-weight: 500;
+  padding: 1.1rem 0.5rem;
+}
+
 /* Tabla principal */
-#personalMedicoTable {
-  width: 100%;
-  min-width: 900px;      /* La tabla nunca será más pequeña */
+.clientes-table {
+  width: 98%;
+  min-width: 100px;      /* La tabla nunca será más pequeña */
   table-layout: fixed;   /* Estructura fija, no se deforma por texto */
   margin-top: 0.9rem;
   background: transparent;
@@ -79,10 +87,11 @@
   border-spacing: 0;
   border: 1px solid #d4d3d3;
   border-radius: 5px;
+  margin-left: 1%;
 }
 
-#personalMedicoTable th,
-#personalMedicoTable td {
+.clientes-table th,
+.clientes-table td {
   padding: 0.8rem 0.85rem;
   font-size: 1.07rem;
   vertical-align: middle;
@@ -92,7 +101,7 @@
   white-space: nowrap;
 }
 
-#personalMedicoTable th {
+.clientes-table th {
   background: #f2f3f4;
   color: #111112;
   font-weight: 600;
@@ -101,35 +110,35 @@
 }
 
 /* Columnas con ancho fijo y mínimo */
-#personalMedicoTable th:nth-child(1),
-#personalMedicoTable td:nth-child(1) { width: 100px; min-width: 120px; }
-#personalMedicoTable th:nth-child(2),
-#personalMedicoTable td:nth-child(2) { width: 100px; min-width: 120px; }
-#personalMedicoTable th:nth-child(3),
-#personalMedicoTable td:nth-child(3) { width: 100px; min-width: 110px; }
-#personalMedicoTable th:nth-child(4),
-#personalMedicoTable td:nth-child(4) { width: 100px; min-width: 110px; }
-#personalMedicoTable th:nth-child(5),
-#personalMedicoTable td:nth-child(5) { width: 100px; min-width: 160px; }
-#personalMedicoTable th:nth-child(6),
-#personalMedicoTable td:nth-child(6) { width: 100px; min-width: 110px; }
+.clientes-table th:nth-child(1),
+.clientes-table td:nth-child(1) { width: 100px; min-width: 120px; }
+.clientes-table th:nth-child(2),
+.clientes-table td:nth-child(2) { width: 100px; min-width: 120px; }
+.clientes-table th:nth-child(3),
+.clientes-table td:nth-child(3) { width: 100px; min-width: 110px; }
+.clientes-table th:nth-child(4),
+.clientes-table td:nth-child(4) { width: 100px; min-width: 110px; }
+.clientes-table th:nth-child(5),
+.clientes-table td:nth-child(5) { width: 100px; min-width: 160px; }
+.clientes-table th:nth-child(6),
+.clientes-table td:nth-child(6) { width: 100px; min-width: 110px; }
 
-#personalMedicoTable tbody tr {
+.clientes-table tbody tr {
   transition: background 0.16s;
 }
 
-#personalMedicoTable tbody tr:hover {
+.clientes-table tbody tr:hover {
   background: #f2f4f7;
 }
 
-#personalMedicoTable td {
+.clientes-table td {
   color: #1f2020;
 }
 
 /* Inputs de edición en la tabla */
-#personalMedicoTable input[type="text"],
-#personalMedicoTable input[type="number"],
-#personalMedicoTable input[type="email"] {
+.clientes-table input[type="text"],
+.clientes-table input[type="number"],
+.clientes-table input[type="email"] {
   width: 100%;
   box-sizing: border-box;
   padding: 0.35rem 0.4rem;
@@ -145,7 +154,7 @@
   min-width: 0;
 }
 
-#personalMedicoTable input {
+.clientes-table input {
   border-color: #9a9999;
   background: #ffffff;
   color: #000000;
@@ -153,7 +162,7 @@
   font-size: 1rem;
 }
 
-#personalMedicoTable input:focus {
+.clientes-table input:focus {
   border-color: #9a9999;
   background: #ffffff;
   color: #090909;
@@ -163,7 +172,7 @@
 
 /* Botones de acción en la tabla */
 .table .btn,
-#personalMedicoTable .btn {
+.clientes-table .btn {
   padding: 0.34rem 0.68rem;
   font-size: 1rem;
   border-radius: 6px;
@@ -236,17 +245,17 @@
 }
 
 /* Mensaje cuando no hay datos */
-#personalMedicoTable td[colspan] {
+.clientes-table td[colspan] {
   color: #7b848b;
   font-style: italic;
   background: #f7f7fa;
 }
 
 /* Estilos para íconos */
-#personalMedicoTable .fa-edit,
-#personalMedicoTable .fa-trash,
-#personalMedicoTable .fa-save,
-#personalMedicoTable .fa-times {
+.clientes-table .fa-edit,
+.clientes-table .fa-trash,
+.clientes-table .fa-save,
+.clientes-table .fa-times {
   margin-right: 0.12em;
   font-size: 1.09em;
   vertical-align: middle;

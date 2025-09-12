@@ -138,12 +138,8 @@ const ResultadosEvaluacion = () => {
       <Sidebar />
       <div className="resultadosevaluacion-content container">
         <h2 className="mt-4">Resultados de Evaluaciones</h2>
-        <ol className="breadcrumb mb-4">
-          <li className="breadcrumb-item">
-            <a href="/admin">Dashboard</a>
-          </li>
-          <li className="breadcrumb-item active">Evaluaciones</li>
-        </ol>
+        <br />
+        <br />
         <div className="card mb-4">
           <div className="card-header">
             <i className="fas fa-clipboard-list me-1"></i>
