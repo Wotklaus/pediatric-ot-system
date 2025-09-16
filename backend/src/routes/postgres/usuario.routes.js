@@ -112,4 +112,19 @@ router.delete("/:email", authMiddleware, async (req, res) => {
   }
 });
 
+// NUEVO: Crear personal médico (solo admin)
+router.post("/personal-medico", authMiddleware, async (req, res) => {
+  if (req.user.rol_id !== ADMIN) {
+    return res.status(403).json({ error: "Solo el administrador puede registrar personal médico" });
+  }
+  try {
+    const { nombre, apellido, cedula, telefono, email, contrasena } = req.body;
+    const result = await usuarioDAO.crearPersonalMedico({ nombre, apellido, cedula, telefono, email, contrasena });
+    res.json({ id: result.id, mensaje: "Personal médico registrado correctamente" });
+  } catch (error) {
+    console.error("Error creando personal médico:", error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
 module.exports = router;

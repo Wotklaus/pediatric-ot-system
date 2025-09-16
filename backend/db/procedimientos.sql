@@ -96,6 +96,34 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+-- Agregar personal medico
+-- Insertar nuevo usuario como personal médico (rol 3 = encargado)
+CREATE OR REPLACE FUNCTION nuevo_personal_medico(
+  _nombre VARCHAR(100),
+  _apellido VARCHAR(100),
+  _cedula VARCHAR(20),
+  _telefono VARCHAR(20),
+  _email VARCHAR(255),
+  _contrasena VARCHAR(255)
+)
+RETURNS INTEGER AS $$
+DECLARE
+  nuevo_id INTEGER;
+BEGIN
+  -- Validar existencia previa
+  IF EXISTS (SELECT 1 FROM usuarios WHERE email = _email) THEN
+    RAISE EXCEPTION 'El email % ya está registrado', _email;
+  END IF;
+
+  INSERT INTO usuarios (nombre, apellido, cedula, telefono, email, contrasena, rol_id)
+  VALUES (_nombre, _apellido, _cedula, _telefono, _email, _contrasena, 3) -- rol 3: encargado
+  RETURNING id INTO nuevo_id;
+
+  RETURN nuevo_id;
+END;
+$$ LANGUAGE plpgsql;
+
 -- Obtener lista de usuarios por rol (ejemplo: rol 3 = personal médico)
 -- Solución: referencia explícita con usuarios.id
 CREATE OR REPLACE FUNCTION obtener_personal_medico()
@@ -139,7 +167,28 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
+-- obtener pacientes 
+CREATE OR REPLACE FUNCTION listar_pacientes()
+RETURNS TABLE (
+    paciente_id INTEGER,
+    nombre_nino VARCHAR,
+    fecha_nacimiento DATE,
+    sexo VARCHAR,
+    nacionalidad VARCHAR,
+    cuidador_principal VARCHAR
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        f.id AS paciente_id,
+        f.nombre_nino,
+        f.fecha_nacimiento,
+        f.sexo,
+        f.nacionalidad,
+        f.cuidador_principal
+    FROM formularios f;
+END;
+$$ LANGUAGE plpgsql;
 
 -- Eliminar usuario por email
 CREATE OR REPLACE FUNCTION eliminar_usuario(

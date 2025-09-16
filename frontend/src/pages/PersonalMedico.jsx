@@ -2,15 +2,12 @@ import React, { useEffect, useState, useCallback } from "react";
 import Sidebar from "../components/sidebar";
 import "./styles/PersonalMedico.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash, faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash, faSave, faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const ENDPOINT = "http://localhost:5000/api/pg/usuarios/personal-medico";
 
 const getRowKey = (u) => (u?.id ?? u?.email);
 
-/**
- * Normaliza strings: recorta y convierte vacíos a null
- */
 const norm = (v) => {
   if (typeof v !== "string") return v ?? null;
   const t = v.trim();
@@ -25,6 +22,18 @@ const PersonalMedico = () => {
   const [editData, setEditData] = useState({});
   const [savingKey, setSavingKey] = useState(null);
   const [deletingKey, setDeletingKey] = useState(null);
+
+  // Añadir usuario
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [addLoading, setAddLoading] = useState(false);
+  const [newUsuarioData, setNewUsuarioData] = useState({
+    nombre: "",
+    apellido: "",
+    cedula: "",
+    telefono: "",
+    email: "",
+    contrasena: ""
+  });
 
   const fetchLista = useCallback(async () => {
     const token = localStorage.getItem("token");
@@ -108,9 +117,6 @@ const PersonalMedico = () => {
       apellido: norm(editData.apellido),
       cedula: norm(editData.cedula),
       telefono: norm(editData.telefono),
-      // Agrega campos permitidos por tu backend si aplica:
-      // contrasena: norm(editData.contrasena),
-      // rol_id: editData.rol_id ?? null,
     };
 
     try {
@@ -133,7 +139,6 @@ const PersonalMedico = () => {
         throw new Error(msg);
       }
 
-      // Actualización optimista del estado local
       setUsuarios((prev) =>
         prev.map((u) =>
           getRowKey(u) === rowKey ? { ...u, ...datos } : u
@@ -177,7 +182,6 @@ const PersonalMedico = () => {
         throw new Error(msg);
       }
 
-      // Actualización optimista
       setUsuarios((prev) => prev.filter((u) => getRowKey(u) !== rowKey));
       setError("");
     } catch (e) {
@@ -185,6 +189,62 @@ const PersonalMedico = () => {
     } finally {
       setDeletingKey(null);
     }
+  };
+
+  // Añadir personal médico
+  const handleAddChange = (e) => {
+    setNewUsuarioData({ ...newUsuarioData, [e.target.name]: e.target.value });
+  };
+
+  const handleAddUsuario = async (e) => {
+    e.preventDefault();
+    if (
+      !newUsuarioData.nombre.trim() ||
+      !newUsuarioData.apellido.trim() ||
+      !newUsuarioData.email.trim() ||
+      !newUsuarioData.contrasena.trim()
+    ) {
+      setError("Nombre, apellido, email y contraseña son obligatorios.");
+      return;
+    }
+    setAddLoading(true);
+    setError("");
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          nombre: norm(newUsuarioData.nombre),
+          apellido: norm(newUsuarioData.apellido),
+          cedula: norm(newUsuarioData.cedula),
+          telefono: norm(newUsuarioData.telefono),
+          email: norm(newUsuarioData.email),
+          contrasena: norm(newUsuarioData.contrasena),
+        }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => {});
+        setError(err?.error || "Error añadiendo usuario");
+      } else {
+        setNewUsuarioData({
+          nombre: "",
+          apellido: "",
+          cedula: "",
+          telefono: "",
+          email: "",
+          contrasena: ""
+        });
+        setShowAddForm(false);
+        fetchLista();
+      }
+    } catch {
+      setError("Error de conexión al añadir usuario.");
+    }
+    setAddLoading(false);
   };
 
   return (
@@ -206,129 +266,247 @@ const PersonalMedico = () => {
             ) : error ? (
               <div className="alert alert-danger">{error}</div>
             ) : (
-              <table className="table table-striped table-bordered" id="personalMedicoTable">
-                <thead>
-                  <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Cédula</th>
-                    <th>Teléfono</th>
-                    <th>Email</th>
-                    <th style={{ textAlign: "center" }}>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {usuarios.length === 0 ? (
+              <>
+                <table className="table table-striped table-bordered" id="personalMedicoTable">
+                  <thead>
                     <tr>
-                      <td colSpan={6} style={{ textAlign: "center" }}>
-                        No hay personal médico registrado.
-                      </td>
+                      <th>Nombre</th>
+                      <th>Apellido</th>
+                      <th>Cédula</th>
+                      <th>Teléfono</th>
+                      <th>Email</th>
+                      <th style={{ textAlign: "center" }}>Acciones</th>
                     </tr>
-                  ) : (
-                    usuarios.map((usuario) => {
-                      const rowKey = getRowKey(usuario);
-                      const isEditing = editKey === rowKey;
-                      const isSaving = savingKey === rowKey;
-                      const isDeleting = deletingKey === rowKey;
+                  </thead>
+                  <tbody>
+                    {usuarios.length === 0 ? (
+                      <tr>
+                        <td colSpan={6} style={{ textAlign: "center" }}>
+                          No hay personal médico registrado.
+                        </td>
+                      </tr>
+                    ) : (
+                      usuarios.map((usuario) => {
+                        const rowKey = getRowKey(usuario);
+                        const isEditing = editKey === rowKey;
+                        const isSaving = savingKey === rowKey;
+                        const isDeleting = deletingKey === rowKey;
 
-                      return (
-                        <tr key={rowKey}>
-                          <td>
-                            {isEditing ? (
-                              <input
-                                name="nombre"
-                                value={editData.nombre ?? ""}
-                                onChange={handleEditChange}
-                              />
-                            ) : (
-                              usuario.nombre
-                            )}
-                          </td>
-                          <td>
-                            {isEditing ? (
-                              <input
-                                name="apellido"
-                                value={editData.apellido ?? ""}
-                                onChange={handleEditChange}
-                              />
-                            ) : (
-                              usuario.apellido
-                            )}
-                          </td>
-                          <td>
-                            {isEditing ? (
-                              <input
-                                name="cedula"
-                                value={editData.cedula ?? ""}
-                                onChange={handleEditChange}
-                              />
-                            ) : (
-                              usuario.cedula
-                            )}
-                          </td>
-                          <td>
-                            {isEditing ? (
-                              <input
-                                name="telefono"
-                                value={editData.telefono ?? ""}
-                                onChange={handleEditChange}
-                              />
-                            ) : (
-                              usuario.telefono
-                            )}
-                          </td>
-                          <td>{usuario.email}</td>
-                          <td style={{ textAlign: "center" }}>
-                            {isEditing ? (
-                              <>
-                                <button
-                                  className="btn btn-success btn-sm me-2"
-                                  onClick={handleEditSave}
-                                  title="Guardar"
-                                  aria-label="Guardar"
-                                  disabled={isSaving}
-                                >
-                                  <FontAwesomeIcon icon={faSave} />
-                                </button>
-                                <button
-                                  className="btn btn-secondary btn-sm"
-                                  onClick={handleEditCancel}
-                                  title="Cancelar"
-                                  aria-label="Cancelar"
-                                  disabled={isSaving}
-                                >
-                                  <FontAwesomeIcon icon={faTimes} />
-                                </button>
-                              </>
-                            ) : (
-                              <>
-                                <button
-                                  className="btn btn-primary btn-sm me-2"
-                                  onClick={() => handleEditClick(usuario)}
-                                  title="Editar"
-                                  aria-label="Editar"
-                                  disabled={isDeleting}
-                                >
-                                  <FontAwesomeIcon icon={faEdit} />
-                                </button>
-                                <button
-                                  className="btn btn-danger btn-sm"
-                                  onClick={() => handleDelete(usuario)}
-                                  title="Eliminar"
-                                  aria-label="Eliminar"
-                                  disabled={isDeleting || isSaving}
-                                >
-                                  <FontAwesomeIcon icon={faTrash} />
-                                </button>
-                              </>
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })
-                  )}
-                </tbody>
-              </table>
+                        return (
+                          <tr key={rowKey}>
+                            <td>
+                              {isEditing ? (
+                                <input
+                                  name="nombre"
+                                  value={editData.nombre ?? ""}
+                                  onChange={handleEditChange}
+                                />
+                              ) : (
+                                usuario.nombre
+                              )}
+                            </td>
+                            <td>
+                              {isEditing ? (
+                                <input
+                                  name="apellido"
+                                  value={editData.apellido ?? ""}
+                                  onChange={handleEditChange}
+                                />
+                              ) : (
+                                usuario.apellido
+                              )}
+                            </td>
+                            <td>
+                              {isEditing ? (
+                                <input
+                                  name="cedula"
+                                  value={editData.cedula ?? ""}
+                                  onChange={handleEditChange}
+                                />
+                              ) : (
+                                usuario.cedula
+                              )}
+                            </td>
+                            <td>
+                              {isEditing ? (
+                                <input
+                                  name="telefono"
+                                  value={editData.telefono ?? ""}
+                                  onChange={handleEditChange}
+                                />
+                              ) : (
+                                usuario.telefono
+                              )}
+                            </td>
+                            <td>{usuario.email}</td>
+                            <td style={{ textAlign: "center" }}>
+                              {isEditing ? (
+                                <>
+                                  <button
+                                    className="btn btn-success btn-sm me-2"
+                                    onClick={handleEditSave}
+                                    title="Guardar"
+                                    aria-label="Guardar"
+                                    disabled={isSaving}
+                                  >
+                                    <FontAwesomeIcon icon={faSave} />
+                                  </button>
+                                  <button
+                                    className="btn btn-secondary btn-sm"
+                                    onClick={handleEditCancel}
+                                    title="Cancelar"
+                                    aria-label="Cancelar"
+                                    disabled={isSaving}
+                                  >
+                                    <FontAwesomeIcon icon={faTimes} />
+                                  </button>
+                                </>
+                              ) : (
+                                <>
+                                  <button
+                                    className="btn btn-primary btn-sm me-2"
+                                    onClick={() => handleEditClick(usuario)}
+                                    title="Editar"
+                                    aria-label="Editar"
+                                    disabled={isDeleting}
+                                  >
+                                    <FontAwesomeIcon icon={faEdit} />
+                                  </button>
+                                  <button
+                                    className="btn btn-danger btn-sm"
+                                    onClick={() => handleDelete(usuario)}
+                                    title="Eliminar"
+                                    aria-label="Eliminar"
+                                    disabled={isDeleting || isSaving}
+                                  >
+                                    <FontAwesomeIcon icon={faTrash} />
+                                  </button>
+                                </>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+                {/* Botón Añadir personal */}
+                <div style={{ textAlign: "right", marginTop: "1rem" }}>
+                  <button
+                    className="btn btn-success"
+                    onClick={() => setShowAddForm(!showAddForm)}
+                  >
+                    <FontAwesomeIcon icon={faPlus} /> Añadir personal
+                  </button>
+                </div>
+                {/* Formulario para añadir personal */}
+                {showAddForm && (
+                  <form
+                    onSubmit={handleAddUsuario}
+                    className="mt-3"
+                  >
+                    <div className="row">
+                      <div className="col-md-2 mb-3">
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="nombre"
+                          placeholder="Nombre"
+                          value={newUsuarioData.nombre}
+                          onChange={handleAddChange}
+                          required
+                          disabled={addLoading}
+                        />
+                      </div>
+                      <div className="col-md-2 mb-3">
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="apellido"
+                          placeholder="Apellido"
+                          value={newUsuarioData.apellido}
+                          onChange={handleAddChange}
+                          required
+                          disabled={addLoading}
+                        />
+                      </div>
+                      <div className="col-md-2 mb-3">
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="cedula"
+                          placeholder="Cédula"
+                          value={newUsuarioData.cedula}
+                          onChange={handleAddChange}
+                          disabled={addLoading}
+                        />
+                      </div>
+                      <div className="col-md-2 mb-3">
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="telefono"
+                          placeholder="Teléfono"
+                          value={newUsuarioData.telefono}
+                          onChange={handleAddChange}
+                          disabled={addLoading}
+                        />
+                      </div>
+                      <div className="col-md-2 mb-3">
+                        <input
+                          type="email"
+                          className="form-control"
+                          name="email"
+                          placeholder="Email"
+                          value={newUsuarioData.email}
+                          onChange={handleAddChange}
+                          required
+                          disabled={addLoading}
+                        />
+                      </div>
+                      <div className="col-md-2 mb-3">
+                        <input
+                          type="password"
+                          className="form-control"
+                          name="contrasena"
+                          placeholder="Contraseña"
+                          value={newUsuarioData.contrasena}
+                          onChange={handleAddChange}
+                          required
+                          disabled={addLoading}
+                        />
+                      </div>
+                      <div className="col-md-12 mt-2">
+                        <button
+                          type="submit"
+                          className="btn btn-success me-2"
+                          disabled={addLoading}
+                        >
+                          <FontAwesomeIcon icon={faSave} /> Guardar
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={() => {
+                            setShowAddForm(false);
+                            setNewUsuarioData({
+                              nombre: "",
+                              apellido: "",
+                              cedula: "",
+                              telefono: "",
+                              email: "",
+                              contrasena: ""
+                            });
+                          }}
+                          disabled={addLoading}
+                        >
+                          <FontAwesomeIcon icon={faTimes} /> Cancelar
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                )}
+              </>
             )}
           </div>
         </div>

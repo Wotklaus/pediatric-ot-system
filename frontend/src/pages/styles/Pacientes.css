@@ -1,0 +1,255 @@
+/* Layout principal: respeta el ancho del sidebar */
+.pacientes-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #ffffff;
+  width: 100vw; /* Ocupa todo el ancho de la ventana */
+}
+
+.pacientes-content {
+  margin-left: 250px;
+  flex: 1;
+  padding: 2.6rem 2.5rem 2rem 2.5rem;
+  background: #f6f7f9;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  text-align: center;
+  min-width: 900px;       /* Ancho mínimo para escritorio grande */
+  width: 100vw;           /* Ocupa todo el ancho de la ventana */
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+/* Responsividad para la vista principal */
+@media (max-width: 900px) {
+  .pacientes-content {
+    margin-left: 190px;
+    padding: 1.1rem 0.7rem 1rem 0.7rem;
+    min-width: 400px;
+    width: 100vw;
+  }
+}
+
+/* Títulos y encabezados */
+.pacientes-content h2 {
+  color: #353637;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin-bottom: 1.3rem;
+}
+
+/* Card contenedor */
+.card {
+  background: #fff;
+  border-radius: 11px;
+  box-shadow: 0 3px 17px rgba(0, 0, 0, 0.13);
+  border: 1px solid #d7d1d1;
+  overflow: hidden;
+  width: 100%;
+  min-width: 900px;
+  box-sizing: border-box;
+}
+
+.card-header {
+  background: #eeefef;
+  color: #292828;
+  font-size: 1.18rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 1.1rem 1.6rem;
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+}
+
+.card-header i {
+  margin-right: 0.7rem;
+  color: hwb(195 16% 8%);
+  font-size: 1.24em;
+}
+
+/* Tabla principal */
+#pacientesTable {
+  width: 100%;
+  min-width: 900px;      /* La tabla nunca será más pequeña */
+  table-layout: fixed;   /* Estructura fija, no se deforma por texto */
+  margin-top: 0.9rem;
+  background: transparent;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #d4d3d3;
+  border-radius: 5px;
+}
+
+#pacientesTable th,
+#pacientesTable td {
+  padding: 0.8rem 0.85rem;
+  font-size: 1.07rem;
+  vertical-align: middle;
+  border: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#pacientesTable th {
+  background: #f2f3f4;
+  color: #111112;
+  font-weight: 600;
+  border-bottom: 2.5px solid #9e9fa1;
+  text-align: center;
+}
+
+/* Columnas con ancho fijo y mínimo */
+#pacientesTable th:nth-child(1),
+#pacientesTable td:nth-child(1) { width: 140px; min-width: 140px; }
+#pacientesTable th:nth-child(2),
+#pacientesTable td:nth-child(2) { width: 80px; min-width: 80px; }
+#pacientesTable th:nth-child(3),
+#pacientesTable td:nth-child(3) { width: 150px; min-width: 150px; }
+#pacientesTable th:nth-child(4),
+#pacientesTable td:nth-child(4) { width: 80px; min-width: 80px; }
+#pacientesTable th:nth-child(5),
+#pacientesTable td:nth-child(5) { width: 180px; min-width: 180px; }
+#pacientesTable th:nth-child(6),
+#pacientesTable td:nth-child(6) { width: 190px; min-width: 190px; }
+#pacientesTable th:nth-child(7),
+#pacientesTable td:nth-child(7) { width: 100px; min-width: 100px; }
+
+#pacientesTable tbody tr {
+  transition: background 0.16s;
+}
+
+#pacientesTable tbody tr:hover {
+  background: #f2f4f7;
+}
+
+#pacientesTable td {
+  color: #1f2020;
+}
+
+/* Inputs de edición en la tabla */
+#pacientesTable input[type="text"],
+#pacientesTable input[type="number"],
+#pacientesTable input[type="email"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.35rem 0.4rem;
+  border: 1.2px solid #ccd2d7;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f7f4f4;
+  color: #383e43;
+  transition: border 0.12s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+#pacientesTable input {
+  border-color: #9a9999;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 3px;
+  font-size: 1rem;
+}
+
+#pacientesTable input:focus {
+  border-color: #9a9999;
+  background: #ffffff;
+  color: #090909;
+  border-radius: 3px;
+  font-size: 1rem;
+}
+
+/* Botones de acción en la tabla */
+.table .btn,
+#pacientesTable .btn {
+  padding: 0.34rem 0.68rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background 0.12s, color 0.12s;
+  margin-right: 0.17rem;
+  margin-left: 0.07rem;
+}
+
+.btn-primary {
+  background: #1d82d5;
+  color: #e9e8e8;
+  border: none;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background: #2791fa;
+  color: #ffffff;
+}
+
+.btn-success {
+  background: hwb(194 21% 20%);
+  color: #fff;
+  border: none;
+}
+
+.btn-success:hover,
+.btn-success:focus {
+  background: #3ba5df;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #ff4b4b;
+  color: #ffffff;
+  border: none;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background: #ccd2d7;
+  color: #383e43;
+}
+
+.btn-danger {
+  background: #d02828;
+  color: #fff;
+  border: none;
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+  background: #d52a2a;
+  color: #fff;
+}
+
+/* Mensajes y alertas */
+.alert {
+  margin-top: 0.5rem;
+  border-radius: 8px;
+  padding: 0.85rem 1.2rem;
+  font-size: 1.05rem;
+}
+
+.alert-danger {
+  background: #ffe2e2;
+  color: #a73030;
+  border: 1.2px solid #da4e4e;
+}
+
+/* Mensaje cuando no hay datos */
+#pacientesTable td[colspan] {
+  color: #7b848b;
+  font-style: italic;
+  background: #f7f7fa;
+}
+
+/* Estilos para íconos */
+#pacientesTable .fa-edit,
+#pacientesTable .fa-trash,
+#pacientesTable .fa-save,
+#pacientesTable .fa-times {
+  margin-right: 0.12em;
+  font-size: 1.09em;
+  vertical-align: middle;
+}

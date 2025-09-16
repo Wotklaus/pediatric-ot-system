@@ -16,7 +16,7 @@ class usuarioDAO {
     if (res.rows.length === 0) return null;
     return new usuarioDTO(res.rows[0]);
   }
-  
+
   // Actualizar 
   async actualizarUsuario(email, datos) {
     // Extrae los campos, si no existen se manda null
@@ -74,6 +74,16 @@ class usuarioDAO {
   async eliminarPorEmail(email) {
     await pool.query("SELECT eliminar_usuario($1)", [email]);
   }
+
+
+  async crearPersonalMedico({ nombre, apellido, cedula, telefono, email, contrasena }) {
+    const resultado = await pool.query(
+      "SELECT nuevo_personal_medico($1, $2, $3, $4, $5, $6)",
+      [nombre, apellido, cedula, telefono, email, contrasena]
+    );
+    return { id: resultado.rows[0].nuevo_personal_medico };
+  }
+
 
 }
 

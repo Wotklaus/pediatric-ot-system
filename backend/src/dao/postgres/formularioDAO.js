@@ -53,16 +53,16 @@ class FormularioDAO {
   }
 
   async listarPorUsuario(userId) {
-  try {
-    const res = await pool.query("SELECT * FROM vista_formularios WHERE user_id = $1", [userId]);
-    return res.rows;
-  } catch (error) {
-    console.error("Error en DAO.listarPorUsuario:", error);
-    throw error;
+    try {
+      const res = await pool.query("SELECT * FROM vista_formularios WHERE user_id = $1", [userId]);
+      return res.rows;
+    } catch (error) {
+      console.error("Error en DAO.listarPorUsuario:", error);
+      throw error;
+    }
   }
-}
 
-async buscarPorIdVista(id) {
+  async buscarPorIdVista(id) {
     try {
       const res = await pool.query("SELECT * FROM buscar_formulario_vista_id($1);", [id]);
       if (res.rows.length === 0) return null;
@@ -73,6 +73,15 @@ async buscarPorIdVista(id) {
     }
   }
 
+  async listarPacientes() {
+    try {
+      const res = await pool.query("SELECT * FROM listar_pacientes();");
+      return res.rows;
+    } catch (error) {
+      console.error("Error en DAO.listarPacientes:", error);
+      throw error;
+    }
+  }
 
 
 }

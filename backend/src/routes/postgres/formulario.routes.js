@@ -109,5 +109,16 @@ router.get("/vista/:id", authMiddleware, async (req, res) => {
   }
 });
 
+// GET: Listar pacientes 
+router.get("/pacientes", authMiddleware, async (req, res) => {
+  try {
+    const pacientes = await formularioDAO.listarPacientes();
+    res.json(pacientes);
+  } catch (error) {
+    console.error("Error al listar pacientes:", error);
+    res.status(500).json({ error: "Error al obtener pacientes" });
+  }
+});
+
 
 module.exports = router;
