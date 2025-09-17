@@ -3,6 +3,7 @@ import Sidebar from "../components/sidebar";
 import "./styles/PersonalMedico.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash, faSave, faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
+import Swal from 'sweetalert2'; // <--- NUEVO: SweetAlert2
 
 const ENDPOINT = "http://localhost:5000/api/pg/usuarios/personal-medico";
 
@@ -96,6 +97,7 @@ const PersonalMedico = () => {
     setEditData({});
   };
 
+  // MODIFICADO: Actualizar usuario con SweetAlert2
   const handleEditSave = async () => {
     if (!editData?.email) {
       setError("No se puede actualizar: falta el email del usuario.");
@@ -146,17 +148,44 @@ const PersonalMedico = () => {
       );
       setError("");
       handleEditCancel();
+      // SweetAlert2 éxito
+      Swal.fire({
+        title: 'Actualizado',
+        text: 'El usuario ha sido actualizado exitosamente.',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false
+      });
     } catch (e) {
       setError(e?.message || "Error de conexión al actualizar usuario.");
+      Swal.fire({
+        title: 'Error',
+        text: e?.message || "Error de conexión al actualizar usuario.",
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: true
+      });
     } finally {
       setSavingKey(null);
     }
   };
 
-  // Eliminar
+  // ELIMINAR con SweetAlert2
   const handleDelete = async (usuario) => {
     const rowKey = getRowKey(usuario);
-    if (!window.confirm("¿Seguro que deseas eliminar este usuario?")) return;
+
+    const result = await Swal.fire({
+      title: '¿Eliminar usuario?',
+      text: "Esta acción no se puede deshacer.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+    });
+
+    if (!result.isConfirmed) return;
 
     const token = localStorage.getItem("token");
     if (!token) {
@@ -184,14 +213,28 @@ const PersonalMedico = () => {
 
       setUsuarios((prev) => prev.filter((u) => getRowKey(u) !== rowKey));
       setError("");
+      Swal.fire({
+        title: 'Eliminado',
+        text: 'El usuario ha sido eliminado exitosamente.',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false
+      });
     } catch (e) {
       setError(e?.message || "Error de conexión al eliminar usuario.");
+      Swal.fire({
+        title: 'Error',
+        text: e?.message || "Error de conexión al eliminar usuario.",
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: true
+      });
     } finally {
       setDeletingKey(null);
     }
   };
 
-  // Añadir personal médico
+  // MODIFICADO: Añadir usuario con SweetAlert2
   const handleAddChange = (e) => {
     setNewUsuarioData({ ...newUsuarioData, [e.target.name]: e.target.value });
   };
@@ -229,6 +272,13 @@ const PersonalMedico = () => {
       if (!res.ok) {
         const err = await res.json().catch(() => {});
         setError(err?.error || "Error añadiendo usuario");
+        Swal.fire({
+          title: 'Error',
+          text: err?.error || "Error añadiendo usuario",
+          icon: 'error',
+          timer: 3000,
+          showConfirmButton: true
+        });
       } else {
         setNewUsuarioData({
           nombre: "",
@@ -240,9 +290,24 @@ const PersonalMedico = () => {
         });
         setShowAddForm(false);
         fetchLista();
+        // SweetAlert2 éxito
+        Swal.fire({
+          title: 'Agregado',
+          text: 'El usuario ha sido agregado exitosamente.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
       }
     } catch {
       setError("Error de conexión al añadir usuario.");
+      Swal.fire({
+        title: 'Error',
+        text: "Error de conexión al añadir usuario.",
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: true
+      });
     }
     setAddLoading(false);
   };

@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import Sidebar from "../components/sidebar";
 import "./styles/Pacientes.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons"; // ← IMPORTA EL OJITO
 
 const ENDPOINT = "http://localhost:5000/api/formularios/pacientes";
 
@@ -53,11 +55,17 @@ const Pacientes = () => {
     fetchLista();
   }, [fetchLista]);
 
+  // Aquí podrías manejar la navegación a la vista de detalles si tienes una ruta
+  // const handleVerDetalles = (id) => {
+  //   // Por ejemplo, navegar a /pacientes/detalle/:id
+  //   // navigate(`/pacientes/detalle/${id}`);
+  // };
+
   return (
     <div className="pacientes-layout">
       <Sidebar />
       <div className="pacientes-content container">
-        <h2 className="mt-4">Pacientes (Niños)</h2>
+        <h2 className="mt-4">Pacientes </h2>
         <br />
         <div className="card mb-4">
           <div className="card-header">
@@ -78,12 +86,13 @@ const Pacientes = () => {
                     <th>Sexo</th>
                     <th>Cuidador principal</th>
                     <th>Nacionalidad</th>
+                    <th style={{ textAlign: "center" }}>Detalles</th> {/* NUEVA COLUMNA */}
                   </tr>
                 </thead>
                 <tbody>
                   {pacientes.length === 0 ? (
                     <tr>
-                      <td colSpan={5} style={{ textAlign: "center" }}>
+                      <td colSpan={6} style={{ textAlign: "center" }}>
                         No hay pacientes registrados.
                       </td>
                     </tr>
@@ -95,6 +104,16 @@ const Pacientes = () => {
                         <td>{p.sexo}</td>
                         <td>{p.cuidador_principal}</td>
                         <td>{p.nacionalidad}</td>
+                        <td style={{ textAlign: "center" }}>
+                          <button
+                            className="btn btn-info btn-sm"
+                            // onClick={() => handleVerDetalles(p.paciente_id)} // Actívalo si tienes lógica de detalles
+                            title="Ver detalles"
+                            aria-label="Ver detalles"
+                          >
+                            <FontAwesomeIcon icon={faEye} />
+                          </button>
+                        </td>
                       </tr>
                     ))
                   )}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import { useUser } from "../context/userContext";
-import "./styles/Admin.css"; // Crea este archivo para los estilos específicos
+import "./styles/Admin.css";
 
 const Admin = () => {
   const { user } = useUser();
@@ -31,19 +31,20 @@ const Admin = () => {
     <div className="admin-layout">
       <Sidebar />
       <div className="admin-content">
-        <div className="container">
+        <div className="container admin-container">
           <br />
           <h2>Panel de Administración - Bienvenido, {userName}</h2>
           <ol className="breadcrumb mb-4">
             <li className="breadcrumb-item active">Dashboard</li>
           </ol>
 
-          <div className="row">
+          {/* Tarjetas resumen */}
+          <div className="row summary-row">
             {summaryCards.map((card, idx) => (
-              <div className="col-xl-3 col-md-6" key={idx}>
+              <div className="col-xl-3 col-md-6 card-col" key={idx}>
                 <div className={`card bg-${card.color} text-white mb-4`}>
                   <div className="card-body">
-                    <span style={{ fontSize: "2rem", fontWeight: "bold" }}>{card.value}</span>
+                    <span>{card.value}</span>
                     <br />
                     {card.title}
                   </div>
@@ -56,28 +57,29 @@ const Admin = () => {
             ))}
           </div>
 
-          <div className="row">
-            <div className="col-xl-6">
+          {/* Gráficos */}
+          <div className="row graph-row">
+            <div className="col-xl-6 card-col">
               <div className="card mb-4">
                 <div className="card-header">
                   <i className="fas fa-chart-area me-1"></i>
                   Evolución de Evaluaciones
                 </div>
                 <div className="card-body">
-                  <div style={{height: "200px", background: "#f8f9fa", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                  <div className="dummy-graph">
                     <span>Gráfico área (Chart.js aquí)</span>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="col-xl-6">
+            <div className="col-xl-6 card-col">
               <div className="card mb-4">
                 <div className="card-header">
                   <i className="fas fa-chart-bar me-1"></i>
                   Estadísticas
                 </div>
                 <div className="card-body">
-                  <div style={{height: "200px", background: "#f8f9fa", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                  <div className="dummy-graph">
                     <span>Gráfico barras (Chart.js aquí)</span>
                   </div>
                 </div>
@@ -85,6 +87,7 @@ const Admin = () => {
             </div>
           </div>
 
+          {/* Tabla de evaluaciones */}
           <div className="card mb-4">
             <div className="card-header">
               <i className="fas fa-table me-1"></i>

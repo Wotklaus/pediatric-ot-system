@@ -3,6 +3,7 @@ import Sidebar from "../components/sidebar";
 import "./styles/Clientes.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash, faSave, faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
+import Swal from 'sweetalert2'; // <--- IMPORTA SWEETALERT2
 
 const ENDPOINT = "http://localhost:5000/api/pg/usuarios/clientes";
 
@@ -79,45 +80,84 @@ const Clientes = () => {
     setEditData({ ...editData, [e.target.name]: e.target.value });
   };
 
+  // MODIFICADO: Actualizar usuario con SweetAlert2
   const handleEditSave = async () => {
-    const token = localStorage.getItem("token");
-    setLoading(true);
+  const token = localStorage.getItem("token");
+  setLoading(true);
 
-    const datos = {
-      nombre: editData.nombre || null,
-      apellido: editData.apellido || null,
-      cedula: editData.cedula || null,
-      telefono: editData.telefono || null,
-    };
-
-    try {
-      const res = await fetch(
-        `http://localhost:5000/api/pg/usuarios/${editData.email}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(datos),
-        }
-      );
-      if (!res.ok) {
-        const err = await res.json().catch(() => {});
-        setError(err?.error || "Error actualizando usuario");
-      } else {
-        setEditId(null);
-        setEditData({});
-        fetchLista();
-      }
-    } catch {
-      setError("Error de conexión al actualizar usuario.");
-    }
-    setLoading(false);
+  const datos = {
+    nombre: editData.nombre || null,
+    apellido: editData.apellido || null,
+    cedula: editData.cedula || null,
+    telefono: editData.telefono || null,
   };
 
+  try {
+    const res = await fetch(
+      `http://localhost:5000/api/pg/usuarios/${editData.email}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(datos),
+      }
+    );
+    if (!res.ok) {
+      const err = await res.json().catch(() => {});
+      setError(err?.error || "Error actualizando usuario");
+      Swal.fire({
+        title: 'Error',
+        text: err?.error || "Error actualizando usuario",
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: true
+      });
+    } else {
+      setUsuarios((prev) =>
+        prev.map((u) =>
+          u.id === editId ? { ...u, ...datos } : u
+        )
+      );
+      setEditId(null);
+      setEditData({});
+      Swal.fire({
+        title: 'Actualizado',
+        text: 'El cliente ha sido actualizado exitosamente.',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false
+      });
+    }
+  } catch {
+    setError("Error de conexión al actualizar usuario.");
+    Swal.fire({
+      title: 'Error',
+      text: "Error de conexión al actualizar usuario.",
+      icon: 'error',
+      timer: 3000,
+      showConfirmButton: true
+    });
+  }
+  setLoading(false);
+};
+
+  // ELIMINAR con SweetAlert2
   const handleDelete = async (id, email) => {
-    if (!window.confirm("¿Seguro que deseas eliminar este cliente?")) return;
+    const result = await Swal.fire({
+      title: '¿Eliminar cliente?',
+      text: "Esta acción no se puede deshacer.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+    });
+
+    if (!result.isConfirmed) return;
+
     const token = localStorage.getItem("token");
     setLoading(true);
     try {
@@ -128,12 +168,33 @@ const Clientes = () => {
       if (!res.ok) {
         const err = await res.json().catch(() => { });
         setError(err?.error || "Error eliminando usuario");
+        Swal.fire({
+          title: 'Error',
+          text: err?.error || "Error eliminando usuario",
+          icon: 'error',
+          timer: 3000,
+          showConfirmButton: true
+        });
       } else {
         setUsuarios(usuarios.filter((u) => u.id !== id));
         setError("");
+        Swal.fire({
+          title: 'Eliminado',
+          text: 'El cliente ha sido eliminado exitosamente.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
       }
     } catch {
       setError("Error de conexión al eliminar usuario.");
+      Swal.fire({
+        title: 'Error',
+        text: "Error de conexión al eliminar usuario.",
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: true
+      });
     }
     setLoading(false);
   };
@@ -143,6 +204,7 @@ const Clientes = () => {
     setNewUsuarioData({ ...newUsuarioData, [e.target.name]: e.target.value });
   };
 
+  // MODIFICADO: Añadir usuario con SweetAlert2
   const handleAddUsuario = async (e) => {
     e.preventDefault();
     if (
@@ -154,6 +216,13 @@ const Clientes = () => {
       !newUsuarioData.contrasena.trim()
     ) {
       setError("Todos los campos son obligatorios.");
+      Swal.fire({
+        title: 'Error',
+        text: "Todos los campos son obligatorios.",
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: true
+      });
       return;
     }
     setAddLoading(true);
@@ -179,6 +248,13 @@ const Clientes = () => {
       const respData = await res.json().catch(() => ({}));
       if (!res.ok) {
         setError(respData?.error || "Error añadiendo cliente");
+        Swal.fire({
+          title: 'Error',
+          text: respData?.error || "Error añadiendo cliente",
+          icon: 'error',
+          timer: 3000,
+          showConfirmButton: true
+        });
       } else {
         setNewUsuarioData({
           nombre: "",
@@ -190,9 +266,23 @@ const Clientes = () => {
         });
         setShowAddForm(false);
         fetchLista();
+        Swal.fire({
+          title: 'Agregado',
+          text: 'El cliente ha sido agregado exitosamente.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
       }
     } catch {
       setError("Error de conexión al añadir cliente.");
+      Swal.fire({
+        title: 'Error',
+        text: "Error de conexión al añadir cliente.",
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: true
+      });
     }
     setAddLoading(false);
   };

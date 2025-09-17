@@ -40,7 +40,7 @@
 
 /* Card contenedor */
 .clientes-card {
-  background: #fff;
+  background: #ffffff;
   border-radius: 11px;
   box-shadow: 0 3px 17px rgba(0, 0, 0, 0.13);
   border: 1px solid #d7d1d1;
@@ -48,6 +48,7 @@
   width: 100%;
   min-width: 900px;
   box-sizing: border-box;
+  padding: 0.1rem;
 }
 
 .clientes-card-header {
@@ -102,11 +103,12 @@
 }
 
 .clientes-table th {
-  background: #f2f3f4;
+  background: #355472;
   color: #111112;
   font-weight: 600;
   border-bottom: 2.5px solid #9e9fa1;
   text-align: center;
+  color: #ffffff;
 }
 
 /* Columnas con ancho fijo y mínimo */

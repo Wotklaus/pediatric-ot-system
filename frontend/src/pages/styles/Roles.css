@@ -108,11 +108,12 @@
 
 /* Encabezado de tabla */
 .roles-table th {
-  background: #f2f3f4;
+  background: #355472;
   color: #111112;
   font-weight: 600;
   border-bottom: 2.5px solid #9e9fa1;
   text-align: center;
+  color: #ffffff;
 }
 
 /* Última columna centrada */
@@ -188,7 +189,7 @@
 /* Formulario para añadir rol */
 .roles-add-form {
  
-  background: #e7e8e9;
+  background: #ffffff;
   padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,.05);

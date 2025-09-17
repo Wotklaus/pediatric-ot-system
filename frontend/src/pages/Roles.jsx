@@ -3,6 +3,7 @@ import Sidebar from "../components/sidebar";
 import "./styles/Roles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash, faSave, faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
+import Swal from 'sweetalert2'; // <--- IMPORTA SWEETALERT2
 
 const ENDPOINT = "http://localhost:5000/api/roles";
 
@@ -73,6 +74,7 @@ const Roles = () => {
     setEditData({ ...editData, [e.target.name]: e.target.value });
   };
 
+  // MODIFICADO: Actualizar rol con SweetAlert2
   const handleEditSave = async () => {
     const token = localStorage.getItem("token");
     setLoading(true);
@@ -97,20 +99,53 @@ const Roles = () => {
       if (!res.ok) {
         const err = await res.json().catch(() => {});
         setError(err?.error || "Error actualizando rol");
+        Swal.fire({
+          title: 'Error',
+          text: err?.error || "Error actualizando rol",
+          icon: 'error',
+          timer: 3000,
+          showConfirmButton: true
+        });
       } else {
         setEditId(null);
         setEditData({});
         fetchLista();
+        Swal.fire({
+          title: 'Actualizado',
+          text: 'El rol ha sido actualizado exitosamente.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
       }
     } catch {
       setError("Error de conexión al actualizar rol.");
+      Swal.fire({
+        title: 'Error',
+        text: "Error de conexión al actualizar rol.",
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: true
+      });
     }
     setLoading(false);
   };
 
-  // Eliminar
+  // ELIMINAR con SweetAlert2
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Seguro que deseas eliminar este rol?")) return;
+    const result = await Swal.fire({
+      title: '¿Eliminar rol?',
+      text: "Esta acción no se puede deshacer.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+    });
+
+    if (!result.isConfirmed) return;
+
     const token = localStorage.getItem("token");
     setLoading(true);
     try {
@@ -121,17 +156,38 @@ const Roles = () => {
       if (!res.ok) {
         const err = await res.json().catch(() => { });
         setError(err?.error || "Error eliminando rol");
+        Swal.fire({
+          title: 'Error',
+          text: err?.error || "Error eliminando rol",
+          icon: 'error',
+          timer: 3000,
+          showConfirmButton: true
+        });
       } else {
         setRoles(roles.filter((r) => r.id !== id));
         setError("");
+        Swal.fire({
+          title: 'Eliminado',
+          text: 'El rol ha sido eliminado exitosamente.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
       }
     } catch {
       setError("Error de conexión al eliminar rol.");
+      Swal.fire({
+        title: 'Error',
+        text: "Error de conexión al eliminar rol.",
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: true
+      });
     }
     setLoading(false);
   };
 
-  // Añadir nuevo rol
+  // Añadir nuevo rol con SweetAlert2
   const handleAddChange = (e) => {
     setNewRolData({ ...newRolData, [e.target.name]: e.target.value });
   };
@@ -140,6 +196,13 @@ const Roles = () => {
     e.preventDefault();
     if (!newRolData.nombre.trim()) {
       setError("El nombre del rol es obligatorio.");
+      Swal.fire({
+        title: 'Error',
+        text: "El nombre del rol es obligatorio.",
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: true
+      });
       return;
     }
     setAddLoading(true);
@@ -157,13 +220,34 @@ const Roles = () => {
       if (!res.ok) {
         const err = await res.json().catch(() => {});
         setError(err?.error || "Error añadiendo rol");
+        Swal.fire({
+          title: 'Error',
+          text: err?.error || "Error añadiendo rol",
+          icon: 'error',
+          timer: 3000,
+          showConfirmButton: true
+        });
       } else {
         setNewRolData({ nombre: "" });
         setShowAddForm(false);
         fetchLista();
+        Swal.fire({
+          title: 'Agregado',
+          text: 'El rol ha sido agregado exitosamente.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
       }
     } catch {
       setError("Error de conexión al añadir rol.");
+      Swal.fire({
+        title: 'Error',
+        text: "Error de conexión al añadir rol.",
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: true
+      });
     }
     setAddLoading(false);
   };

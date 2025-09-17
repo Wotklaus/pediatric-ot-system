@@ -1,75 +1,84 @@
-/* Espacio para el Sidebar y Navbar */
+/* --- Espacio para el Sidebar y Navbar --- */
 .main-content-with-sidebar {
-  margin-left: 250px; /* Sidebar ocupa 250px */
-  padding-top: 64px;  /* Ajusta este valor al alto real de tu navbar */
+  margin-left: 250px;
+  padding-top: 64px;
   min-height: 100vh;
   box-sizing: border-box;
-  background: #f4f3f3;
-  width: 120%;
+  background: #f5f6fa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(100vw - 250px);
 }
 
-/* Contenedor principal de todas las evaluaciones */
+/* --- Contenedor principal de todas las evaluaciones --- */
 .mis-formularios {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 2.5rem;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1050px;
   margin: 0 auto;
+  padding: 0 1.2rem;
 }
 
-/* Cada evaluación en vertical */
+/* --- Cada evaluación en vertical --- */
 .formulario-card {
-  background-color: #ffffff;
-  border: 1.5px solid #d1d1d1;
+  background: #fff;
   border-radius: 18px;
-  box-shadow: 0 2px 14px rgba(0,0,0,0.10);
-  padding: 28px 28px 18px 28px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.11), 0 1.5px 4px rgba(0,0,0,0.09);
+  border: 1.5px solid #d1d1d1;
+  padding: 2.5rem 3rem 2rem 3rem;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 2.2rem;
+  margin: 2.5rem auto;
 }
 
-/* Título de evaluación */
+/* --- Título de evaluación --- */
 .evaluacion-titulo h2 {
-  font-size: 26px;
-  color: #3b3b3b;
-  margin-bottom: 16px;
+  font-size: 2.4rem;
+  color: #295179;
+  margin-bottom: 1.2rem;
   letter-spacing: 1px;
-  font-weight: 700;
+  font-weight: 800;
+  text-align: center;
 }
 
-/* Cards en fila arriba */
+/* --- Cards en fila arriba --- */
 .info-sections-row {
   display: flex;
   flex-direction: row;
-  gap: 22px;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
 }
+
+/* --- Card de sección interna --- */
 .section-card {
-  background-color: #e1e4e7;
+  background: #f7f9fc;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   border: 1px solid #cce2fa;
-  border-radius: 12px;
-  box-shadow: 0 1px 5px rgba(60,130,255,0.06);
-  padding: 18px 15px;
-  flex: 1;
-  min-width: 0;
+  padding: 1.5rem 1.2rem;
+  flex: 1 1 320px;
+  min-width: 270px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0.3rem;
 }
+
 .section-card h3 {
-  margin-bottom: 7px;
+  margin-bottom: 1rem;
   color: #074f97;
   border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 4px;
-  font-size: 18px;
-  font-weight: 600;
+  padding-bottom: 0.35rem;
+  font-size: 1.18rem;
+  font-weight: 700;
   text-align: center;
 }
 .section-card p {
-  font-size: 15px;
+  font-size: 1rem;
   margin: 2px 0;
 }
 .section-card p strong {
@@ -77,153 +86,123 @@
   color: #1a1a1a;
 }
 
-/* Hitos abajo */
+/* --- Hitos abajo --- */
 .hitos-desarrollo {
-  margin-top: 10px;
+  margin-top: 1.2rem;
 }
 .hitos-desarrollo h3 {
-  margin-bottom: 8px;
+  margin-bottom: 0.7rem;
 }
 .hitos {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 15px;
-  margin-top: 8px;
+  gap: 1.1rem;
+  margin-top: 0.5rem;
 }
 .hito-card {
   border: 1px solid #d1d1d1;
   border-radius: 8px;
-  padding: 10px 12px;
-  background-color: #f9f9f9;
-  box-shadow: 0 1px 5px rgba(60,130,255,0.04);
+  padding: 1rem 1rem;
+  background: #eaf3fa;
+  box-shadow: 0 1px 4px rgba(41,81,121,0.07);
 }
 .hito-card h4 {
-  font-size: 15px;
-  margin-bottom: 7px;
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
   color: #2e3d49;
 }
 .hito-card p {
-  font-size: 14px;
+  font-size: 0.95rem;
   margin: 2px 0;
 }
 .hito-card ul {
-  margin: 5px 0 0 15px;
+  margin: 4px 0 0 1.2rem;
   padding: 0;
   list-style-type: disc;
 }
 .hito-card li {
-  font-size: 13px;
-  margin-bottom: 3px;
+  font-size: 0.9rem;
+  margin-bottom: 2px;
 }
 
-/* Botón detalles */
+/* --- Botón detalles --- */
 .evaluacion-detalles-btn-container {
   display: flex;
   justify-content: flex-end;
-  margin-top: 18px;
+  margin-top: 1.2rem;
 }
 .evaluacion-detalles-btn {
-  background-color: #2264a8;
+  background: #2264a8;
   color: #fff;
   border: none;
   border-radius: 7px;
-  padding: 8px 24px;
+  padding: 0.7rem 1.7rem;
   font-weight: 600;
-  font-size: 15px;
-  cursor: not-allowed;
-  opacity: 0.8;
+  font-size: 0.98rem;
+  cursor: pointer;
   box-shadow: 0 1px 4px rgba(34,100,168,0.13);
   transition: background 0.2s;
 }
+.evaluacion-detalles-btn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
 
-/* Mensaje de error o vacío */
+/* --- Mensaje de error o vacío --- */
 .error {
   color: #d32f2f;
   font-weight: bold;
   text-align: center;
-  font-size: 16px;
+  font-size: 1.08rem;
   margin-top: 80px;
 }
 
-/* RESPONSIVE */
-@media (max-width: 1200px) {
-  .info-sections-row {
-    flex-direction: column;
-    gap: 16px;
-  }
-  .main-content-with-sidebar {
-    max-width: 100vw;
-    padding-left: 0;
-    padding-right: 10px;
-  }
-}
-@media (max-width: 900px) {
-  .main-content-with-sidebar {
-    margin-left: 190px; /* Sidebar más estrecho en móvil según tu CSS */
-    padding-top: 54px;  /* Navbar más pequeño en móvil si aplica */
-    padding-right: 4px;
-  }
-  .mis-formularios {
-    padding: 0 4px;
-    gap: 14px;
-  }
-  .formulario-card {
-    padding: 12px 5px 10px 5px;
-    gap: 16px;
-  }
-  .section-card {
-    padding: 10px 4px;
-  }
-  .hitos {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Panel de detalles de evaluación expandido */
+/* --- Panel de detalles de evaluación expandido --- */
 .evaluacion-detalles-expanded {
-  background-color: #f8fafc;
+  background: #fdf6f5;
   border: 1.2px solid #bdd2ed;
   border-radius: 14px;
   box-shadow: 0 1px 8px rgba(34,100,168,0.08);
-  padding: 24px 28px 18px 28px;
-  margin-top: 18px;
+  padding: 1.5rem 2rem 1rem 2rem;
+  margin-top: 1.2rem;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1.1rem;
 }
 
-/* Título de resultados */
+/* --- Título de resultados --- */
 .evaluacion-detalles-expanded h3 {
-  font-size: 22px;
-  color: #45484c;
-  margin-bottom: 10px;
-  font-weight: 600;
+  font-size: 1.3rem;
+  color: #b34747;
+  margin-bottom: 0.7rem;
+  font-weight: 700;
   letter-spacing: 0.5px;
+  text-align: center;
 }
 
-/* Listado de respuestas */
+/* --- Listado de respuestas --- */
 .evaluacion-respuestas-list {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  margin-top: 3px;
+  gap: 1.1rem;
+  margin-top: 0.2rem;
 }
 
-/* Card para cada pregunta respondida */
+/* --- Card para cada pregunta respondida --- */
 .evaluacion-respuesta-item {
-  background-color: #eaeef4;
+  background: #fff;
   border: 1px solid #cce2fa;
   border-radius: 10px;
   box-shadow: 0 1px 5px rgba(34,100,168,0.06);
-  padding: 18px 14px 12px 14px;
+  padding: 1rem 1rem 0.7rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 0.5rem;
 }
 
 /* Pregunta */
 .evaluacion-respuesta-item > div:first-child {
-  font-size: 17px;
+  font-size: 1.07rem;
   color: #46494d;
   font-weight: 600;
   margin-bottom: 1px;
@@ -231,7 +210,7 @@
 
 /* Opción elegida */
 .evaluacion-respuesta-item > div:nth-child(2) {
-  font-size: 15px;
+  font-size: 1rem;
   color: #46494d;
   font-weight: 500;
   margin-bottom: 2px;
@@ -239,40 +218,70 @@
 
 /* Contextos asociados */
 .evaluacion-respuesta-item ul {
-  margin: 6px 0 0 18px;
+  margin: 6px 0 0 1.2rem;
   padding: 0;
   list-style-type: disc;
 }
 .evaluacion-respuesta-item li {
-  font-size: 13px;
+  font-size: 0.9rem;
   color: #080808;
   margin-bottom: 2px;
 }
-
-/* Subtítulo Contextos */
 .evaluacion-respuesta-item strong {
   color: #1d3670;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.95rem;
 }
 
-/* Responsive para detalles expandido */
-@media (max-width: 900px) {
+/* --- Responsive --- */
+@media (max-width: 1200px) {
+  .info-sections-row {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .main-content-with-sidebar {
+    max-width: 100vw;
+    padding-left: 0;
+    padding-right: 1rem;
+    margin-left: 190px;
+  }
+  .mis-formularios {
+    gap: 1.4rem;
+  }
+  .formulario-card {
+    padding: 1rem 0.5rem 0.7rem 0.5rem;
+    gap: 1.2rem;
+  }
+  .section-card {
+    padding: 0.9rem 0.6rem;
+  }
+  .hitos {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .main-content-with-sidebar {
+    margin-left: 0;
+    padding-top: 44px;
+    padding-right: 0.2rem;
+  }
+  .mis-formularios {
+    padding: 0 0.2rem;
+    gap: 0.7rem;
+  }
+  .formulario-card {
+    padding: 0.7rem 0.1rem 0.5rem 0.1rem;
+    gap: 0.6rem;
+  }
+  .section-card {
+    padding: 0.5rem 0.1rem;
+  }
+  .hitos-desarrollo {
+    margin-top: 0.6rem;
+  }
   .evaluacion-detalles-expanded {
-    padding: 13px 4px 8px 4px;
-    gap: 10px;
-  }
-  .evaluacion-respuesta-item {
-    padding: 8px 3px 7px 3px;
-    gap: 5px;
-  }
-  .evaluacion-respuesta-item > div:first-child {
-    font-size: 15px;
-  }
-  .evaluacion-respuesta-item > div:nth-child(2) {
-    font-size: 13px;
-  }
-  .evaluacion-respuesta-item li {
-    font-size: 12px;
+    padding: 0.7rem 0.2rem 0.3rem 0.2rem;
+    gap: 0.4rem;
   }
 }

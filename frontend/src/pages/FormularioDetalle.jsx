@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import "./styles/MisFormularios.css";
+import "./styles/FormularioDetalle.css";
 
 // Mapea razones técnicas a frases amigables
 const convertirRazon = (razon) => {
@@ -260,18 +260,18 @@ export default function FormularioDetalle() {
   return (
     <>
       <Sidebar />
-      <div className="main-content-with-sidebar">
+      <div className="fd-main-content-with-sidebar">
         {error ? (
-          <p className="error">{error}</p>
+          <p className="fd-error">{error}</p>
         ) : !formulario ? (
-          <p>Cargando...</p>
+          <p className="fd-loading">Cargando...</p>
         ) : (
-          <div className="formulario-card">
-            <div className="evaluacion-titulo">
+          <div className="fd-formulario-card">
+            <div className="fd-evaluacion-titulo">
               <h2>Historia Clínica: {formulario.nombre_nino}</h2>
             </div>
-            <div className="info-sections-row">
-              <div className="section-card datos-paciente">
+            <div className="fd-info-sections-row">
+              <div className="fd-section-card fd-datos-paciente">
                 <h3>Datos del paciente</h3>
                 <p><strong>Nombre:</strong> {formulario.nombre_nino}</p>
                 <p><strong>Edad:</strong> {formulario.edad}</p>
@@ -286,7 +286,7 @@ export default function FormularioDetalle() {
                 <p><strong>Cuidador durante el día:</strong> {formulario.cuidador_dia}</p>
                 {formulario.cuidador_dia_otro && <p><strong>Otro cuidador:</strong> {formulario.cuidador_dia_otro}</p>}
               </div>
-              <div className="section-card embarazo-partos">
+              <div className="fd-section-card fd-embarazo-partos">
                 <h3>Embarazo y parto</h3>
                 <p><strong>Embarazo controlado:</strong> {formulario.embarazo_controlado}</p>
                 <p><strong>Complicaciones:</strong> {Array.isArray(formulario.complicaciones) ? formulario.complicaciones.join(", ") : formulario.complicaciones}</p>
@@ -299,7 +299,7 @@ export default function FormularioDetalle() {
                 <p><strong>Dificultad nacimiento:</strong> {formulario.dificultad_nacimiento}</p>
                 {formulario.dificultad_nacimiento_detalle && <p><strong>Detalle dificultad:</strong> {formulario.dificultad_nacimiento_detalle}</p>}
               </div>
-              <div className="section-card alimentacion-desarrollo">
+              <div className="fd-section-card fd-alimentacion-desarrollo">
                 <h3>Alimentación y desarrollo</h3>
                 <p><strong>Lactancia:</strong> {formulario.lactancia}</p>
                 <p><strong>Dificultades alimentación:</strong> {formulario.dificultades_alimentacion}</p>
@@ -309,11 +309,11 @@ export default function FormularioDetalle() {
               </div>
             </div>
             {formulario.hitos &&
-              <div className="section-card hitos-desarrollo">
+              <div className="fd-section-card fd-hitos-desarrollo">
                 <h3>Hitos del desarrollo</h3>
-                <div className="hitos">
+                <div className="fd-hitos">
                   {Object.entries(formulario.hitos).map(([hito, info]) => (
-                    <div key={hito} className="hito-card">
+                    <div key={hito} className="fd-hito-card">
                       <h4>{hito.charAt(0).toUpperCase() + hito.slice(1)}</h4>
                       <p><strong>Edad registrada:</strong> {info.edad}</p>
                       <p><strong>Esperado:</strong> {info.esperado}</p>
@@ -329,20 +329,20 @@ export default function FormularioDetalle() {
                 </div>
               </div>
             }
-            <div className="section-card evaluacion-detalles-expanded">
+            <div className="fd-section-card fd-evaluacion-detalles-expanded">
               <h3>Resultados de la Evaluación</h3>
               {!evaluacion ? (
-                <p>Cargando evaluación...</p>
+                <p className="fd-loading">Cargando evaluación...</p>
               ) : evaluacion?.error ? (
-                <p className="error">{evaluacion.error}</p>
+                <p className="fd-error">{evaluacion.error}</p>
               ) : (
-                <div className="evaluacion-respuestas-list">
+                <div className="fd-evaluacion-respuestas-list">
                   {evaluacion.respuestas?.map((resp, i) => {
                     const preguntaObj = preguntasConfig.find(p => p.id === Number(resp.pregunta_id));
                     const opcionTexto = preguntaObj?.opciones?.[Number(resp.respuesta)] || resp.respuesta;
 
                     return (
-                      <div key={i} className="evaluacion-respuesta-item">
+                      <div key={i} className="fd-evaluacion-respuesta-item">
                         <div>
                           <strong> {i + 1}:</strong> {preguntaObj?.pregunta || `Pregunta ${resp.pregunta_id}`}
                         </div>
@@ -366,16 +366,16 @@ export default function FormularioDetalle() {
               )}
             </div>
             {/* --- BOTONES DE REPORTES --- */}
-            <div style={{ textAlign: "right", marginTop: "2rem" }}>
+            <div className="fd-report-buttons">
               <button
-                className="btn btn-warning me-2"
+                className="fd-btn fd-btn-warning fd-me-2"
                 onClick={handleGenerarCSV}
                 disabled={!formulario}
               >
                 Descargar reporte CSV
               </button>
               <button
-                className="btn btn-danger"
+                className="fd-btn fd-btn-danger"
                 onClick={handleGenerarPDF}
                 disabled={!formulario}
               >

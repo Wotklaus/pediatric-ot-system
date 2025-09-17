@@ -93,11 +93,12 @@
 }
 
 #pacientesTable th {
-  background: #f2f3f4;
+  background: #355472;
   color: #111112;
   font-weight: 600;
   border-bottom: 2.5px solid #9e9fa1;
   text-align: center;
+  color: #ffffff;
 }
 
 /* Columnas con ancho fijo y mínimo */
