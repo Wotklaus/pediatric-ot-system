@@ -526,3 +526,17 @@ BEGIN
         ORDER BY e.fecha DESC;
 END;
 $$ LANGUAGE plpgsql;
+
+-- Agrupar evaluaciones por recomendación
+CREATE OR REPLACE FUNCTION fn_resumen_recomendaciones()
+RETURNS TABLE(
+    recomendacion TEXT,
+    cantidad BIGINT
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT e.recomendacion, COUNT(*) as cantidad
+    FROM evaluaciones e
+    GROUP BY e.recomendacion;
+END;
+$$ LANGUAGE plpgsql;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import { useUser } from "../context/userContext";
+import EvolucionEvaluacionesChart from "../components/EvolucionEvaluacionesChart";
 import "./styles/Admin.css";
 
 const Admin = () => {
@@ -33,7 +34,7 @@ const Admin = () => {
       <div className="admin-content">
         <div className="container admin-container">
           <br />
-          <h2>Panel de Administración - Bienvenido, {userName}</h2>
+          <h2>Bienvenido, {userName}</h2>
           <ol className="breadcrumb mb-4">
             <li className="breadcrumb-item active">Dashboard</li>
           </ol>
@@ -66,9 +67,7 @@ const Admin = () => {
                   Evolución de Evaluaciones
                 </div>
                 <div className="card-body">
-                  <div className="dummy-graph">
-                    <span>Gráfico área (Chart.js aquí)</span>
-                  </div>
+                  <EvolucionEvaluacionesChart />
                 </div>
               </div>
             </div>

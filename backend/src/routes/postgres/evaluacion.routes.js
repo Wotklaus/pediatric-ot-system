@@ -120,4 +120,16 @@ router.get('/admin-evaluaciones', authMiddleware, async (req, res) => {
     }
 });
 
+
+
+router.get('/resumen-recomendacion', authMiddleware, async (req, res) => {
+    try {
+        const resumen = await evaluacionDAO.obtenerResumenRecomendaciones();
+        res.json(resumen);
+    } catch (error) {
+        console.error("❌ Error obteniendo el resumen de recomendaciones:", error);
+        res.status(500).json({ error: "Error obteniendo el resumen de recomendaciones" });
+    }
+});
+
 module.exports = router;

@@ -62,16 +62,33 @@ class EvaluacionDAO {
     }
 
     async obtenerTodasEvaluacionesConNino() {
-    try {
-        const result = await pool.query('SELECT * FROM fn_todas_evaluaciones_con_nino()');
-        return result.rows.map(row => new EvaluacionDTO(row)); // row.nombre_nino
-    } catch (error) {
-        console.error("❌ Error en obtenerTodasEvaluacionesConNino:", error);
-        throw error;
+        try {
+            const result = await pool.query('SELECT * FROM fn_todas_evaluaciones_con_nino()');
+            return result.rows.map(row => new EvaluacionDTO(row)); // row.nombre_nino
+        } catch (error) {
+            console.error("❌ Error en obtenerTodasEvaluacionesConNino:", error);
+            throw error;
+        }
     }
-}
 
-    
+    async obtenerResumenRecomendaciones() {
+        try {
+            const result = await pool.query(
+                'SELECT * FROM fn_resumen_recomendaciones()'
+            );
+            // Construir el objeto resumen
+            const resumen = {};
+            result.rows.forEach(row => {
+                resumen[row.recomendacion] = parseInt(row.cantidad, 10);
+            });
+            return resumen;
+        } catch (error) {
+            console.error("❌ Error en obtenerResumenRecomendaciones:", error);
+            throw error;
+        }
+    }
+
+
 }
 
 module.exports = EvaluacionDAO;
