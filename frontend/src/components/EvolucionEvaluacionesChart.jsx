@@ -1,50 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
+import styles from "../pages/styles/DashboardCharts.module.css";
 Chart.register(ArcElement, Tooltip, Legend);
 
 const colores = {
-  "No se recomienda atención": "#43a047", // verde
-  "Se recomienda atención": "#ffc107",    // amarillo
-  "Atención urgente": "#d32f2f"           // rojo
+  "No se recomienda atención": "#43a047",
+  "Se recomienda atención": "#ffc107",
+  "Atención urgente": "#d32f2f"
 };
 
 const EvolucionEvaluacionesChart = () => {
   const [datos, setDatos] = useState([0, 0, 0]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      setError("No autenticado. Por favor inicia sesión.");
-      setLoading(false);
-      return;
-    }
-
     fetch("http://localhost:5000/api/postgres/evaluaciones/resumen-recomendacion", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     })
-      .then(res => {
-        if (!res.ok) {
-          if (res.status === 401) throw new Error("No autorizado. Inicia sesión nuevamente.");
-          throw new Error("Error cargando datos.");
-        }
-        return res.json();
-      })
+      .then(res => res.json())
       .then(data => {
         setDatos([
           data["No se recomienda atención"] || 0,
           data["Se recomienda atención"] || 0,
           data["Atención urgente"] || 0
         ]);
-        setLoading(false);
-        setError("");
-      })
-      .catch(e => {
-        setError(e.message);
         setLoading(false);
       });
   }, []);
@@ -68,18 +49,34 @@ const EvolucionEvaluacionesChart = () => {
     ],
   };
 
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: { display: false }
+    },
+    cutout: "65%",
+  };
+
   return (
-    <div style={{ width: "100%", maxWidth: 350, margin: "0 auto" }}>
-      {loading && <div>Cargando...</div>}
-      {error && <div style={{ color: "#d32f2f", padding: "10px" }}>{error}</div>}
-      {!loading && !error && (
-        <>
-          <Doughnut data={chartData} />
-          <div style={{ textAlign: "center", marginTop: "10px" }}>
-            <strong>Distribución de recomendaciones</strong>
-          </div>
-        </>
-      )}
+    <div className={`${styles.chartCard} ${styles.donut}`}>
+      <div className={styles.chartTitle}>
+        <i className="fa fa-chart-pie" /> Evolución de Evaluaciones
+      </div>
+      <div className={styles.chartLegend}>
+        <span className={styles.legendItem}>
+          <span className={styles.legendColor} style={{background: colores["No se recomienda atención"]}} /> No se recomienda atención
+        </span>
+        <span className={styles.legendItem}>
+          <span className={styles.legendColor} style={{background: colores["Se recomienda atención"]}} /> Se recomienda atención
+        </span>
+        <span className={styles.legendItem}>
+          <span className={styles.legendColor} style={{background: colores["Atención urgente"]}} /> Atención urgente
+        </span>
+      </div>
+      <div className={styles.chartCanvas}>
+        {loading ? <div>Cargando...</div> :
+          <Doughnut data={chartData} options={options} />}
+      </div>
     </div>
   );
 };

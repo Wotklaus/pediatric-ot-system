@@ -132,4 +132,13 @@ router.get('/resumen-recomendacion', authMiddleware, async (req, res) => {
     }
 });
 
+router.get('/conteo-por-dia', authMiddleware, async (req, res) => {
+    try {
+        const conteoPorDia = await evaluacionDAO.obtenerConteoEvaluacionesPorDia();
+        res.json(conteoPorDia);
+    } catch (error) {
+        res.status(500).json({ error: "Error obteniendo conteo por día" });
+    }
+});
+
 module.exports = router;

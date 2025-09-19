@@ -540,3 +540,16 @@ BEGIN
     GROUP BY e.recomendacion;
 END;
 $$ LANGUAGE plpgsql;
+
+--Conteo de evaluaciones por día
+CREATE OR REPLACE FUNCTION fn_conteo_evaluaciones_por_dia()
+RETURNS TABLE(fecha TEXT, cantidad BIGINT) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT TO_CHAR(evaluaciones.fecha, 'YYYY-MM-DD') AS fecha, COUNT(*) AS cantidad
+    FROM evaluaciones
+    GROUP BY TO_CHAR(evaluaciones.fecha, 'YYYY-MM-DD')
+    ORDER BY TO_CHAR(evaluaciones.fecha, 'YYYY-MM-DD') ASC;
+END;
+
+$$ LANGUAGE plpgsql;

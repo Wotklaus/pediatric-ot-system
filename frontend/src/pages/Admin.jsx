@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import { useUser } from "../context/userContext";
 import EvolucionEvaluacionesChart from "../components/EvolucionEvaluacionesChart";
+import LineEvaluacionesPorDiaChart from "../components/LineEvaluacionesPorDiaChart";
+import styles from "./styles/DashboardCharts.module.css"; // Importa el CSS de charts
 import "./styles/Admin.css";
 
 const Admin = () => {
@@ -58,32 +60,10 @@ const Admin = () => {
             ))}
           </div>
 
-          {/* Gráficos */}
-          <div className="row graph-row">
-            <div className="col-xl-6 card-col">
-              <div className="card mb-4">
-                <div className="card-header">
-                  <i className="fas fa-chart-area me-1"></i>
-                  Evolución de Evaluaciones
-                </div>
-                <div className="card-body">
-                  <EvolucionEvaluacionesChart />
-                </div>
-              </div>
-            </div>
-            <div className="col-xl-6 card-col">
-              <div className="card mb-4">
-                <div className="card-header">
-                  <i className="fas fa-chart-bar me-1"></i>
-                  Estadísticas
-                </div>
-                <div className="card-body">
-                  <div className="dummy-graph">
-                    <span>Gráfico barras (Chart.js aquí)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          {/* Gráficos con mismo tamaño y distribución */}
+          <div className={styles.chartsGrid}>
+            <EvolucionEvaluacionesChart />
+            <LineEvaluacionesPorDiaChart />
           </div>
 
           {/* Tabla de evaluaciones */}

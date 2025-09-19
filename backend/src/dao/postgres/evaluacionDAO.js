@@ -88,6 +88,16 @@ class EvaluacionDAO {
         }
     }
 
+    async obtenerConteoEvaluacionesPorDia() {
+        try {
+            const result = await pool.query('SELECT * FROM fn_conteo_evaluaciones_por_dia()');
+            return result.rows; // [{ fecha: '2025-09-13', cantidad: 3 }, ...]
+        } catch (error) {
+            console.error("❌ Error en obtenerConteoEvaluacionesPorDia:", error);
+            throw error;
+        }
+    }
+
 
 }
 
