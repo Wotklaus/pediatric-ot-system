@@ -83,6 +83,15 @@ class FormularioDAO {
     }
   }
 
+  async contarPacientes() {
+    try {
+      const res = await pool.query("SELECT * FROM contar_pacientes();");
+      return res.rows[0].contar_pacientes;
+    } catch (error) {
+      console.error("Error en DAO.contarPacientes:", error);
+      throw error;
+    }
+  }
 
 }
 

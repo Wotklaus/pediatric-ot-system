@@ -98,6 +98,16 @@ class EvaluacionDAO {
         }
     }
 
+    async contarEvaluaciones() {
+        try {
+            const result = await pool.query('SELECT * FROM fn_contar_evaluaciones();');
+            return result.rows[0].fn_contar_evaluaciones;
+        } catch (error) {
+            console.error("❌ Error en contarEvaluaciones:", error);
+            throw error;
+        }
+    }
+
 
 }
 

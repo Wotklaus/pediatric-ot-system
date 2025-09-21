@@ -10,8 +10,8 @@ const LineEvaluacionesPorDiaChart = () => {
     datasets: [{
       label: "Evaluaciones agregadas por día",
       data: [],
-      borderColor: "#007bff",
-      backgroundColor: "#007bff",
+      borderColor: "#99a2acff",
+      backgroundColor: "#babfc4ff",
       fill: false,
       tension: 0.2,
       pointRadius: 5,
@@ -41,8 +41,8 @@ const LineEvaluacionesPorDiaChart = () => {
           datasets: [{
             label: "Evaluaciones agregadas por día",
             data: cantidades,
-            borderColor: "#007bff",
-            backgroundColor: "#007bff",
+            borderColor: "#76ace9ff",
+            backgroundColor: "#68b5f4ff",
             fill: false,
             tension: 0.2,
             pointRadius: 5,

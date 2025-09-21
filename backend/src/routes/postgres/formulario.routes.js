@@ -120,5 +120,18 @@ router.get("/pacientes", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/pacientes/count", authMiddleware, async (req, res) => {
+  try {
+    if (req.user.rol_id !== 1) {
+      return res.status(403).json({ error: "No tienes permiso" });
+    }
+    const count = await formularioDAO.contarPacientes();
+    res.json({ count });
+  } catch (error) {
+    console.error("Error al contar pacientes:", error);
+    res.status(500).json({ error: "Error al obtener contador de pacientes" });
+  }
+});
+
 
 module.exports = router;

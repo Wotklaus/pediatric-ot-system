@@ -127,4 +127,30 @@ router.post("/personal-medico", authMiddleware, async (req, res) => {
   }
 });
 
+// Contador de personal médico
+router.get("/personal-medico/count", authMiddleware, async (req, res) => {
+  try {
+    if (req.user.rol_id !== ADMIN) {
+      return res.status(403).json({ error: "No tienes permiso" });
+    }
+    const lista = await usuarioDAO.listarPersonalMedico();
+    res.json({ count: lista.length });
+  } catch (err) {
+    res.status(500).json({ error: "Error interno" });
+  }
+});
+
+// Contador de clientes (representantes)
+router.get("/clientes/count", authMiddleware, async (req, res) => {
+  try {
+    if (req.user.rol_id !== ADMIN) {
+      return res.status(403).json({ error: "No tienes permiso" });
+    }
+    const lista = await usuarioDAO.listarClientes();
+    res.json({ count: lista.length });
+  } catch (err) {
+    res.status(500).json({ error: "Error interno" });
+  }
+});
+
 module.exports = router;

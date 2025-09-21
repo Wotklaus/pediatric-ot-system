@@ -553,3 +553,25 @@ BEGIN
 END;
 
 $$ LANGUAGE plpgsql;
+
+--Contar pacientes 
+CREATE OR REPLACE FUNCTION contar_pacientes()
+RETURNS INTEGER AS $$
+BEGIN
+  RETURN (
+    SELECT COUNT(DISTINCT nombre_nino)
+    FROM formularios
+    WHERE nombre_nino IS NOT NULL AND nombre_nino <> ''
+  );
+END;
+$$ LANGUAGE plpgsql;
+
+--Contar evaluaciones
+CREATE OR REPLACE FUNCTION fn_contar_evaluaciones()
+RETURNS INTEGER AS $$
+BEGIN
+    RETURN (
+        SELECT COUNT(*) FROM evaluaciones
+    );
+END;
+$$ LANGUAGE plpgsql;

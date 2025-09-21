@@ -40,7 +40,7 @@ const Sidebar = () => {
                     Personal Médico
                   </Link>
                   <Link className="sidebar-link" to="/clientes">
-                    Clientes
+                    Representantes
                   </Link>
                   <Link className="sidebar-link" to="/pacientes">
                     Pacientes

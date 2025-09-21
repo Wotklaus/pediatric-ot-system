@@ -141,4 +141,17 @@ router.get('/conteo-por-dia', authMiddleware, async (req, res) => {
     }
 });
 
+router.get('/count', authMiddleware, async (req, res) => {
+    try {
+        if (req.user.rol_id !== 1) {
+            return res.status(403).json({ error: "No tienes permiso" });
+        }
+        const count = await evaluacionDAO.contarEvaluaciones();
+        res.json({ count });
+    } catch (error) {
+        console.error("❌ Error obteniendo contador de evaluaciones:", error);
+        res.status(500).json({ error: "Error obteniendo contador de evaluaciones" });
+    }
+});
+
 module.exports = router;
