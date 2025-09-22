@@ -291,13 +291,13 @@ const Clientes = () => {
     <div className="clientes-layout">
       <Sidebar className="clientes-sidebar" />
       <div className="clientes-content container">
-        <h2 className="mt-4">Clientes</h2>
+        <h2 className="mt-4">Representantes</h2>
         <br />
         <br />
         <div className="clientes-card mb-4">
           <div className="clientes-card-header">
             <i className="fas fa-users me-1"></i>
-            Registro de Clientes
+            Registro de Representantes
           </div>
           <div className="card-body">
             {loading ? (

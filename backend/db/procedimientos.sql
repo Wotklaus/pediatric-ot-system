@@ -575,3 +575,98 @@ BEGIN
     );
 END;
 $$ LANGUAGE plpgsql;
+
+-- Contar pacientes por mes 
+CREATE OR REPLACE FUNCTION listar_pacientes_por_mes()
+RETURNS TABLE(mes TEXT, total INTEGER)
+LANGUAGE sql
+AS $$
+  SELECT 
+    TO_CHAR(created_at, 'YYYY-MM') AS mes,
+    COUNT(*) AS total
+  FROM formularios
+  GROUP BY mes
+  ORDER BY mes;
+$$;
+
+--Listar esdad pacientes 
+
+CREATE OR REPLACE FUNCTION listar_distribucion_edad_pacientes()
+RETURNS TABLE(edad TEXT, total INTEGER)
+LANGUAGE sql
+AS $$
+  SELECT 
+    edad,
+    COUNT(*) AS total
+  FROM formularios
+  GROUP BY edad
+  ORDER BY edad;
+$$;
+
+--Listar promedio por áre
+CREATE OR REPLACE FUNCTION listar_promedio_puntaje_por_area()
+RETURNS TABLE(area TEXT, promedio NUMERIC)
+LANGUAGE sql
+AS $$
+SELECT
+    respuestas_area.area,
+    ROUND(AVG(respuestas_area.puntaje), 2) AS promedio
+FROM (
+    SELECT
+        (r->>'puntaje')::INT AS puntaje,
+        (r->>'pregunta_id')::INT AS pregunta_id,
+        preg.area AS area
+    FROM evaluaciones e,
+         jsonb_array_elements(e.respuestas) r
+    JOIN (
+        VALUES
+            (1, 'Actividades Básicas'),
+            (2, 'Actividades Básicas'),
+            (3, 'Actividades Básicas'),
+            (4, 'Actividades Básicas'),
+            (5, 'Juego y Participación Social'),
+            (6, 'Juego y Participación Social'),
+            (7, 'Juego y Participación Social'),
+            (8, 'Juego y Participación Social'),
+            (9, 'Habilidades del desempeño'),
+            (10, 'Habilidades del desempeño'),
+            (11, 'Habilidades del desempeño'),
+            (12, 'Habilidades del desempeño'),
+            (13, 'Habilidades del desempeño'),
+            (14, 'Habilidades del desempeño'),
+            (15, 'Habilidades del desempeño'),
+            (16, 'Habilidades del desempeño'),
+            (17, 'Habilidades del desempeño'),
+            (18, 'Habilidades del desempeño')
+    ) AS preg(pregunta_id, area)
+    ON (r->>'pregunta_id')::INT = preg.pregunta_id
+) AS respuestas_area
+GROUP BY respuestas_area.area
+ORDER BY respuestas_area.area;
+$$;
+
+--Listar problemas hitos 
+CREATE OR REPLACE FUNCTION listar_problemas_hitos_porcentaje()
+RETURNS TABLE(hito TEXT, porcentaje NUMERIC)
+LANGUAGE sql
+AS $$
+WITH conteos AS (
+    SELECT
+        key AS hito,
+        COUNT(*) AS total
+    FROM (
+        SELECT
+            key,
+            value
+        FROM formularios,
+             jsonb_each(hitos)
+        WHERE (value->>'esperado') = 'no'
+    ) sub
+    GROUP BY key
+)
+SELECT
+    hito,
+    ROUND((total * 100.0) / SUM(total) OVER (), 2) AS porcentaje
+FROM conteos
+ORDER BY porcentaje DESC;
+$$;

@@ -111,3 +111,82 @@
     max-height: 140px; /* Reduce la altura del área del gráfico */
   }
 }
+
+/* -------------------- Pie Chart Custom Layout -------------------- */
+.pieChartLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos mitades iguales */
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.pieChartCanvas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.pieChartCanvas > canvas {
+  width: 90% !important;
+  height: 90% !important;
+  max-width: 220px !important;
+  max-height: 220px !important;
+  margin: 0 auto;
+  display: block;
+}
+
+.pieChartLegend {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+  overflow-y: auto;
+  gap: 12px;
+  padding-left: 8px;
+  font-size: 1.08rem;
+}
+
+.donutChartLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos mitades iguales */
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.donutChartCanvas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.donutChartCanvas > canvas {
+  width: 90% !important;
+  height: 90% !important;
+  max-width: 220px !important;
+  max-height: 220px !important;
+  margin: 0 auto;
+  display: block;
+}
+
+.donutChartLegend {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+  overflow-y: auto;
+  gap: 12px;
+  padding-left: 8px;
+  font-size: 1.08rem;
+}
+
+

@@ -62,20 +62,23 @@ const EvolucionEvaluacionesChart = () => {
       <div className={styles.chartTitle}>
         <i className="fa fa-chart-pie" /> Evolución de Evaluaciones
       </div>
-      <div className={styles.chartLegend}>
-        <span className={styles.legendItem}>
-          <span className={styles.legendColor} style={{background: colores["No se recomienda atención"]}} /> No se recomienda atención
-        </span>
-        <span className={styles.legendItem}>
-          <span className={styles.legendColor} style={{background: colores["Se recomienda atención"]}} /> Se recomienda atención
-        </span>
-        <span className={styles.legendItem}>
-          <span className={styles.legendColor} style={{background: colores["Atención urgente"]}} /> Atención urgente
-        </span>
-      </div>
-      <div className={styles.chartCanvas}>
-        {loading ? <div>Cargando...</div> :
-          <Doughnut data={chartData} options={options} />}
+      <div className={styles.donutChartLayout}>
+        <div className={styles.donutChartCanvas}>
+          {loading ? <div>Cargando...</div> :
+            <Doughnut data={chartData} options={options} width={220} height={220} />
+          }
+        </div>
+        <div className={styles.donutChartLegend}>
+          <span className={styles.legendItem}>
+            <span className={styles.legendColor} style={{background: colores["No se recomienda atención"]}} /> No se recomienda atención
+          </span>
+          <span className={styles.legendItem}>
+            <span className={styles.legendColor} style={{background: colores["Se recomienda atención"]}} /> Se recomienda atención
+          </span>
+          <span className={styles.legendItem}>
+            <span className={styles.legendColor} style={{background: colores["Atención urgente"]}} /> Atención urgente
+          </span>
+        </div>
       </div>
     </div>
   );

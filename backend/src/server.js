@@ -23,6 +23,8 @@ const rolRoutes = require("./routes/postgres/rol.routes");
 const loginRoutes = require("./routes/login.routes");
 const formularioRoutes = require("./routes/postgres/formulario.routes");
 const evaluacionRoutes = require("./routes/postgres/evaluacion.routes");
+const estadisticasRoutes = require("./routes/estadisticas.routes");
+
 
 // Endpoints
 app.use("/api/registro", registerRoute);
@@ -31,6 +33,7 @@ app.use("/api/roles", rolRoutes);
 app.use("/api/login", loginRoutes);
 app.use("/api/formularios", formularioRoutes);
 app.use("/api/postgres/evaluaciones" , evaluacionRoutes);
+app.use("/api/estadisticas", estadisticasRoutes);
 
 // Iniciar servidor
 app.listen(PORT, () => {
