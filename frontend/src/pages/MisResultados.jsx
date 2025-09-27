@@ -46,7 +46,7 @@ export default function MisResultados() {
             <div key={datos.id || idx} className="resultados-card">
               <div className="resultados-info">
                 <p>
-                  <strong>Puntaje Total:</strong>{" "}
+                  <strong>Puntaje:</strong>{" "}
                   <span className="puntaje">{datos.puntajeTotal}</span>
                 </p>
                 <p>
@@ -58,12 +58,7 @@ export default function MisResultados() {
                       })
                     : ""}
                 </p>
-                {datos.id && (
-                  <p>
-                    <strong>ID de la evaluación:</strong>{" "}
-                    <span className="id-evaluacion">{datos.id}</span>
-                  </p>
-                )}
+                
               </div>
               <div className="resultados-recomendacion">
                 <h3>Recomendación principal</h3>

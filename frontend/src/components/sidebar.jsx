@@ -270,9 +270,6 @@ const Sidebar = () => {
                   <Link className="sidebar-link" to="/misformularios">
                     Historia Clínica
                   </Link>
-                  <Link className="sidebar-link" to="/misresultados">
-                    Resultados
-                  </Link>
                 </div>
               </div>
             </div>

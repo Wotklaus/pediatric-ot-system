@@ -91,11 +91,12 @@ const Admin = () => {
       .finally(() => setLoadingPersonalMedico(false));
   }, []);
 
+  // COLORES PERSONALIZADOS (puedes cambiarlos a placer)
   const summaryCards = [
-    { color: "primary", title: "Personal Médico", value: personalMedicoCount, link: "/personalmedico", linkText: "Ver detalles" },
-    { color: "warning", title: "Representantes", value: representantesCount, link: "/clientes", linkText: "Ver detalles" },
-    { color: "success", title: "Pacientes", value: pacientesCount, link: "/pacientes", linkText: "Ver detalles" },
-    { color: "danger", title: "Evaluaciones", value: evaluacionesCount, link: "/historiasclinicas", linkText: "Ver detalles" }
+    { color: "#3b5b7cff", title: "Personal Médico", value: personalMedicoCount, link: "/personalmedico", linkText: "Ver detalles" }, // Azul
+    { color: "#f8bf2fff", title: "Representantes", value: representantesCount, link: "/clientes", linkText: "Ver detalles" },         // Amarillo
+    { color: "#4cc152ff", title: "Pacientes", value: pacientesCount, link: "/pacientes", linkText: "Ver detalles" },                  // Verde
+    { color: "#d54141ff", title: "Evaluaciones", value: evaluacionesCount, link: "/historiasclinicas", linkText: "Ver detalles" }     // Rojo
   ];
 
   return (
@@ -109,7 +110,10 @@ const Admin = () => {
           <div className="row summary-row">
             {summaryCards.map((card, idx) => (
               <div className="col-xl-3 col-md-6 card-col" key={idx}>
-                <div className={`card bg-${card.color} text-white mb-4`}>
+                <div
+                  className="card text-white mb-4"
+                  style={{ backgroundColor: card.color }}
+                >
                   <div className="card-body">
                     <span>{card.value}</span>
                     <br />
@@ -140,7 +144,7 @@ const Admin = () => {
           <div className="card mb-4">
             <div className="card-header">
               <i className="fas fa-user-md me-1"></i>
-              Personal Médico Reciente
+              Personal Médico 
             </div>
             <div className="card-body">
               {loadingPersonalMedico ? (

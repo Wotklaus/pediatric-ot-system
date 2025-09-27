@@ -670,3 +670,27 @@ SELECT
 FROM conteos
 ORDER BY porcentaje DESC;
 $$;
+
+--Reportes personalizados
+CREATE OR REPLACE FUNCTION obtener_reporte_evaluaciones()
+RETURNS TABLE (
+    nombre_nino VARCHAR,
+    fecha_nacimiento DATE,
+    sexo VARCHAR,
+    fecha_evaluacion TIMESTAMP,
+    puntaje INT,
+    recomendacion TEXT
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        f.nombre_nino,
+        f.fecha_nacimiento,
+        f.sexo,
+        e.fecha AS fecha_evaluacion,
+        e.puntaje_total AS puntaje,
+        e.recomendacion
+    FROM evaluaciones e
+    JOIN formularios f ON e.formulario_id = f.id;
+END;
+$$ LANGUAGE plpgsql;

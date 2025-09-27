@@ -26,7 +26,7 @@ const EdadPacientesChart = () => {
     labels: chartData.labels,
     datasets: [{
       data: chartData.values,
-      backgroundColor: ["#007bff", "#28a745", "#ffc107"]
+      backgroundColor: ["#217ddeff", "#dc3e8bff", "#4dffafff"]
     }]
   };
 

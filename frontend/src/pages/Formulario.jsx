@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import "./styles/Formulario.css";
+import Swal from "sweetalert2"; // Importa SweetAlert2
 
 // 🔹 RadioGroup reutilizable
 const RadioGroup = ({ name, value, options, onChange }) => (
@@ -87,9 +88,6 @@ const Formulario = () => {
         },
     });
 
-    const [mensaje, setMensaje] = useState("");        // Texto del mensaje
-    const [tipoMensaje, setTipoMensaje] = useState(""); // "error" o "exito"
-
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -137,8 +135,13 @@ const Formulario = () => {
         e.preventDefault();
         const errorMsg = validateForm();
         if (errorMsg) {
-            setMensaje(errorMsg);
-            setTipoMensaje("error");
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: errorMsg,
+                timer: 2800,
+                showConfirmButton: false,
+            });
             return;
         }
         try {
@@ -154,22 +157,51 @@ const Formulario = () => {
 
             const data = await response.json();
             if (response.ok) {
-                setMensaje("Formulario guardado correctamente ✅");
-                setTipoMensaje("exito");
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Guardado!',
+                    text: "Formulario guardado correctamente ✅",
+                    timer: 1800,
+                    showConfirmButton: false,
+                });
                 const formularioId = data.id;
-                setTimeout(() => navigate("/evaluacion", { state: { formularioId } }), 2000);
+                setTimeout(() => navigate("/evaluacion", { state: { formularioId } }), 1800);
             } else {
-                setMensaje("Error al guardar: " + data.error);
-                setTipoMensaje("error");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al guardar',
+                    text: data.error,
+                    timer: 2800,
+                    showConfirmButton: false,
+                });
             }
         } catch (error) {
-            setMensaje("Error al enviar formulario: " + error.message);
-            setTipoMensaje("error");
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al enviar',
+                text: error.message,
+                timer: 2800,
+                showConfirmButton: false,
+            });
         }
     };
 
     const handleCancel = () => {
-        navigate("/customer");
+        // Puedes poner un SweetAlert de confirmación si quieres
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Deseas cancelar y regresar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#2862be',
+            cancelButtonColor: '#aaa',
+            confirmButtonText: 'Sí, regresar',
+            cancelButtonText: 'No, continuar aquí'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                navigate("/customer");
+            }
+        });
     };
 
     return (
@@ -366,7 +398,7 @@ const Formulario = () => {
                                 onChange={handleChange}
                                 options={[
                                     { value: "no", label: "No" },
-                                    { value: "sí", label: "Sí, describa" },
+                                    { value: "sí", label: "Sí" },
                                 ]}
                             />
                             {formData.dificultadNacimiento === "sí" && (
@@ -522,12 +554,6 @@ const Formulario = () => {
                                 );
                             })}
                         </fieldset>
-
-                        {mensaje && (
-                            <div className={`formulario-toast ${tipoMensaje}`}>
-                                {mensaje}
-                            </div>
-                        )}
 
                         <div className="formulario-buttons">
                             <button type="submit" className="formulario-btn">

@@ -13,7 +13,7 @@ const PacientesPorMesChart = () => {
     datasets: [{
       label: "Pacientes",
       data: [],
-      backgroundColor: "#007bff"
+      backgroundColor: "#5ec099ff"
     }]
   });
   const [loading, setLoading] = useState(true);
@@ -31,7 +31,7 @@ const PacientesPorMesChart = () => {
           datasets: [{
             label: "Pacientes",
             data: res.values,
-            backgroundColor: "#007bff"
+            backgroundColor: "#57c69aff"
           }]
         });
         setLoading(false);

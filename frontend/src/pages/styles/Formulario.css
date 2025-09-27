@@ -1,92 +1,89 @@
 /* ===========================
    CONTENEDOR PRINCIPAL
    =========================== */
-/* Estilo del área principal donde va el formulario */
 .formulario-content {
-  width: 100vw;                     /* Ocupa todo el ancho de la ventana */
-  min-height: 100vh;                /* Al menos toda la altura de la ventana */
-  padding: 50px 50px;               /* Espaciado interno alrededor */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente principal */
-  color: #000000;                   /* Color de texto (puedes cambiar aquí) */
-  background-color: #ffffff;        /* Fondo general del contenido (puedes cambiar aquí) */
-  box-sizing: border-box;           /* Incluye el padding en el ancho total */
-  margin-top: 50px;                 /* Separación superior (ajusta si lo necesitas) */
+  width: 100vw;
+  min-height: 100vh;
+  padding: 50px 50px;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  color: #232323;
+  background-color: #f5f6fa;
+  box-sizing: border-box;
+  
 }
 
 /* ===========================
    FORMULARIO PRINCIPAL
    =========================== */
-/* Sección contenedora del formulario */
 .formulario-section {
-  max-width: 1000px;                /* Ancho máximo del formulario */
-  margin: 0 auto;                   /* Centrado horizontal */
-  display: flex;                    /* Para organizar los elementos en columna */
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
   flex-direction: column;
-  gap: 30px;                        /* Espacio entre elementos hijos */
-  background-color: #ffffff;        /* Fondo del bloque formulario (puedes cambiar aquí) */
-  margin-left: 340px;               /* Separación para el sidebar (ajusta según el sidebar) */
-  margin-top: -70px;                /* Ajuste vertical (modifica si lo necesitas) */
+  gap: 30px;
+  background-color: #ffffff;
+  margin-left: 380px;
+  margin-top: 30px;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(49,105,212,0.08);
+  padding: 32px 34px 28px 34px;
 }
 
 /* ===========================
    FIELDSETS POR SECCIÓN
    =========================== */
-/* Estilos para cada sección del formulario */
 .formulario-form fieldset {
-  border: 1px solid #a1a3a6;        /* Borde del bloque */
-  border-radius: 8px;               /* Bordes redondeados */
-  padding: 20px;                    /* Espaciado interno */
-  background-color: #ffffff;        /* Fondo por defecto de cada sección */
-  margin-bottom: 28px;              /* <-- Espacio extra entre secciones (MODIFICADO) */
-  /* Ajusta este valor para más o menos espacio vertical entre fieldsets */
+  border: 1px solid #d5dae0;
+  border-radius: 9px;
+  padding: 22px 20px 18px 20px;
+  background-color: #fafbfc;
+  margin-bottom: 32px;
 }
 
-/* ======= COLORES POR SECCIÓN (MODIFICAR AQUÍ) ======= */
-/* Puedes cambiar el color de fondo de cada sección editando estas líneas */
-.formulario-form fieldset:nth-child(1) { background-color: #f1f3f4; }      /* Sección 1: azul claro */
-.formulario-form fieldset:nth-child(2) { background-color: #f5fcff; }      /* Sección 2: crema (MODIFICADO) */
-.formulario-form fieldset:nth-child(3) { background-color: #fcfce4; }      /* Sección 3: beige */
-.formulario-form fieldset:nth-child(4) { background-color: #f5fcff; }      /* Sección 4: celeste muy claro */
-
-/* Puedes cambiar los colores hexadecimales por los que prefieras para cada sección */
+/* Colores sutiles y profesionales para secciones */
+.formulario-form fieldset:nth-child(1) { background-color: #f3f6f8; }
+.formulario-form fieldset:nth-child(2) { background-color: #f6fafd; }
+.formulario-form fieldset:nth-child(3) { background-color: #f9f7f4; }
+.formulario-form fieldset:nth-child(4) { background-color: #f6fafd; }
 
 /* ===========================
    ENCABEZADOS
    =========================== */
-/* Títulos superiores del formulario */
 .formulario-section h2 {
-  text-align: center;               /* Centrado horizontal */
-  font-size: 32px;                  /* Tamaño de fuente (MODIFICADO para mayor visibilidad) */
-  margin-bottom: 20px;              /* Espacio inferior */
-  color: #4a4b4e;                   /* Color del título principal (MODIFICADO) */
-  letter-spacing: 1px;              /* Espaciado entre letras */
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 18px;
+  color: #2a2d34;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.15;
 }
-/* Si quieres cambiar el texto del título, debes modificar el JSX, no el CSS */
 
 /* ===========================
    TITULOS DE SECCIÓN
    =========================== */
-/* Leyenda/título de cada fieldset */
 .formulario-form legend {
-  font-weight: bold;
-  font-size: 20px;                  /* Tamaño del título de sección (MODIFICADO) */
-  color: #1d9dba;                   /* Color del título de sección */
+  font-weight: 600;
+  font-size: 1.23rem;
+  color: #2472a4;
   padding: 0 10px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+  letter-spacing: 0.01em;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 }
-/* Cambia el color aquí para cada sección si quieres más variedad */
 
 /* ===========================
    LABELS
    =========================== */
-/* Etiquetas de los campos */
 .formulario-form label {
   display: block;
-  margin-bottom: 10px;
-  font-size: 15px;
+  margin-bottom: 7px;
+  font-size: 1.04rem;
   font-weight: 500;
-  color: #000000;
-  /* Puedes cambiar el color aquí si quieres etiquetas diferentes */
+  color: #343a40;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: 0.01em;
 }
 
 /* ===========================
@@ -96,37 +93,33 @@
 .formulario-form input[type="number"],
 .formulario-form input[type="tel"],
 .formulario-form input[type="date"] {
-  width: 100%;            
-  height: 35px;
-  padding: 10px 14px;
-  margin-bottom: 15px;
-  border: 1px solid #babcbe;
-  border-radius: 6px;
-  font-size: 15px;
-  background-color: #ffffff;
+  width: 100%;
+  height: 36px;
+  padding: 9px 14px;
+  margin-bottom: 12px;
+  border: 1.5px solid #bac3cf;
+  border-radius: 7px;
+  font-size: 1.01rem;
+  background-color: #f8fbfd;
   box-sizing: border-box;
-  color: #000000;
+  color: #222;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  transition: border 0.15s;
 }
-/* Puedes modificar el background-color para inputs aquí */
 
-/* Focus de los inputs */
-.formulario-form input[type="text"]:focus,
-.formulario-form input[type="number"]:focus,
-.formulario-form input[type="tel"]:focus,
-.formulario-form input[type="date"]:focus {
-  border-color: #c3cbd1;
-  box-shadow: 0 0 4px rgba(162, 167, 170, 0.4);
+.formulario-form input:focus {
+  border-color: #3174d4;
+  box-shadow: 0 0 4px rgba(49,105,212,0.06);
   outline: none;
 }
 
 /* ===========================
-   RADIOS SÍ/NO REDONDOS
+   RADIOS REDONDOS
    =========================== */
-/* Radios personalizados */
 .formulario-radio-group input[type="radio"] {
   appearance: none;
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
   border: 2px solid #b0bec5;
   border-radius: 50%;
   background-color: #ffffff;
@@ -135,16 +128,14 @@
   margin-right: 8px;
   position: relative;
 }
-/* Color del radio seleccionado */
 .formulario-radio-group input[type="radio"]:checked {
-  background-color: #40aff8;
-  border-color: #23475f63;
+  background-color: #3174d4;
+  border-color: #3174d4;
 }
 
 /* ===========================
-   CHECKBOXES SIMPLES
+   CHECKBOXES
    =========================== */
-/* Checkboxes personalizados */
 .formulario-checkbox-group input[type="checkbox"] {
   appearance: none;
   width: 18px;
@@ -157,87 +148,78 @@
   margin-right: 8px;
   position: relative;
 }
-/* Color del checkbox seleccionado */
 .formulario-checkbox-group input[type="checkbox"]:checked {
-  background-color: #3498db;
-  border-color: #3498db;
+  background-color: #3174d4;
+  border-color: #3174d4;
 }
-/* Marca de check simple */
 .formulario-checkbox-group input[type="checkbox"]:checked::after {
   content: '✓';
   color: white;
-  font-size: 14px;
+  font-size: 13px;
   position: absolute;
   top: -2px;
   left: 2px;
+  font-weight: 700;
 }
 
 /* ===========================
    BOTONES
    =========================== */
-/* Botón principal */
 .formulario-btn {
-  background-color: #4b7bac;         /* Color de fondo botón principal */
+  background-color: #3174d4;
   color: white;
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: 11px 24px;
+  font-size: 1.09rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 7px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(49,105,212,0.06);
+  transition: background-color 0.18s, box-shadow 0.18s, transform 0.18s;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 }
-/* Hover botón principal */
 .formulario-btn:hover {
-  background-color: #0059b3;         /* Color al pasar el mouse */
+  background-color: #245089;
+  box-shadow: 0 2px 14px rgba(49,105,212,0.13);
   transform: translateY(-2px);
 }
-/* Botón de cancelar/peligro */
 .formulario-btn-danger {
-  background-color: #ff0e0e;         /* Color fondo botón cancelar */
-  color: white;
-  padding: 12px 24px;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  background-color: #e31414 !important;
+  color: #fff !important;
 }
 .formulario-btn-danger:hover {
-  background-color: #d32f2f;         /* Color hover botón cancelar */
-  transform: translateY(-2px);
+  background-color: #b10c0c !important;
 }
 
 /* ===========================
    GRUPOS DE BOTONES
    =========================== */
-/* Contenedor de los botones */
 .formulario-buttons {
   display: flex;
   justify-content: center;
-  gap: 20px;                         /* Espacio entre botones */
-  margin-top: 20px;
+  gap: 18px;
+  margin-top: 18px;
 }
 
 /* ===========================
    MENSAJE DE ÉXITO O ERROR
    =========================== */
-/* Toast de mensajes */
 .formulario-toast {
-  padding: 12px 20px;
-  border-radius: 6px;
-  margin: 10px 0;
-  font-weight: bold;
+  padding: 10px 18px;
+  border-radius: 7px;
+  margin: 8px 0;
+  font-weight: 600;
   text-align: center;
-  transition: all 0.3s ease;
+  font-size: 1.01rem;
+  transition: all 0.18s ease;
   position: relative;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 }
-/* Mensaje de error */
 .formulario-toast.error {
   background-color: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;
 }
-/* Mensaje de éxito */
 .formulario-toast.exito {
   background-color: #d4edda;
   color: #155724;
@@ -247,24 +229,33 @@
 /* ===========================
    GRUPOS DE RADIO Y CHECKBOX
    =========================== */
-/* Organización vertical de radios y checkboxes */
 .formulario-radio-group,
 .formulario-checkbox-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 14px;
+  gap: 8px;
+  margin-bottom: 13px;
   align-items: flex-start;
 }
 
 /* ===========================
-   ESPACIOS Y COLORES A MODIFICAR FÁCILMENTE
+   RESPONSIVE
    =========================== */
-/*
-- Espacio entre secciones: modifica 'margin-bottom' en '.formulario-form fieldset'
-- Color de fondo de cada sección: cambia los colores en los selectores fieldset:nth-child()
-- Color y tamaño de los títulos: ajusta en '.formulario-section h2' y '.formulario-form legend'
-- Color de los botones: ajusta en '.formulario-btn', '.formulario-btn-danger'
-*/
+@media (max-width: 900px) {
+  .formulario-section {
+    max-width: 99vw;
+    margin-left: 0;
+    padding: 1.1rem;
+  }
+  .formulario-content {
+    padding: 10px 2vw;
+  }
+  .formulario-btn,
+  .formulario-btn-danger {
+    min-width: 100px;
+    font-size: 0.98rem;
+    padding: 8px 0;
+  }
+}
 
-/* FIN DEL CSS COMENTADO */
+/* FIN DEL CSS MEJORADO */

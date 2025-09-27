@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import "./styles/Evaluacion.css";
+import Swal from "sweetalert2"; // Importa SweetAlert2
 
 // RadioGroup reutilizable
 const RadioGroup = ({ name, value, options, onChange }) => (
@@ -29,8 +30,6 @@ const Evaluacion = () => {
   const [preguntas, setPreguntas] = useState([]);
   const [respuestas, setRespuestas] = useState({});
   const [contextos, setContextos] = useState({});
-  const [mensaje, setMensaje] = useState("");
-  const [mensajeTipo, setMensajeTipo] = useState("");
 
   useEffect(() => {
     const cargarPreguntas = async () => {
@@ -51,8 +50,13 @@ const Evaluacion = () => {
         setRespuestas(respuestasIniciales);
         setContextos(contextosIniciales);
       } catch (error) {
-        setMensaje("Error cargando el formulario");
-        setMensajeTipo("error");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error cargando el formulario',
+          timer: 2300,
+          showConfirmButton: false
+        });
       }
     };
     cargarPreguntas();
@@ -90,13 +94,16 @@ const Evaluacion = () => {
   const validateFields = () => {
     for (let pregunta of preguntas) {
       if (!respuestas[pregunta.id]) {
-        setMensaje("Responde todas las preguntas antes de continuar.");
-        setMensajeTipo("error");
+        Swal.fire({
+          icon: 'warning',
+          title: 'Faltan respuestas',
+          text: 'Responde todas las preguntas antes de continuar.',
+          timer: 2200,
+          showConfirmButton: false
+        });
         return false;
       }
     }
-    setMensaje("");
-    setMensajeTipo("");
     return true;
   };
 
@@ -104,8 +111,13 @@ const Evaluacion = () => {
     e.preventDefault();
     if (!validateFields()) return;
     if (!formularioId) {
-      setMensaje("Error: formularioId no disponible");
-      setMensajeTipo("error");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Error: formularioId no disponible',
+        timer: 2200,
+        showConfirmButton: false
+      });
       return;
     }
 
@@ -134,23 +146,58 @@ const Evaluacion = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // AQUÍ navegas y pasas el evaluacionId y datos
-        navigate("/MisResultados", {
-          state: {
-            evaluacionId: data.evaluacionId, // <-- El ID que te devuelve el backend
-            puntajeTotal,
-            recomendacion: interpretar(puntajeTotal),
-            fecha: new Date().toISOString()
-          }
+        Swal.fire({
+          icon: 'success',
+          title: '¡Guardado!',
+          text: 'Evaluación guardada correctamente ✅',
+          timer: 1600,
+          showConfirmButton: false
         });
+        setTimeout(() => {
+          navigate("/MisResultados", {
+            state: {
+              evaluacionId: data.evaluacionId,
+              puntajeTotal,
+              recomendacion: interpretar(puntajeTotal),
+              fecha: new Date().toISOString()
+            }
+          });
+        }, 1600);
       } else {
-        setMensaje(data.error || "Error guardando la evaluación");
-        setMensajeTipo("error");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al guardar',
+          text: data.error || "Error guardando la evaluación",
+          timer: 2300,
+          showConfirmButton: false
+        });
       }
     } catch (error) {
-      setMensaje("Error de conexión con el servidor");
-      setMensajeTipo("error");
+      Swal.fire({
+        icon: 'error',
+        title: 'Conexión fallida',
+        text: 'Error de conexión con el servidor',
+        timer: 2300,
+        showConfirmButton: false
+      });
     }
+  };
+
+  const handleCancel = () => {
+    Swal.fire({
+      title: '¿Cancelar evaluación?',
+      text: '¿Deseas cancelar y regresar?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#2862be',
+      cancelButtonColor: '#aaa',
+      confirmButtonText: 'Sí, regresar',
+      cancelButtonText: 'No, continuar aquí'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/customer");
+      }
+    });
   };
 
   const renderContextos = (preguntaId, contextosDisponibles) => {
@@ -183,7 +230,7 @@ const Evaluacion = () => {
           <form onSubmit={handleSubmit} className="evaluacion-form">
             {Object.entries(preguntasPorArea).map(([area, preguntasArea]) => (
               <fieldset key={area} data-area={area}>
-                <legend> {area}</legend>
+                <legend>{area}</legend>
                 {preguntasArea.map((pregunta) => (
                   <div className="evaluacion-pregunta" key={pregunta.id}>
                     <label>
@@ -203,15 +250,12 @@ const Evaluacion = () => {
                 ))}
               </fieldset>
             ))}
-            {mensaje && (
-              <div className={`evaluacion-toast ${mensajeTipo}`}>{mensaje}</div>
-            )}
             <div className="evaluacion-buttons">
               <button type="submit" className="evaluacion-btn">Guardar</button>
               <button
                 type="button"
                 className="evaluacion-btn evaluacion-btn-danger"
-                onClick={() => navigate("/customer")}
+                onClick={handleCancel}
               >
                 Cancelar
               </button>

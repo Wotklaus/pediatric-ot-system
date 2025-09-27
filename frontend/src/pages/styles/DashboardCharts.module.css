@@ -20,17 +20,17 @@
   width: 100%; /* Ocupa todo el ancho de la celda */
   height: 350px; /* Altura fija, puedes personalizar aquí */
   box-sizing: border-box; /* Incluye borde y padding en el tamaño */
-  border: 2.5px solid #e6eaf1; /* Borde gris claro */
+  border: 2px solid #9a9b9a; /* Borde gris claro */
   transition: box-shadow 0.18s, border-color 0.18s; /* Animación suave */
   position: relative; /* Para posicionar elementos hijos */
 }
 
 /* Personalización del borde según el tipo de gráfico */
 .chartCard.donut {
-  border: 2.5px solid #727574; /* Borde azul para gráficos tipo "donut" */
+  border: 2px solid #9a9b9a; /* Borde azul para gráficos tipo "donut" */
 }
 .chartCard.line {
-  border: 2.5px solid #727574; /* Borde verde para gráficos tipo "line" */
+  border: 2px solid #9a9b9a; /* Borde verde para gráficos tipo "line" */
 }
 
 /* Título del gráfico */

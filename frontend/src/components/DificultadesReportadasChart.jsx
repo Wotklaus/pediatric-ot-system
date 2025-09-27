@@ -23,7 +23,7 @@ const DificultadesReportadasChart = () => {
   }, []);
 
   const colores = [
-    "#ffc107", "#007bff", "#dc3545", "#28a745", "#6c757d",
+    "#ffc107", "#007bff", "#dc3545", "#28a745", "#20c997",
     "#17a2b8", "#6610f2", "#fd7e14", "#e83e8c", "#20c997"
   ];
 

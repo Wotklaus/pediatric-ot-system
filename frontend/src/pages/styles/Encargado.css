@@ -1,0 +1,138 @@
+.encargado-layout {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(120deg, #fdfeff 0%, #f7fafd 100%);
+}
+
+.encargado-content {
+  margin-left: 250px;
+  padding: 2.3rem 2.8rem;
+  width: 1270px;
+  box-sizing: border-box;
+}
+
+/* Título y subtítulo */
+.encargado-content h2 {
+  font-size: 2.55rem;
+  font-weight: 700;
+  color: #3b3d40;
+  margin-bottom: 0.32rem;
+}
+.encargado-subtitle {
+  font-size: 1.23rem;
+  color: #2862be;
+  margin-bottom: 2.2rem;
+}
+
+/* Dashboard cards personalizados */
+.encargado-dashboard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.6rem;
+  margin-top: 0.3rem;
+  margin-bottom: 2.2rem;
+  width: 100%;
+}
+
+.encargado-card {
+  border-radius: 18px;
+  padding: 1.7rem 1.2rem 1.1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: box-shadow 0.16s, transform 0.14s, border-color 0.12s, background 0.14s;
+  box-shadow: 0 3px 16px rgba(36, 67, 102, 0.09);
+  text-align: center;
+  min-height: 170px;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+}
+
+.encargado-card-icon {
+  font-size: 2.8rem;
+  margin-bottom: 0.8rem;
+  transition: color 0.17s;
+}
+
+.encargado-card-title {
+  font-size: 1.13rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.encargado-card-description {
+  font-size: 0.98rem;
+  font-weight: 400;
+  color: #234366;
+  opacity: 0.85;
+}
+
+.encargado-card:hover {
+  transform: scale(1.04) translateY(-2px);
+  border-color: #2862be;
+  box-shadow: 0 8px 36px rgba(36, 67, 102, 0.15);
+  background: #f2f6fb;
+}
+
+/* Charts grid igual que admin */
+.chartsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.8rem;
+  width: 100%;
+}
+
+.encargado-chart-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 3px 16px rgba(36, 67, 102, 0.10);
+  border: 1.6px solid #d7e0ee;
+  padding: 1.1rem 1.1rem 0.3rem 1.1rem;
+  width: 100%;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .encargado-content {
+    padding: 1.2rem 0.6rem;
+  }
+  .encargado-dashboard {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+  }
+  .chartsGrid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .encargado-content {
+    margin-left: 190px;
+    padding: 1.1rem 0.7rem;
+  }
+  .encargado-dashboard {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .encargado-content {
+    margin-left: 0;
+    padding: 0.4rem 0.1rem;
+  }
+  .encargado-dashboard {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+  .chartsGrid {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+}

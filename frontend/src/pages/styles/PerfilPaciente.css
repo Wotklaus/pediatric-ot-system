@@ -1,149 +1,165 @@
-/* ===========================
-   Layout principal
-   =========================== */
-.perfil-paciente-main {
-  display: flex;
-  min-height: 100vh;
-  width: 100vw;
-  background: #f6faff;
-}
+/* Contenido principal ocupa todo el ancho menos el sidebar */
 .perfil-paciente-content {
-  flex: 1;
-  margin-left: 250px; /* Ajusta según el ancho de tu sidebar */
-  padding-top: 64px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin-left: 250px; /* Respeta el ancho del sidebar */
+  padding: 2rem 2.5rem;
   min-height: 100vh;
+  background: linear-gradient(120deg, #f0f2f4 0%, #f7fafd 100%);
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
   box-sizing: border-box;
+  width: 1280px;
 }
 
-/* ===========================
-   Card principal
-   =========================== */
+/* Título principal */
+.perfil-paciente-content h2 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #222323;
+  margin-bottom: 2rem;
+  letter-spacing: 0.03em;
+  text-shadow: 0 2px 10px rgba(36, 67, 102, 0.07);
+  text-align: center;
+}
+
+/* Lista de tarjetas */
+.perfil-paciente-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Tarjeta de reporte */
 .perfil-paciente-card {
   background: #fff;
-  width: 100%;
-  max-width: 580px;  /* Puedes modificar el ancho */
-  margin: 28px auto 0 auto;
-  border-radius: 18px;
-  box-shadow: 0 2px 16px rgba(34,92,168,0.10);
-  padding: 36px 30px 28px 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 36px rgba(36, 67, 102, 0.09);
+  padding: 1.3rem 1.2rem 1.1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e8eaf1;
+  transition: box-shadow 0.2s, transform 0.2s;
 }
 
-/* ===========================
-   Secciones internas
-   =========================== */
-.perfil-paciente-section {
-  margin-bottom: 32px;
-  padding-bottom: 12px;
-  border-bottom: 1.2px solid #e3eaf5;
-}
-.perfil-paciente-section:last-child {
-  border-bottom: none;
+.perfil-paciente-card:hover {
+  box-shadow: 0 10px 36px rgba(36, 67, 102, 0.12);
+  transform: translateY(-1px) scale(1.005);
 }
 
-/* ===========================
-   Títulos y filas
-   =========================== */
-.perfil-paciente-section h2 {
-  font-size: 1.35rem;
-  color: #225ca8;
-  font-weight: 700;
-  margin-bottom: 16px;
-}
+/* Filas dentro de la tarjeta */
 .perfil-paciente-row {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 10px;
-  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 0.6rem;
+  font-size: 1.07rem;
+  flex-wrap: wrap;
 }
+
+/* Etiquetas en la tarjeta */
 .perfil-paciente-label {
-  width: 110px; /* Ajusta el ancho de las etiquetas */
-  color: #2264a8;
   font-weight: 600;
-  font-size: 1.05rem;
-  text-align: right;
+  color: #343536;
+  min-width: 132px;
+  margin-right: 0.5rem;
+  letter-spacing: 0.01em;
+  font-size: 1rem;
 }
+
+/* Valores en la tarjeta */
 .perfil-paciente-value {
-  color: #222;
-  font-size: 1.08rem;
+  color: #216d90;
   font-weight: 500;
   word-break: break-word;
 }
 
-/* ===========================
-   Listas de seguimiento y referencias
-   =========================== */
-.perfil-paciente-seguimiento-list,
-.perfil-paciente-referencia-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+
+
+
+/* Recomendaciones en casa */
+.perfil-paciente-recomendaciones {
+  background: #f7fafd;
+  border-radius: 8px;
+  padding: 0.5rem 1.1rem;
+  margin-bottom: 1rem;
 }
-.perfil-paciente-seguimiento-item,
-.perfil-paciente-referencia-item {
-  background: #f4fafd;
-  border-radius: 7px;
-  padding: 10px 12px;
-  margin-bottom: 10px;
-  box-shadow: 0 1px 5px rgba(34,92,168,0.07);
+.perfil-paciente-recomendaciones ul {
+  margin: 0.3rem 0 0 0;
+  padding-left: 1.2rem;
+}
+.perfil-paciente-recomendaciones li {
+  color: #1337a5;
+  font-size: 1.04rem;
+  margin-bottom: 0.20rem;
+  font-weight: 400;
+  position: relative;
+  line-height: 1.5;
+}
+.perfil-paciente-recomendaciones li::before {
+  content: "•";
+  color: #181919;
+  margin-right: 0.42rem;
+  font-size: 1.1em;
+}
+
+/* Grupo de botones */
+.resultados-btn-group {
   display: flex;
-  flex-direction: row;
-  gap: 18px;
-  align-items: flex-start;
+  gap: 0.7rem;
+  margin-top: 0.7rem;
+  justify-content: flex-start;
 }
-.perfil-paciente-seg-fecha,
-.perfil-paciente-ref-fecha {
-  color: #267a3c;
+
+.resultados-btn {
+  background: linear-gradient(90deg, #127128 0%, #0daaa0 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.58rem 1.3rem;
+  font-size: 1.01rem;
   font-weight: 600;
-  font-size: 0.98rem;
-  min-width: 90px;
+  cursor: not-allowed;
+  opacity: 0.78;
+  box-shadow: 0 2px 8px rgba(40, 98, 190, 0.07);
+  transition: background 0.15s, color 0.15s;
 }
-.perfil-paciente-seg-detalle,
-.perfil-paciente-ref-detalle {
-  color: #222;
-  font-size: 1rem;
+
+/* Mensajes de error y carga */
+.error {
+  margin-left: 250px;
+  margin-top: 2.5rem;
+  color: #d32f2f;
+  background: #fff3f1;
+  padding: 1.2rem 2rem;
+  border-radius: 10px;
+  font-size: 1.12rem;
   font-weight: 500;
+  box-shadow: 0 2px 8px rgba(211, 47, 47, 0.10);
+  border-left: 6px solid #d32f2f;
 }
 
-/* ===========================
-   Mensajes vacíos y de carga
-   =========================== */
-.perfil-paciente-empty {
-  color: #888;
-  font-size: 1rem;
-  margin-bottom: 10px;
-}
-.perfil-paciente-loading {
-  margin-top: 120px;
-  text-align: center;
-  color: #225ca8;
-  font-size: 1.18rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-}
-
-/* ===========================
-   Responsive
-   =========================== */
-@media (max-width: 900px) {
+/* Responsividad para escritorio y pantallas medianas */
+@media (max-width: 1200px) {
   .perfil-paciente-content {
+    padding: 1.5rem 0.5rem;
+  }
+  .perfil-paciente-list {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Respeta sidebar responsivo */
+@media (max-width: 900px) {
+  .perfil-paciente-content, .error {
+    margin-left: 190px;
+    padding: 1.1rem 0.7rem 1.1rem 0.7rem;
+  }
+}
+
+/* Para pantallas pequeñas: ocupa todo el ancho, sidebar flotante */
+@media (max-width: 600px) {
+  .perfil-paciente-content, .error {
     margin-left: 0;
-    padding-top: 30px;
-    padding-left: 2px;
-    padding-right: 2px;
-  }
-  .perfil-paciente-card {
-    max-width: 98vw;
-    padding: 12px 4vw;
-  }
-  .perfil-paciente-label {
-    width: 80px;
-    font-size: 0.96rem;
-  }
-  .perfil-paciente-section h2 {
-    font-size: 1.1rem;
+    padding: 0.4rem 0.1rem 0.4rem 0.1rem;
   }
 }

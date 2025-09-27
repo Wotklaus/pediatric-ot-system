@@ -24,6 +24,7 @@ const loginRoutes = require("./routes/login.routes");
 const formularioRoutes = require("./routes/postgres/formulario.routes");
 const evaluacionRoutes = require("./routes/postgres/evaluacion.routes");
 const estadisticasRoutes = require("./routes/estadisticas.routes");
+const reporteRoutes = require("./routes/reporte.routes");
 
 
 // Endpoints
@@ -34,6 +35,7 @@ app.use("/api/login", loginRoutes);
 app.use("/api/formularios", formularioRoutes);
 app.use("/api/postgres/evaluaciones" , evaluacionRoutes);
 app.use("/api/estadisticas", estadisticasRoutes);
+app.use("/api/reportes", reporteRoutes);
 
 // Iniciar servidor
 app.listen(PORT, () => {

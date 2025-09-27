@@ -5,9 +5,9 @@ import styles from "../pages/styles/DashboardCharts.module.css";
 Chart.register(ArcElement, Tooltip, Legend);
 
 const colores = {
-  "No se recomienda atención": "#43a047",
-  "Se recomienda atención": "#ffc107",
-  "Atención urgente": "#d32f2f"
+  "No se recomienda atención": "#31c138ff",
+  "Se recomienda atención": "#2a8ec0ff",
+  "Atención urgente": "#ede619ff"
 };
 
 const EvolucionEvaluacionesChart = () => {

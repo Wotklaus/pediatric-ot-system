@@ -1,34 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { FaUserCircle } from "react-icons/fa";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
+import Swal from "sweetalert2";
 import "./styles/Perfil.css";
-
-function MinimalUserIcon() {
-  return (
-    <svg
-      width="86"
-      height="86"
-      viewBox="0 0 86 86"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="perfil-elegante-svg-icon"
-    >
-      <circle cx="43" cy="43" r="42" fill="#e3f0ff" stroke="#2264a8" strokeWidth="2" />
-      <circle cx="43" cy="36" r="18" fill="#2264a8" opacity="0.18" />
-      <ellipse cx="43" cy="60" rx="21" ry="12" fill="#2264a8" opacity="0.11" />
-      <circle cx="43" cy="36" r="12" fill="#2264a8" />
-      <ellipse cx="43" cy="60" rx="14" ry="8" fill="#2264a8" />
-    </svg>
-  );
-}
 
 function Perfil() {
   const [usuario, setUsuario] = useState(null);
+  const [metrics, setMetrics] = useState({ formulariosCompletados: 0 });
   const [editando, setEditando] = useState(false);
   const [formulario, setFormulario] = useState({});
-  const [mensaje, setMensaje] = useState("");
-  const [tipoMensaje, setTipoMensaje] = useState("success");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,18 +19,49 @@ function Perfil() {
       navigate("/login");
       return;
     }
-    const fetchUsuario = async () => {
+    const fetchUsuarioYEvaluacion = async () => {
       try {
+        // 1. Consulta usuario (AJUSTA el endpoint si es distinto)
         const res = await api.get(`/api/pg/usuarios/${localStorage.getItem("email")}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsuario(res.data);
         setFormulario(res.data);
+        setMetrics({
+          formulariosCompletados: res.data.formulariosCompletados ?? 0,
+        });
+
+        // 2. Saca el id del formulario del usuario (AJUSTA el campo si es necesario)
+        // Si tienes dudas, haz console.log(res.data) y busca el campo que es el id del formulario
+        const formularioId = res.data.formularioId || res.data.id_formulario || res.data.id;
+
+        // 3. Consulta si existe evaluación para ese formulario
+        let evaluacionCompletada = false;
+        if (formularioId) {
+          try {
+            const evRes = await api.get(`/api/postgres/evaluaciones/by-formulario/${formularioId}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            // Si existe el campo id en la respuesta, la evaluación está hecha
+            if (evRes.data && evRes.data.id) {
+              evaluacionCompletada = true;
+            }
+          } catch (e) {
+            // Si no existe, sigue en registro
+            evaluacionCompletada = false;
+          }
+        }
+
+        // SOLO nos interesa hasta evaluación, control lo dejamos para después
+        setUsuario(prev => ({
+          ...prev,
+          evaluacionCompletada
+        }));
       } catch (error) {
         if (error.response?.status === 401) navigate("/login");
       }
     };
-    fetchUsuario();
+    fetchUsuarioYEvaluacion();
   }, [navigate]);
 
   const handleChange = (e) => {
@@ -56,14 +69,11 @@ function Perfil() {
   };
 
   const handleUpdate = async () => {
-    // Solo los campos que el backend acepta actualizar en perfil
     const datos = {
       nombre: formulario.nombre || null,
       apellido: formulario.apellido || null,
       cedula: formulario.cedula || null,
       telefono: formulario.telefono || null,
-      // Si quieres permitir foto y tu backend la soporta, agrega aquí
-      // foto: formulario.foto || null
     };
 
     try {
@@ -72,14 +82,37 @@ function Perfil() {
       });
       setUsuario({ ...usuario, ...datos });
       setEditando(false);
-      setTipoMensaje("success");
-      setMensaje("✅ Perfil actualizado correctamente");
-      setTimeout(() => setMensaje(""), 3000);
+      Swal.fire({
+        title: "Perfil actualizado correctamente",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1800,
+        background: "#f5f5f5",
+        color: "#333"
+      });
     } catch (error) {
-      setTipoMensaje("error");
-      setMensaje("❌ Error al actualizar perfil");
-      setTimeout(() => setMensaje(""), 3000);
+      Swal.fire({
+        title: "❌ Error al actualizar perfil",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 1800,
+        background: "#f5f5f5",
+        color: "#a82822"
+      });
     }
+  };
+
+  const handleCancel = () => {
+    setFormulario(usuario);
+    setEditando(false);
+    Swal.fire({
+      title: "Edición cancelada",
+      icon: "info",
+      showConfirmButton: false,
+      timer: 1200,
+      background: "#f5f5f5",
+      color: "#333"
+    });
   };
 
   if (!usuario) return (
@@ -91,52 +124,29 @@ function Perfil() {
     </div>
   );
 
+  // PROGRESO SOLO HASTA EVALUACIÓN
+  const etapas = ["Registro", "Evaluación", "Control"];
+  let etapaIndex = 0;
+  if (usuario.evaluacionCompletada) etapaIndex = 1;
+  // NO se avanza a control
+  const progreso = ((etapaIndex + 1) / etapas.length) * 100;
+  const getEtapaClass = idx => etapaIndex === idx ? "etapa-activa" : "";
+
   return (
     <div className="perfil-elegante-main">
       <Sidebar />
       <div className="perfil-elegante-content">
-        {mensaje && <div className={`perfil-elegante-toast ${tipoMensaje}`}>{mensaje}</div>}
         <div className="perfil-elegante-card perfil-elegante-row-flex">
-          <div
-            className="perfil-elegante-avatar-col"
-            onClick={() => document.getElementById("fotoInput").click()}
-            title="Cambiar foto de perfil"
-          >
-            {usuario.foto ? (
-              <img src={usuario.foto} alt="Usuario" className="perfil-elegante-avatar-img" />
-            ) : (
-              <MinimalUserIcon />
-            )}
-            <input
-              type="file"
-              id="fotoInput"
-              style={{ display: "none" }}
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files[0];
-                if (file) {
-                  const reader = new FileReader();
-                  reader.onload = () =>
-                    setUsuario({ ...usuario, foto: reader.result });
-                  reader.readAsDataURL(file);
-                }
-              }}
-            />
+          <div className="perfil-elegante-avatar-profesional">
+            <FaUserCircle size={120} color="#444" />
           </div>
           <div className="perfil-elegante-info-col">
             <h2 className="perfil-elegante-title">Mi Perfil</h2>
-            <div className="perfil-elegante-data-col">
-              {/* Datos en una sola columna, tipo ficha */}
+            <div className="perfil-elegante-grid-datos">
               <div className="perfil-elegante-row">
                 <label className="perfil-elegante-label">Nombre:</label>
                 {editando ? (
-                  <input
-                    className="perfil-elegante-input"
-                    type="text"
-                    name="nombre"
-                    value={formulario.nombre || ""}
-                    onChange={handleChange}
-                  />
+                  <input className="perfil-elegante-input" type="text" name="nombre" value={formulario.nombre || ""} onChange={handleChange} />
                 ) : (
                   <span className="perfil-elegante-value">{usuario.nombre}</span>
                 )}
@@ -144,13 +154,7 @@ function Perfil() {
               <div className="perfil-elegante-row">
                 <label className="perfil-elegante-label">Apellido:</label>
                 {editando ? (
-                  <input
-                    className="perfil-elegante-input"
-                    type="text"
-                    name="apellido"
-                    value={formulario.apellido || ""}
-                    onChange={handleChange}
-                  />
+                  <input className="perfil-elegante-input" type="text" name="apellido" value={formulario.apellido || ""} onChange={handleChange} />
                 ) : (
                   <span className="perfil-elegante-value">{usuario.apellido}</span>
                 )}
@@ -158,14 +162,7 @@ function Perfil() {
               <div className="perfil-elegante-row">
                 <label className="perfil-elegante-label">Cédula:</label>
                 {editando ? (
-                  <input
-                    className="perfil-elegante-input"
-                    type="text"
-                    name="cedula"
-                    value={formulario.cedula || ""}
-                    onChange={handleChange}
-                    disabled
-                  />
+                  <input className="perfil-elegante-input" type="text" name="cedula" value={formulario.cedula || ""} onChange={handleChange} disabled />
                 ) : (
                   <span className="perfil-elegante-value">{usuario.cedula}</span>
                 )}
@@ -173,13 +170,7 @@ function Perfil() {
               <div className="perfil-elegante-row">
                 <label className="perfil-elegante-label">Teléfono:</label>
                 {editando ? (
-                  <input
-                    className="perfil-elegante-input"
-                    type="text"
-                    name="telefono"
-                    value={formulario.telefono || ""}
-                    onChange={handleChange}
-                  />
+                  <input className="perfil-elegante-input" type="text" name="telefono" value={formulario.telefono || ""} onChange={handleChange} />
                 ) : (
                   <span className="perfil-elegante-value">{usuario.telefono}</span>
                 )}
@@ -187,14 +178,7 @@ function Perfil() {
               <div className="perfil-elegante-row">
                 <label className="perfil-elegante-label">Email:</label>
                 {editando ? (
-                  <input
-                    className="perfil-elegante-input"
-                    type="text"
-                    name="email"
-                    value={formulario.email || ""}
-                    onChange={handleChange}
-                    disabled
-                  />
+                  <input className="perfil-elegante-input" type="text" name="email" value={formulario.email || ""} onChange={handleChange} disabled />
                 ) : (
                   <span className="perfil-elegante-value">{usuario.email}</span>
                 )}
@@ -206,13 +190,7 @@ function Perfil() {
                   <button className="perfil-elegante-btn guardar" onClick={handleUpdate}>
                     Guardar
                   </button>
-                  <button
-                    className="perfil-elegante-btn cancelar"
-                    onClick={() => {
-                      setFormulario(usuario);
-                      setEditando(false);
-                    }}
-                  >
+                  <button className="perfil-elegante-btn cancelar" onClick={handleCancel}>
                     Cancelar
                   </button>
                 </>
@@ -222,6 +200,20 @@ function Perfil() {
                 </button>
               )}
             </div>
+          </div>
+        </div>
+        {/* Barra de progreso SOLO hasta evaluación */}
+        <div className="perfil-progress-card">
+          <div className="perfil-progress-etapas-bar">
+            <span className={`perfil-etapa-label ${getEtapaClass(0)}`}>Registro</span>
+            <span className={`perfil-etapa-label ${getEtapaClass(1)}`}>Evaluación</span>
+            <span className={`perfil-etapa-label`}>Control</span>
+          </div>
+          <div className="perfil-progress-bar">
+            <div className={`perfil-progress-filled etapa-${etapaIndex}`} style={{ width: `${progreso}%` }} />
+            <div className="perfil-progress-dot" style={{ left: `0%` }} />
+            <div className="perfil-progress-dot" style={{ left: `50%` }} />
+            <div className="perfil-progress-dot" style={{ left: `100%` }} />
           </div>
         </div>
       </div>

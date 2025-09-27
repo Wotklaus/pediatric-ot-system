@@ -36,8 +36,8 @@ router.get("/personal-medico", authMiddleware, async (req, res) => {
 // Listar clientes (solo admin)
 router.get("/clientes", authMiddleware, async (req, res) => {
   try {
-    // Solo el admin puede ver todos los clientes
-    if (req.user.rol_id !== ADMIN) {
+    // Permitir acceso tanto a admin como encargado
+    if (![ADMIN, ENCARGADO].includes(req.user.rol_id)) {
       return res.status(403).json({ error: "No tienes permiso" });
     }
     const lista = await usuarioDAO.listarClientes();
